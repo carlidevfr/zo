@@ -1,0 +1,6 @@
+**/env.php
+**/envTest.php
+/vendor/
+**/**.xml.dist
+**/prod.sql
+**/testprod.sql
