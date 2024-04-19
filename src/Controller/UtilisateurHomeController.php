@@ -20,9 +20,6 @@ class UtilisateurHomeController
         //On vérifie si on a le droit d'être là (admin)
         $this->Security->verifyAccess();
 
-        var_dump($_SESSION['role']);
-        var_dump($_SESSION['user']);
-
         // Affiche la page back office
         $loader = new Twig\Loader\FilesystemLoader('./src/templates');
         $twig = new Twig\Environment($loader);
