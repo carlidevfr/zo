@@ -26,4 +26,17 @@ abstract class Model
         header("Content-Type: application/json");
         echo json_encode($info);
     }
+
+    protected function logError(Exception $e)
+    {
+        $log = sprintf(
+            "%s %s %s %s %s",
+            date('Y-m-d H:i:s'),
+            $e->getMessage(),
+            $e->getCode(),
+            $e->getFile(),
+            $e->getLine()
+        );
+        error_log($log . "\n", 3, './src/error.log');
+    }
 }

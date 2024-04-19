@@ -37,13 +37,12 @@ class Security
     {
         //On vérifie si l'adresse ip est la même que lors de la connexion
         //Si le navigateur est le même
-        //Si le rôle est admin
+        //Si le rôle existe
         // si un token existe
         if (
             isset($_SESSION['ipAdress']) and $_SESSION['ipAdress'] === $_SERVER['REMOTE_ADDR'] and
             isset($_SESSION['userAgent']) and $_SESSION['userAgent'] === $_SERVER['HTTP_USER_AGENT'] and
-            isset($_SESSION['role']) and $_SESSION['role'] === 'admin' and
-            isset($_SESSION['csrf_token'])
+            isset($_SESSION['role']) and isset($_SESSION['csrf_token']) and isset($_SESSION['user'])
         ) {
             // On vérifie si on regénère l'id de session
             if (isset($_SESSION['last_id']) and time() - $_SESSION['last_id'] > 10) {
@@ -72,10 +71,9 @@ class Security
         if (
             isset($_SESSION['ipAdress']) and $_SESSION['ipAdress'] === $_SERVER['REMOTE_ADDR'] and
             isset($_SESSION['userAgent']) and $_SESSION['userAgent'] === $_SERVER['HTTP_USER_AGENT'] and
-            isset($_SESSION['role']) and $_SESSION['role'] === 'admin' and
-            isset($_SESSION['csrf_token'])
+            isset($_SESSION['role']) and isset($_SESSION['csrf_token']) and isset($_SESSION['user'])
         ) {
-            // On regénère le tokene
+            // On regénère le token
             $_SESSION['csrf_token'] = md5(bin2hex(random_bytes(32)));
 
             // On vérifie si on regénère l'id de session
@@ -95,11 +93,26 @@ class Security
     }
 
     public static function getToken()
-    // On renvoie le token
+    // On récupère le token
     // Si absent on déconnecte
     {
         if (isset($_SESSION['csrf_token']) and !empty($_SESSION['csrf_token'])) {
             return self::filter_form($_SESSION['csrf_token']);
+
+        } else {
+            session_unset();
+            session_destroy();
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+        }
+    }
+
+    public static function getRole()
+    // On récupère le role
+    // Si absent on déconnecte
+    {
+        if (isset($_SESSION['role']) and !empty($_SESSION['role'])) {
+            return self::filter_form($_SESSION['role']);
 
         } else {
             session_unset();
@@ -123,7 +136,7 @@ class Security
         }
     }
 
-    public static function logOut()
+    public static function logout()
     //  on déconnecte
     {
             session_unset();

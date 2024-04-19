@@ -1,0 +1,221 @@
+-- MariaDB
+-- on supprime les versions précédentes des tables
+DROP DATABASE IF EXISTS zoo;
+CREATE DATABASE zoo;
+USE zoo;
+
+-- on crée la table roles
+
+CREATE TABLE roles
+(
+    id_role INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    label VARCHAR(50) NOT NULL
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table utilisateurs
+
+CREATE TABLE utilisateurs
+(
+    id_utilisateur CHAR(36) NOT NULL PRIMARY KEY, -- UUID
+    firstname VARCHAR(250) NOT NULL,
+    lastname VARCHAR(250) NOT NULL,
+    email VARCHAR(250) NOT NULL UNIQUE,
+    pass VARCHAR(60) NOT NULL,
+    role_utilisateur INT NOT NULL,
+    FOREIGN KEY (role_utilisateur) REFERENCES roles(id_role)
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table services
+
+CREATE TABLE services
+(
+    id_service INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    titre VARCHAR(250) NOT NULL,
+    description TEXT NOT NULL
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table avis
+
+CREATE TABLE avis
+(
+    id_avis INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    pseudo VARCHAR(50) NOT NULL,
+    date_avis DATE NOT NULL,
+    contenu_avis TEXT NOT NULL,
+    actif TINYINT NOT NULL
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table race
+
+CREATE TABLE races
+(
+    id_race INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nom_race VARCHAR(50) NOT NULL
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table habitats
+
+CREATE TABLE habitats
+(
+    id_habitat INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nom_habitat VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    avis TEXT
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table animaux
+
+CREATE TABLE animaux
+(
+    id_animal INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nom_animal VARCHAR(50) NOT NULL,
+    etat VARCHAR(50) NOT NULL,
+    race_animal INT NOT NULL,
+    habitat_animal INT NOT NULL,
+    FOREIGN KEY (race_animal) REFERENCES races(id_race),
+    FOREIGN KEY (habitat_animal) REFERENCES habitats(id_habitat)
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table consommation_nourriture
+
+CREATE TABLE consommation_nourriture
+(
+    id_nourrissage INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nourriture VARCHAR(50) NOT NULL,
+    quantite VARCHAR(50) NOT NULL,
+    date_nourrissage DATETIME NOT NULL,
+    animal INT NOT NULL,
+    FOREIGN KEY (animal) REFERENCES animaux(id_animal)
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table rapport_veterinaire
+
+CREATE TABLE rapport_veterinaire
+(
+    id_rapport INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    date_rapport DATE NOT NULL,
+    detail VARCHAR(50) NOT NULL,
+    nourriture_propose VARCHAR(50) NOT NULL,
+    quantite_nourriture VARCHAR(50) NOT NULL,
+    animal INT NOT NULL,
+    FOREIGN KEY (animal) REFERENCES animaux(id_animal)
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table images
+
+CREATE TABLE images
+(
+    id_image INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    data BLOB NOT NULL
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table images_animaux
+
+CREATE TABLE images_animaux
+(
+    id_animal INT NOT NULL,
+    id_image INT NOT NULL,
+    PRIMARY KEY (id_animal, id_image),
+    FOREIGN KEY (id_animal) REFERENCES animaux(id_animal),
+    FOREIGN KEY (id_image) REFERENCES images(id_image)
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- on crée la table images_habitats
+
+CREATE TABLE images_habitats
+(
+    id_habitat INT NOT NULL,
+    id_image INT NOT NULL,
+    PRIMARY KEY (id_habitat, id_image),
+    FOREIGN KEY (id_habitat) REFERENCES habitats(id_habitat),
+    FOREIGN KEY (id_image) REFERENCES images(id_image)
+) engine=INNODB DEFAULT CHARSET=utf8;
+
+-- insertion données fictives;
+
+INSERT INTO roles (label) VALUES
+    ('admin'),
+    ('employe'),
+    ('veterinaire');
+
+INSERT INTO utilisateurs (id_utilisateur, firstname, lastname, email, pass, role_utilisateur) VALUES
+    (UUID(), 'Anthony', 'DOTTOR', 'admin@test.fr', '$2y$10$w/Z3seCK31OxqV22WKRY2u51LdlRf9cJ6tFAyOnMUGMJ57I5sxdEm', 1),
+    (UUID(), 'Anthony', 'vete', 'vete@test.fr', '$2y$10$w/Z3seCK31OxqV22WKRY2u51LdlRf9cJ6tFAyOnMUGMJ57I5sxdEm', 3),
+    (UUID(), 'Anthony', 'emploi', 'emp@test.fr', '$2y$10$w/Z3seCK31OxqV22WKRY2u51LdlRf9cJ6tFAyOnMUGMJ57I5sxdEm', 2)
+;
+
+INSERT INTO services (titre, description) VALUES
+    ('restauration rapide', "Venez découvrir notre merveilleux espace de restauration en pleine nature. Au menu, des burgers, du thon, de l'herbe et des oeufs"),
+    ('visite du parc en train', "Nous vous proposons tous les jours à 17h une visite en train du parc. Vous verrez tous nos animaux dans leur espace naturel."),
+    ('point de détente', "Nous avons installé un espace détente pour petits et grands");
+
+INSERT INTO avis (pseudo, date_avis, contenu_avis, actif) VALUES
+    ('José','2023-11-28', 'Très bel endroit, je recommande', 1),
+    ('Martine','2023-11-29', 'beaux animaux', 1),
+    ('Paul','2023-12-28', 'froid', 0);
+
+INSERT INTO races (nom_race) VALUES
+    ('Félins'),
+    ('Loup'),
+    ('kangourou'),
+    ('poisson');
+
+INSERT INTO habitats (nom_habitat, description, avis) VALUES
+    ('Plaine',"Une très belle plaine, remplie de verdure.", 'Très bel endroit, je recommande'),
+    ('Bassin',"beaucoup d'eau", 'beaux animaux'),
+    ('Forêt',"des arbres à perte de vue", 'froid');
+
+INSERT INTO animaux (nom_animal, etat, race_animal, habitat_animal) VALUES
+    ('Panpan le tigre',"bonne santé", 1, 1),
+    ('kitty le chat',"bonne santé", 1, 1),
+    ('pamplemousse le tigre',"bonne santé", 1, 1),
+    ('HUHU le loup',"bonne santé", 2, 3),
+    ('kiki le loup',"bonne santé", 2, 3),
+    ('Panpan le poisson',"bonne santé", 4, 2),
+    ('fishy le poisson',"bonne santé", 4, 2),
+    ('josette le poisson',"bonne santé", 4, 2),
+    ('Panpan le kangourou',"bonne santé", 3, 1),
+    ('pompom le kangourou',"bonne santé", 3, 1);
+
+
+INSERT INTO consommation_nourriture (animal, date_nourrissage, nourriture, quantite) VALUES
+    (1,'2024-04-16 15:30:00', 'jambon', '1 kg'),
+    (1,'2024-04-17 15:30:00', 'jambon', '1 kg'),
+    (1,'2024-04-18 15:30:00', 'jambon', '1 kg'),
+    (2,'2024-04-16 15:30:00', 'jambon', '2 kg'),
+    (2,'2024-04-17 15:30:00', 'jambon', '2 kg'),
+    (2,'2024-04-18 15:30:00', 'jambon', '2 kg'),
+    (3,'2024-04-16 15:30:00', 'jambon', '1 kg'),
+    (3,'2024-04-17 15:30:00', 'jambon', '1 kg'),
+    (3,'2024-04-18 15:30:00', 'jambon', '1 kg'),
+    (4,'2024-04-16 15:30:00', 'Pâté', '1 kg'),
+    (4,'2024-04-17 15:30:00', 'Pâté', '1 kg'),
+    (4,'2024-04-18 15:30:00', 'Pâté', '1 kg'),
+    (5,'2024-04-16 15:30:00', 'Pâté', '1 kg'),
+    (5,'2024-04-17 15:30:00', 'Pâté', '1 kg'),
+    (5,'2024-04-18 15:30:00', 'Pâté', '1 kg'),
+    (6,'2024-04-16 15:30:00', 'Billes', '1 kg'),
+    (6,'2024-04-17 15:30:00', 'billes', '1 kg'),
+    (6,'2024-04-18 15:30:00', 'billes', '1 kg'),
+    (7,'2024-04-16 15:30:00', 'Billes', '1 kg'),
+    (7,'2024-04-17 15:30:00', 'billes', '1 kg'),
+    (7,'2024-04-18 15:30:00', 'billes', '1 kg'),
+    (8,'2024-04-16 15:30:00', 'Billes', '1 kg'),
+    (8,'2024-04-17 15:30:00', 'billes', '1 kg'),
+    (8,'2024-04-18 15:30:00', 'billes', '1 kg');
+
+INSERT INTO rapport_veterinaire (animal, date_rapport, detail, nourriture_propose, quantite_nourriture) VALUES
+    (1,'2024-04-16', 'A faim', 'jambon', '1 kg'),
+    (1,'2024-04-17', 'Très bonne santé','jambon', '1 kg'),
+    (1,'2024-04-18', 'En super forme', 'jambon', '1 kg'),
+    (2,'2024-04-16', 'A faim','jambon', '2 kg'),
+    (2,'2024-04-17', 'Très bonne santé', 'jambon', '2 kg'),
+    (2,'2024-04-18', 'Un peu gros', 'jambon', '2 kg'),
+    (3,'2024-04-16', 'A faim', 'jambon', '1 kg'),
+    (3,'2024-04-17', 'Très bonne santé', 'jambon', '1 kg'),
+    (3,'2024-04-18', 'En super forme', 'jambon', '1 kg');
+
+-- création d'un utilisateur qui servira à faire la connexion dans le .ENV du PHP pour toute l'app;
+CREATE OR REPLACE USER 'zooapp'@'%' IDENTIFIED BY PASSWORD '*54958E764CE10E50764C2EECBB71D01F08549980';
+GRANT SELECT, INSERT, UPDATE, DELETE ON zoo.* TO 'zooapp'@'%' ;
+    
