@@ -20,6 +20,8 @@ require_once './src/Model/Common/Router.php';
 require_once './src/Config/env.php';
 require_once './src/Controller/HomeController.php';
 require_once './src/Controller/UtilisateurHomeController.php';
+require_once './src/Controller/UtilisateurRaceController.php';
+
 
 require_once './src/Model/Common/Security.php';
 require_once './src/Model/Common/Regenerate.php';
@@ -37,6 +39,9 @@ $router->addRoute('GET', BASE_URL . 'login', 'UtilisateurHomeController', 'userL
 $router->addRoute('POST', BASE_URL . 'login', 'UtilisateurHomeController', 'userLogin');
 $router->addRoute('GET', BASE_URL . 'logout', 'UtilisateurHomeController', 'userLogout');
 
+$router->addRoute('GET', BASE_URL . 'admin/manage-race', 'UtilisateurRaceController', 'adminRacePage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-race/add', 'UtilisateurRaceController', 'adminAddRace');
+$router->addRoute('GET', BASE_URL . 'admin/manage-race/action/success', 'UtilisateurRaceController', 'adminSuccessActionRace');
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = strtolower($_SERVER['REQUEST_URI']); // gère les minuscules et les majuscules

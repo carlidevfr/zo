@@ -11,15 +11,7 @@ class Regenerate extends Model
             $pdo->exec($sql);
             return true;
         } catch (PDOException $e) {
-            $log = sprintf(
-                "%s %s %s %s %s",
-                date('Y-m-d- H:i:s'),
-                $e->getMessage(),
-                $e->getCode(),
-                $e->getFile(),
-                $e->getLine()
-            );
-            error_log($log . "\n\r", 3, './src/error.log');
+            $this->logError($e);
             return false;
         }
     }

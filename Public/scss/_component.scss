@@ -1,0 +1,31 @@
+h1 {
+    font-size: $header__font-size-xl;
+}
+
+h2 {
+    font-size: $h2__font-size-xl
+}
+
+h3 {
+    font-size: $h3__font-size-xl; 
+}
+
+p,
+li {
+    font-size: $p__font-size-xl; 
+    text-align: justify;
+}
+
+a {
+    text-decoration: none;
+    color: $text__color;
+
+    &:hover {
+        opacity: 0.6;
+    }
+
+    &:visited,
+    &:active {
+        color: $text__color;
+    }
+}

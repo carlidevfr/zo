@@ -1,0 +1,11 @@
+html {
+    /* base de "10px" au lieu de "16px" */
+    scroll-behavior: smooth; // scroll smooth
+}
+
+
+body {
+    font-family: $font-family;
+    color: $text__color;
+    background-color: $body__color;
+}
