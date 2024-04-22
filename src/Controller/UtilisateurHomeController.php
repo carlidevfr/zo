@@ -20,6 +20,10 @@ class UtilisateurHomeController
         //On vérifie si on a le droit d'être là (admin)
         $this->Security->verifyAccess();
 
+        // On récupère le role
+        $userRole = $this->Security->getRole();
+        echo $userRole;
+
         // Affiche la page back office
         $loader = new Twig\Loader\FilesystemLoader('./src/templates');
         $twig = new Twig\Environment($loader);
@@ -27,6 +31,7 @@ class UtilisateurHomeController
 
         echo $template->render([
             'base_url' => BASE_URL,
+            'user_role' => $userRole
         ]);
     }
 

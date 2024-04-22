@@ -42,7 +42,8 @@ class Security
         if (
             isset($_SESSION['ipAdress']) and $_SESSION['ipAdress'] === $_SERVER['REMOTE_ADDR'] and
             isset($_SESSION['userAgent']) and $_SESSION['userAgent'] === $_SERVER['HTTP_USER_AGENT'] and
-            isset($_SESSION['role']) and isset($_SESSION['csrf_token']) and isset($_SESSION['user'])
+            isset($_SESSION['role']) and isset($_SESSION['csrf_token']) and isset($_SESSION['user']) and 
+            in_array($_SESSION['role'], ['veterinaire', 'admin', 'employe'])
         ) {
             // On vérifie si on regénère l'id de session
             if (isset($_SESSION['last_id']) and time() - $_SESSION['last_id'] > 10) {

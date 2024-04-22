@@ -18,6 +18,10 @@
 <h1>Bienvenue dans votre espace de gestion</h1> <br>
 <h2>Que voulez vous faire ?</h2><br><br>
 
+{% if user_role == 'admin' %}
+<button onclick="location.href='/admin/manage-race'">Gestion des races</button><br><br>
+{% endif %}
+
 <button onclick="location.href='/logout'">Déconnexion</button>
 
 {% endblock %}
