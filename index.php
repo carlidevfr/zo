@@ -21,6 +21,8 @@ require_once './src/Config/env.php';
 require_once './src/Controller/HomeController.php';
 require_once './src/Controller/UtilisateurHomeController.php';
 require_once './src/Controller/UtilisateurRaceController.php';
+require_once './src/Controller/UtilisateurAvisController.php';
+
 
 
 require_once './src/Model/Common/Security.php';
@@ -46,9 +48,11 @@ $router->addRoute('POST', BASE_URL . 'admin/manage-race/delete', 'UtilisateurRac
 $router->addRoute('GET', BASE_URL . 'admin/manage-race/update', 'UtilisateurRaceController', 'adminUpdateRacePage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-race/update', 'UtilisateurRaceController', 'adminUpdateRace');
 
-$router->addRoute('GET', BASE_URL . 'admin/manage-avis', 'UtilisateurRaceController', 'adminRacePage');
-$router->addRoute('GET', BASE_URL . 'admin/manage-avis/action/success', 'UtilisateurRaceController', 'adminSuccessActionRace');
-$router->addRoute('POST', BASE_URL . 'admin/manage-avis/delete', 'UtilisateurRaceController', 'adminDeleteRace');
+$router->addRoute('GET', BASE_URL . 'admin/manage-avis', 'UtilisateurAvisController', 'adminAvisPage');
+$router->addRoute('GET', BASE_URL . 'admin/manage-avis/action/success', 'UtilisateurAvisController', 'adminSuccessActionAvis');
+$router->addRoute('POST', BASE_URL . 'admin/manage-avis/delete', 'UtilisateurAvisController', 'adminDeleteAvis');
+$router->addRoute('GET', BASE_URL . 'admin/manage-avis/update', 'UtilisateurAvisController', 'adminUpdateAvisPage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-avis/update', 'UtilisateurAvisController', 'adminUpdateAvis');
 
 
 $method = $_SERVER['REQUEST_METHOD'];

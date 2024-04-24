@@ -232,14 +232,8 @@ class UtilisateurRaceController
         (isset($_GET['UpdateElementId']) and !empty($_GET['UpdateElementId']) and isset($_GET['tok']) and $this->Security->verifyToken($token, $_GET['tok'])) ? $raceAction = $this->Security->filter_form($_GET['UpdateElementId']) : $raceAction = '';
 
         // Récupère le pays à modifier
-        $country = $this->Race->getByRaceId($raceAction);
+        $race = $this->Race->getByRaceId($raceAction);
         $modifySection = true;
-
-        // on regénère le token
-        $this->Security->regenerateToken();
-
-        // On récupère le token pour le nouveau form
-        $token = $this->Security->getToken();
 
         //twig
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
@@ -249,7 +243,7 @@ class UtilisateurRaceController
         echo $template->render([
             'base_url' => BASE_URL,
             'pageName' => 'races',
-            'elements' => $country,
+            'elements' => $race,
             'modifySection' => $modifySection,
             'deleteUrl' => 'admin/manage-race/delete',
             'addUrl' => 'admin/manage-race/add',

@@ -27,107 +27,163 @@
 		<br>
 
 		{# Liste des éléments liés pouvant empêcher la suppression #}
-			{% if data is defined and data is not empty %}<h2>Liaisons relatives à l'élément à supprimer
+			{% if data is defined and data is not empty %}
+				<h2>
+			Liaisons relatives à l'élément à supprimer
 		</h2>
 		{% endif %}
 			<a href="{{ base_url }}{{previousUrl}}"> Retour</a>
-{% else %}
 
-	<div class='container-fluid'>
-		<div class='row justify-content-center'>
-			<h1 class="col-11 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-5 text-center">Bienvenue dans votre espace de gestion des avis</h1>
-		</div>
-	</div>
+	{% elseif modifySection is defined and modifySection == true %}
 
-	<br>
-	<div class='container-fluid'>
-		<div class='row justify-content-center'>
-			<h2 class="col-11 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-5 text-center">Que voulez vous faire ?</h2>
-		</div>
-	</div>
+		{# Page 'update' pour valider ou non -----------------------------------------------------------------#}
 
+		<h2>Modification
+			{{pageName}}:</h2>
 
-	{# Page 'main' de la section avec CRUD ----------------------------------------------------------------------#}
+		L'avis est il posté ?
+		{% if element.actif == 1 %}
+			Oui
+		{% else %}
+			Non
+		{% endif %}
+		<br>
 
-	<div class='container-fluid'>
-		<div class='row justify-content-start'>
-			<h2 class="col-12 m-2">liste des
-				{{pageName}}</h2>
-		</div>
+		Date de l'avis :{{element.date_avis}}<br>
 
-		{# Formulaire de recherche #}
-		<form action="{{base_url}}{{previousUrl}}" method="get" enctype='multipart/form-data'>
-			<input type="text" name='search'>
+		Pseudo :
+		{{element.valeur}}<br>
+
+		Contenu :
+		{{element.contenu_avis}}<br>
+		<br><br>
+		Souhaitez-vous le valider ?
+		<br>
+		<form action="{{base_url}}{{updateUrl}}" method="post" enctype='multipart/form-data'>
+			<select name="updatedName" id="">
+				<option value="0">Non</option>
+				<option value="1">Oui</option>
+			</select>
+			<input type="hidden" name="updateElementId" value={{ element.id }}>
 			<input type="hidden" name="tok" value={{ token }}>
-			<button type="submit">Recherche
-				{{pageName}}</button>
-			<button onclick="location.href='{{ base_url }}{{previousUrl}}'">Reset</button>
+
+			<button type="submit">Soumettre</button>
+
 		</form>
 
-		{% if elements == 'une erreur est survenue' %}
-			<b>une erreur est survenue</b>
-		{% else %}
+		<a href="{{ base_url }}{{previousUrl}}">Retour</a>
+	{% else %}
 
-			{# Tableau des éléments #}
-			<table>
-				<thead>
-					<tr>
-						<th>Nom
-							{{pageName}}</th>
-						<th>Modifier</th>
-						<th>Supprimer</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					{% for element in elements %}
-						<tr>
-							<td>{{ element.valeur }}</td>
-
-							<td>
-								<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
-									<input type="hidden" name="UpdateElementId" value={{ element.id }}>
-									<input type="hidden" name="tok" value={{ token }}>
-									<button type="submit">Modifier</button>
-								</form>
-							</td>
-
-							<td>
-								<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
-									<input type="hidden" name="deleteElementId" value={{ element.id }}>
-									<input type="hidden" name="tok" value={{ token }}>
-									<button type="submit">Supprimer</button>
-								</form>
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-
-			{# Pagination #}
-			<div class="pagination">
-				page
-				<br>
-				{% if activePage > 1 %}
-					<a href="?page={{ activePage - 1 }}&search={{search}}&tok={{token}}">Page précédente</a>
-				{% endif %}
-
-				{% for page in 1..pageMax %}
-					{% if page == activePage %}
-						<span class="current-page">{{ page }}</span>
-					{% else %}
-						<a href="?page={{ page }}&search={{search}}&tok={{token}}">{{ page }}</a>
-					{% endif %}
-				{% endfor %}
-
-				{% if activePage < pageMax %}
-					<a href="?page={{ activePage + 1 }}&search={{search}}&tok={{token}}">Page suivante</a>
-				{% endif %}
-			</div><br>
+		<div class='container-fluid'>
+			<div class='row justify-content-center'>
+				<h1 class="col-11 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-5 text-center">Bienvenue dans votre espace de gestion des avis</h1>
+			</div>
 		</div>
 
-	{% endif %}
+		<br>
+		<div class='container-fluid'>
+			<div class='row justify-content-center'>
+				<h2 class="col-11 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-5 text-center">Que voulez vous faire ?</h2>
+			</div>
+		</div>
 
-	{# Retour vers page d'accueil admin #}
-	<a href="{{base_url}}admin">Retour</a>
-{% endif %}{% endblock %}
+
+		{# Page 'main' de la section avec CRUD ----------------------------------------------------------------------#}
+
+		<div class='container-fluid'>
+			<div class='row justify-content-start'>
+				<h2 class="col-12 m-2">liste des
+					{{pageName}}</h2>
+			</div>
+
+			{# Formulaire de recherche #}
+			<form action="{{base_url}}{{previousUrl}}" method="get" enctype='multipart/form-data'>
+				<input type="text" name='search'>
+				<input type="hidden" name="tok" value={{ token }}>
+				<button type="submit">Recherche
+					{{pageName}}</button>
+				<button onclick="location.href='{{ base_url }}{{previousUrl}}'">Reset</button>
+			</form>
+
+			{% if elements == 'une erreur est survenue' %}
+				<b>une erreur est survenue</b>
+			{% else %}
+
+				{# Tableau des éléments #}
+				<table>
+					<thead>
+						<tr>
+							<th>Avis publié ?</th>
+							<th>Date</th>
+							<th>Pseudo</th>
+							<th>Contenu</th>
+							<th>Modifier</th>
+							<th>Supprimer</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for element in elements %}
+							<tr>
+								<td>
+									{% if element.actif == 1 %}
+										Oui 
+									{% else %}
+										Non
+									{% endif %}
+								</td>
+
+								<td>{{element.date_avis}}</td>
+
+								<td>{{element.valeur}}</td>
+
+								<td>{{element.contenu_avis}}</td>
+
+								<td>
+									<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
+										<input type="hidden" name="UpdateElementId" value={{ element.id }}>
+										<input type="hidden" name="tok" value={{ token }}>
+										<button type="submit">Valider</button>
+									</form>
+								</td>
+
+								<td>
+									<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
+										<input type="hidden" name="deleteElementId" value={{ element.id }}>
+										<input type="hidden" name="tok" value={{ token }}>
+										<button type="submit">Supprimer</button>
+									</form>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+
+				{# Pagination #}
+				<div class="pagination">
+					page
+					<br>
+					{% if activePage > 1 %}
+						<a href="?page={{ activePage - 1 }}&search={{search}}&tok={{token}}">Page précédente</a>
+					{% endif %}
+
+					{% for page in 1..pageMax %}
+						{% if page == activePage %}
+							<span class="current-page">{{ page }}</span>
+						{% else %}
+							<a href="?page={{ page }}&search={{search}}&tok={{token}}">{{ page }}</a>
+						{% endif %}
+					{% endfor %}
+
+					{% if activePage < pageMax %}
+						<a href="?page={{ activePage + 1 }}&search={{search}}&tok={{token}}">Page suivante</a>
+					{% endif %}
+				</div><br>
+			</div>
+
+		{% endif %}
+
+		{# Retour vers page d'accueil admin #}
+		<a href="{{base_url}}admin">Retour</a>
+	{% endif %}
+{% endblock %}

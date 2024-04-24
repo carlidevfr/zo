@@ -24,7 +24,7 @@ class UtilisateurAvisController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'admin') {
+        if ($userRole !== 'admin' and $userRole !== 'employe') {
             $this->Security->logout();
         }
 
@@ -89,7 +89,7 @@ class UtilisateurAvisController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'admin') {
+        if ($userRole !== 'admin' and $userRole !== 'employe') {
             $this->Security->logout();
         }
 
@@ -137,9 +137,8 @@ class UtilisateurAvisController
         ]);
 
     }
-
-    public function adminAddAvis()
-    // Ajout de avis
+    public function adminDeleteAvis()
+    // Suppression de avis
     {
         //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
@@ -147,53 +146,14 @@ class UtilisateurAvisController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'admin') {
-            $this->Security->logout();
-        }
-
-        // On récupère le role
-        $userRole = $this->Security->getRole();
-
-        if ($userRole !== 'admin') {
+        if ($userRole !== 'admin' and $userRole !== 'employe') {
             $this->Security->logout();
         }
 
         // On récupère le token
         $token = $this->Security->getToken();
 
-        // on récupère la avis ajoutée
-        (isset($_POST['addElementName']) and !empty($_POST['addElementName']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $avisAction = $this->Security->filter_form($_POST['addElementName']) : $avisAction = '';
-
-        // on fait l'ajout en BDD et on récupère le résultat
-        $res = $this->Avis->addAvis($avisAction);
-
-        // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
-        $_SESSION['resultat'] = $res;
-
-        // on regénère le token
-        $this->Security->regenerateToken();
-
-        header('Location: ' . BASE_URL . 'admin/manage-avis/action/success');
-        exit;
-    }
-
-    public function adminDeleteAvis()
-    // Suppression de avis
-    {
-       //On vérifie si on a le droit d'être là
-       $this->Security->verifyAccess();
-
-       // On récupère le role
-       $userRole = $this->Security->getRole();
-
-       if ($userRole !== 'admin') {
-           $this->Security->logout();
-       }
-
-        // On récupère le token
-        $token = $this->Security->getToken();
-
-        // on récupère l'id pays à supprimer
+        // on récupère l'id AVIS à supprimer
         (isset($_POST['deleteElementId']) and !empty($_POST['deleteElementId']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $avisAction = $this->Security->filter_form($_POST['deleteElementId']) : $avisAction = '';
 
         // on fait la suppression en BDD et on récupère le résultat
@@ -213,7 +173,7 @@ class UtilisateurAvisController
     }
 
     public function adminUpdateAvisPage()
-    // Page permettant la saisie pour la modification de la avis
+    // Page permettant la saisie pour la validation ou non de l'avis
     {
         //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
@@ -221,25 +181,20 @@ class UtilisateurAvisController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'admin') {
+        if ($userRole !== 'admin' and $userRole !== 'employe') {
             $this->Security->logout();
         }
 
         // On récupère le token
         $token = $this->Security->getToken();
+        var_dump($_SESSION['csrf_token']);
 
-        //Récupère l'id du pays à modifier
+        //Récupère l'id de l'avis à modifier
         (isset($_GET['UpdateElementId']) and !empty($_GET['UpdateElementId']) and isset($_GET['tok']) and $this->Security->verifyToken($token, $_GET['tok'])) ? $avisAction = $this->Security->filter_form($_GET['UpdateElementId']) : $avisAction = '';
 
-        // Récupère le pays à modifier
-        $country = $this->Avis->getByAvisId($avisAction);
+        // Récupère l'avis à modifier
+        $avis = $this->Avis->getByAvisId($avisAction);
         $modifySection = true;
-
-        // on regénère le token
-        $this->Security->regenerateToken();
-
-        // On récupère le token pour le nouveau form
-        $token = $this->Security->getToken();
 
         //twig
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
@@ -249,7 +204,7 @@ class UtilisateurAvisController
         echo $template->render([
             'base_url' => BASE_URL,
             'pageName' => 'avis',
-            'elements' => $country,
+            'element' => $avis,
             'modifySection' => $modifySection,
             'deleteUrl' => 'admin/manage-avis/delete',
             'addUrl' => 'admin/manage-avis/add',
@@ -261,7 +216,7 @@ class UtilisateurAvisController
     }
 
     public function adminUpdateAvis()
-    // Modification de la avis
+    // Modification de l'avis
     {
         //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
@@ -269,20 +224,20 @@ class UtilisateurAvisController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'admin') {
+        if ($userRole !== 'admin' and $userRole !== 'employe') {
             $this->Security->logout();
         }
 
         // On récupère le token
         $token = $this->Security->getToken();
 
-        // on récupère l'id de la avis à Modifier
+        // on récupère l'id de l avis à Modifier
         (isset($_POST['updateElementId']) and !empty($_POST['updateElementId']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $avisAction = $this->Security->filter_form($_POST['updateElementId']) : $avisAction = '';
 
-        // on récupère le nouveau nom et on vérifie qu'il n'est pas vide
-        (isset($_POST['updatedName']) and !empty($_POST['updatedName']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $newName = $this->Security->filter_form($_POST['updatedName']) : $newName = '';
+        // on récupère le nouveau nom 
+        (isset($_POST['updatedName']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $newName = $this->Security->filter_form($_POST['updatedName']) : $newName = '';
 
-        // on fait la suppression en BDD et on récupère le résultat
+        // on fait la modification en BDD et on récupère le résultat
         $res = $this->Avis->updateAvis($avisAction, $newName);
 
         // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
@@ -293,7 +248,5 @@ class UtilisateurAvisController
 
         header('Location: ' . BASE_URL . 'admin/manage-avis/action/success');
         exit;
-
-
     }
 }

@@ -2,10 +2,10 @@
 require_once './src/Model/Common/Model.php';
 require_once './src/Model/Common/Security.php';
 
-class Race extends Model
+class Avis extends Model
 {
-    public function getSearchRaceNames($raceName, $page, $itemsPerPage)
-    //Récupère les races recherchées triées par page
+    public function getSearchAvisNames($search, $page, $itemsPerPage)
+    //Récupère les avis recherchées triées par page
     // si vide retourne tout
     {
         try {
@@ -13,18 +13,23 @@ class Race extends Model
             $offset = ($page - 1) * $itemsPerPage;
 
             $bdd = $this->connexionPDO();
-            $req = '
-        SELECT id_race AS id, nom_race AS valeur
-        FROM races
-        WHERE nom_race LIKE :nom_race
-        ORDER BY id_race
-        LIMIT :offset, :itemsPerPage';
+            $req = "
+            SELECT id_avis AS id,
+            pseudo AS valeur, 
+            DATE_FORMAT(date_avis, '%d/%m/%Y') AS date_avis,
+            contenu_avis,
+            actif
+            FROM avis
+            WHERE pseudo LIKE :search OR
+            contenu_avis LIKE :search 
+            ORDER BY id_avis DESC
+            LIMIT :offset, :itemsPerPage";
             // on teste si la connexion pdo a réussi
             if (is_object($bdd)) {
                 $stmt = $bdd->prepare($req);
 
-                if (!empty ($raceName) and !empty ($page) and !empty ($itemsPerPage)) {
-                    $stmt->bindValue(':nom_race', '%' . $raceName . '%', PDO::PARAM_STR);
+                if (!empty ($search) and !empty ($page) and !empty ($itemsPerPage)) {
+                    $stmt->bindValue(':search', '%' . $search . '%', PDO::PARAM_STR);
                     $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
                     $stmt->bindValue(':itemsPerPage', $itemsPerPage, PDO::PARAM_INT);
                     if ($stmt->execute()) {
@@ -33,7 +38,7 @@ class Race extends Model
                         return $races;
                     }
                 } else {
-                    return $this->getAllRaceNames();
+                    return $this->getAllAvisNames();
                 }
             } else {
                 return 'une erreur est survenue';
@@ -44,23 +49,29 @@ class Race extends Model
         }
     }
 
-    public function getAllRaceNames()
-    //Récupère toutes les races
+    public function getAllAvisNames()
+    //Récupère tous les avis
     {
         try {
             $bdd = $this->connexionPDO();
-            $req = '
-            SELECT id_race AS id, nom_race AS valeur
-            FROM races';
+            $req = "
+            SELECT id_avis AS id,
+            pseudo AS valeur, 
+            DATE_FORMAT(date_avis, '%d/%m/%Y') AS date_avis,
+            contenu_avis,
+            actif
+            FROM avis
+            ORDER BY id_avis DESC
+            ";
 
             if (is_object($bdd)) {
                 // on teste si la connexion pdo a réussi
                 $stmt = $bdd->prepare($req);
 
                 if ($stmt->execute()) {
-                    $races = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     $stmt->closeCursor();
-                    return $races;
+                    return $avis;
                 }
             } else {
                 return 'une erreur est survenue';
@@ -70,19 +81,23 @@ class Race extends Model
         }
     }
 
-    public function getPaginationAllRaceNames($page, $itemsPerPage)
-    //Récupère les races triées par page
+    public function getPaginationAllAvisNames($page, $itemsPerPage)
+    //Récupère les avis triées par page
     {
         try {
             // Calculez l'offset pour la requête : Page 1,2 etc
             $offset = ($page - 1) * $itemsPerPage;
 
             $bdd = $this->connexionPDO();
-            $req = '
-            SELECT id_race AS id, nom_race AS valeur
-            FROM races
-            ORDER BY id_race
-            LIMIT :offset, :itemsPerPage';
+            $req = "
+            SELECT id_avis AS id,
+            pseudo AS valeur, 
+            DATE_FORMAT(date_avis, '%d/%m/%Y') AS date_avis,
+            contenu_avis,
+            actif
+            FROM avis
+            ORDER BY id_avis DESC
+            LIMIT :offset, :itemsPerPage";
 
             if (is_object($bdd)) {
                 // on teste si la connexion pdo a réussi
@@ -93,9 +108,9 @@ class Race extends Model
                     $stmt->bindValue(':itemsPerPage', $itemsPerPage, PDO::PARAM_INT);
 
                     if ($stmt->execute()) {
-                        $races = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         $stmt->closeCursor();
-                        return $races;
+                        return $avis;
                     }
                 }
 
@@ -107,27 +122,31 @@ class Race extends Model
         }
     }
 
-    public function getByRaceId($raceId)
-    //retourne la race selon l'id
+    public function getByAvisId($avisId)
+    //retourne l'avis selon l'id
     {
         try {
             $bdd = $this->connexionPDO();
-            $req = '
-        SELECT id_race AS id, nom_race AS valeur
-        FROM races
-        WHERE id_race  = :raceId';
+            $req = "
+            SELECT id_avis AS id,
+            pseudo AS valeur, 
+            DATE_FORMAT(date_avis, '%d/%m/%Y') AS date_avis,
+            contenu_avis,
+            actif
+            FROM avis
+            WHERE id_avis  = :avisId";
 
             if (is_object($bdd)) {
                 // on teste si la connexion pdo a réussi
                 $stmt = $bdd->prepare($req);
 
-                if (!empty ($raceId)) {
-                    $stmt->bindValue(':raceId', $raceId, PDO::PARAM_INT);
+                if (!empty ($avisId)) {
+                    $stmt->bindValue(':avisId', $avisId, PDO::PARAM_INT);
 
                     if ($stmt->execute()) {
-                        $race = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $avis = $stmt->fetch(PDO::FETCH_ASSOC);
                         $stmt->closeCursor();
-                        return $race;
+                        return $avis;
                     }
                 }
             } else {
@@ -138,23 +157,23 @@ class Race extends Model
         }
     }
 
-    public function addRace($raceName)
-    // Ajoute une race
+    public function deleteAvis($avisId)
+    // Supprime l'avis selon l'id
     {
         try {
             $bdd = $this->connexionPDO();
             $req = '
-            INSERT INTO races (nom_race)
-            VALUES (:raceName)';
+            DELETE FROM avis
+            WHERE id_avis  = :avisId';
 
+            // on teste si la connexion pdo a réussi
             if (is_object($bdd)) {
-                // on teste si la connexion pdo a réussi
                 $stmt = $bdd->prepare($req);
 
-                if (!empty ($raceName)) {
-                    $stmt->bindValue(':raceName', $raceName, PDO::PARAM_STR);
+                if (!empty ($avisId)) {
+                    $stmt->bindValue(':avisId', $avisId, PDO::PARAM_STR);
                     if ($stmt->execute()) {
-                        return 'La race suivante a bien été ajoutée : ' . $raceName;
+                        return "Cet avis a bien été supprimé ";
                     }
                 }
             } else {
@@ -166,54 +185,25 @@ class Race extends Model
         }
     }
 
-    public function deleteRace($raceId)
+    public function updateAvis($avisId, $newName)
+    // Valide ou non le post de l'avis
     {
         try {
-            // Supprime la race selon l'id
-
             $bdd = $this->connexionPDO();
             $req = '
-            DELETE FROM races
-            WHERE id_race  = :raceId';
+            UPDATE avis
+            SET actif = :newName
+            WHERE id_avis  = :avisId';
 
             // on teste si la connexion pdo a réussi
             if (is_object($bdd)) {
                 $stmt = $bdd->prepare($req);
 
-                if (!empty ($raceId)) {
-                    $stmt->bindValue(':raceId', $raceId, PDO::PARAM_STR);
+                if (!empty ($avisId)) {
+                    $stmt->bindValue(':avisId', $avisId, PDO::PARAM_INT);
+                    $stmt->bindValue(':newName', $newName, PDO::PARAM_INT);
                     if ($stmt->execute()) {
-                        return 'La race a bien été supprimée ';
-                    }
-                }
-            } else {
-                return 'une erreur est survenue';
-            }
-        } catch (Exception $e) {
-            $this->logError($e);
-            return 'Une erreur est survenue';
-        }
-    }
-
-    public function updateRace($raceId, $newName)
-    // Modifie la race selon l'id
-    {
-        try {
-            $bdd = $this->connexionPDO();
-            $req = '
-            UPDATE races
-            SET nom_race = :newName
-            WHERE id_race  = :raceId';
-
-            // on teste si la connexion pdo a réussi
-            if (is_object($bdd)) {
-                $stmt = $bdd->prepare($req);
-
-                if (!empty ($raceId) and !empty ($newName)) {
-                    $stmt->bindValue(':raceId', $raceId, PDO::PARAM_INT);
-                    $stmt->bindValue(':newName', $newName, PDO::PARAM_STR);
-                    if ($stmt->execute()) {
-                        return 'La race a bien été modifiée : ' . $newName;
+                        return 'Le statut de cet avis a bien été modifié ';
                     }
                 }
             } else {
