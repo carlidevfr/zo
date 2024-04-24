@@ -23,6 +23,10 @@
 <button onclick="location.href='/admin/manage-race'">Gestion des races</button><br><br>
 {% endif %}
 
+{% if user_role == 'admin' or user_role == 'employe' %}
+<button onclick="location.href='/admin/manage-avis'">Gestion des avis</button><br><br>
+{% endif %}
+
 <button onclick="location.href='/logout'">Déconnexion</button>
 
 {% endblock %}
