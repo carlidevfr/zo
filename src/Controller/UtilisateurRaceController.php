@@ -80,15 +80,28 @@ class UtilisateurRaceController
         ]);
     }
 
-    public function adminSuccessActionCountry()
-    // Résultat succès ou echec après action sur pays
+    public function adminSuccessActionRace()
+    // Résultat succès ou echec après action sur race
     {
-        //On vérifie si on a le droit d'être là (admin)
+        //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
+
+        // On récupère le role
+        $userRole = $this->Security->getRole();
+
+        if ($userRole !== 'admin') {
+            $this->Security->logout();
+        }
+
+        // On récupère le role
+        $userRole = $this->Security->getRole();
+
+        if ($userRole !== 'admin') {
+            $this->Security->logout();
+        }
 
         $res = null;
         $idElement = null;
-        $missions = null;
 
         // On récupère le résultat de la requête
         if (isset($_SESSION['resultat']) and !empty($_SESSION['resultat'])) {
@@ -97,9 +110,6 @@ class UtilisateurRaceController
             // Si l'id est en variable session on le récupère
             (isset($_SESSION['idElement']) and !empty($_SESSION['idElement'])) ? $idElement = $this->Security->filter_form($_SESSION['idElement']) : $idElement = '';
 
-            // On récupère la liste des éléments liés pouvant empêcher la suppression
-            (isset($idElement) and !empty($idElement) ? $data = $this->Country->getRelatedCountries($idElement): $data = '');
-
             // Efface les résultats de la session pour éviter de les conserver plus longtemps que nécessaire
             unset($_SESSION['resultat']);
             unset($_SESSION['idElement']);
@@ -107,42 +117,55 @@ class UtilisateurRaceController
         } else {
 
             //Si vide on retourne sur la page pays
-            header('Location: ' . BASE_URL . 'admin/manage-country');
+            header('Location: ' . BASE_URL . 'admin/manage-race');
             exit;
 
         }
 
-        $loader = new Twig\Loader\FilesystemLoader('./src/templates');
+        $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
-        $template = $twig->load('adminManageElement.twig');
+        $template = $twig->load('utilisateurRace.twig');
 
         echo $template->render([
             'base_url' => BASE_URL,
-            'pageName' => 'pays',
+            'pageName' => 'races',
             'addResult' => $res,
-            'data' => $data,
-            'deleteUrl' => 'admin/manage-country/delete',
-            'addUrl' => 'admin/manage-country/add',
-            'updateUrl' => 'admin/manage-country/update',
-            'previousUrl' => 'admin/manage-country'
+            'deleteUrl' => 'admin/manage-race/delete',
+            'addUrl' => 'admin/manage-race/add',
+            'updateUrl' => 'admin/manage-race/update',
+            'previousUrl' => 'admin/manage-race'
         ]);
 
     }
 
-    public function adminAddCountry()
-    // Ajout de pays
+    public function adminAddRace()
+    // Ajout de races
     {
-        //On vérifie si on a le droit d'être là (admin)
+        //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
+
+        // On récupère le role
+        $userRole = $this->Security->getRole();
+
+        if ($userRole !== 'admin') {
+            $this->Security->logout();
+        }
+
+        // On récupère le role
+        $userRole = $this->Security->getRole();
+
+        if ($userRole !== 'admin') {
+            $this->Security->logout();
+        }
 
         // On récupère le token
         $token = $this->Security->getToken();
 
-        // on récupère le pays ajouté
-        (isset($_POST['addElementName']) and !empty($_POST['addElementName']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $countryAction = $this->Security->filter_form($_POST['addElementName']) : $countryAction = '';
+        // on récupère la race ajoutée
+        (isset($_POST['addElementName']) and !empty($_POST['addElementName']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $raceAction = $this->Security->filter_form($_POST['addElementName']) : $raceAction = '';
 
         // on fait l'ajout en BDD et on récupère le résultat
-        $res = $this->Country->addCountry($countryAction);
+        $res = $this->Race->addRace($raceAction);
 
         // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
         $_SESSION['resultat'] = $res;
@@ -150,7 +173,125 @@ class UtilisateurRaceController
         // on regénère le token
         $this->Security->regenerateToken();
 
-        header('Location: ' . BASE_URL . 'admin/manage-country/action/success');
+        header('Location: ' . BASE_URL . 'admin/manage-race/action/success');
+        exit;
+    }
+
+    public function adminDeleteRace()
+    // Suppression de race
+    {
+       //On vérifie si on a le droit d'être là
+       $this->Security->verifyAccess();
+
+       // On récupère le role
+       $userRole = $this->Security->getRole();
+
+       if ($userRole !== 'admin') {
+           $this->Security->logout();
+       }
+
+        // On récupère le token
+        $token = $this->Security->getToken();
+
+        // on récupère l'id pays à supprimer
+        (isset($_POST['deleteElementId']) and !empty($_POST['deleteElementId']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $raceAction = $this->Security->filter_form($_POST['deleteElementId']) : $raceAction = '';
+
+        // on fait la suppression en BDD et on récupère le résultat
+        $res = $this->Race->deleteRace($raceAction);
+
+        // Stockage des résultats et l'id de l'élément dans la session puis redirection pour éviter renvoi au rafraichissement
+        $_SESSION['resultat'] = $res;
+        $_SESSION['idElement'] = $raceAction;
+
+        // on regénère le token
+        $this->Security->regenerateToken();
+
+        header('Location: ' . BASE_URL . 'admin/manage-race/action/success');
+        exit;
+
+
+    }
+
+    public function adminUpdateRacePage()
+    // Page permettant la saisie pour la modification de la race
+    {
+        //On vérifie si on a le droit d'être là
+        $this->Security->verifyAccess();
+
+        // On récupère le role
+        $userRole = $this->Security->getRole();
+
+        if ($userRole !== 'admin') {
+            $this->Security->logout();
+        }
+
+        // On récupère le token
+        $token = $this->Security->getToken();
+
+        //Récupère l'id du pays à modifier
+        (isset($_GET['UpdateElementId']) and !empty($_GET['UpdateElementId']) and isset($_GET['tok']) and $this->Security->verifyToken($token, $_GET['tok'])) ? $raceAction = $this->Security->filter_form($_GET['UpdateElementId']) : $raceAction = '';
+
+        // Récupère le pays à modifier
+        $country = $this->Race->getByRaceId($raceAction);
+        $modifySection = true;
+
+        // on regénère le token
+        $this->Security->regenerateToken();
+
+        // On récupère le token pour le nouveau form
+        $token = $this->Security->getToken();
+
+        //twig
+        $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
+        $twig = new Twig\Environment($loader);
+        $template = $twig->load('utilisateurRace.twig');
+
+        echo $template->render([
+            'base_url' => BASE_URL,
+            'pageName' => 'races',
+            'elements' => $country,
+            'modifySection' => $modifySection,
+            'deleteUrl' => 'admin/manage-race/delete',
+            'addUrl' => 'admin/manage-race/add',
+            'updateUrl' => 'admin/manage-race/update',
+            'previousUrl' => 'admin/manage-race',
+            'token' => $token
+        ]);
+
+    }
+
+    public function adminUpdateRace()
+    // Modification de la race
+    {
+        //On vérifie si on a le droit d'être là
+        $this->Security->verifyAccess();
+
+        // On récupère le role
+        $userRole = $this->Security->getRole();
+
+        if ($userRole !== 'admin') {
+            $this->Security->logout();
+        }
+
+        // On récupère le token
+        $token = $this->Security->getToken();
+
+        // on récupère l'id de la race à Modifier
+        (isset($_POST['updateElementId']) and !empty($_POST['updateElementId']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $raceAction = $this->Security->filter_form($_POST['updateElementId']) : $raceAction = '';
+
+        // on récupère le nouveau nom et on vérifie qu'il n'est pas vide
+        (isset($_POST['updatedName']) and !empty($_POST['updatedName']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $newName = $this->Security->filter_form($_POST['updatedName']) : $newName = '';
+
+        // on fait la suppression en BDD et on récupère le résultat
+        $res = $this->Race->updateRace($raceAction, $newName);
+
+        // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
+        $_SESSION['resultat'] = $res;
+
+        // on regénère le token
+        $this->Security->regenerateToken();
+
+        header('Location: ' . BASE_URL . 'admin/manage-race/action/success');
         exit;
 
 

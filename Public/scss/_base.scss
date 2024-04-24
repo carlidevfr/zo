@@ -8,3 +8,20 @@ $p__font-size-xl : 1.6rem;
 $text__color: #000000;
 $body__color: #FFF9E9;
 
+table {
+    border-collapse: collapse;
+    background-color: #ffffff; /* Changer la couleur de fond du tableau si nécessaire */
+}
+
+td,
+th {
+    border: 1px solid #000000; /* Ajouter des bordures aux cellules */
+    padding: 8px; /* Ajouter un remplissage pour améliorer la lisibilité */
+}
+
+/* Changer la couleur du texte si nécessaire */
+td,
+th {
+    color: #000000; /* Changer la couleur du texte si nécessaire */
+}
+

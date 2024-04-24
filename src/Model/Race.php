@@ -107,4 +107,121 @@ class Race extends Model
         }
     }
 
+    public function getByRaceId($raceId)
+    //retourne la race selon l'id
+    {
+        try {
+            $bdd = $this->connexionPDO();
+            $req = '
+        SELECT id_race AS id, nom_race AS valeur
+        FROM races
+        WHERE id_race  = :raceId';
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                if (!empty ($raceId)) {
+                    $stmt->bindValue(':raceId', $raceId, PDO::PARAM_INT);
+
+                    if ($stmt->execute()) {
+                        $race = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $stmt->closeCursor();
+                        return $race;
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+        }
+    }
+
+    public function addRace($raceName)
+    // Ajoute une race
+    {
+        try {
+            $bdd = $this->connexionPDO();
+            $req = '
+            INSERT INTO races (nom_race)
+            VALUES (:raceName)';
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                if (!empty ($raceName)) {
+                    $stmt->bindValue(':raceName', $raceName, PDO::PARAM_STR);
+                    if ($stmt->execute()) {
+                        return 'La race suivante a bien été ajoutée : ' . $raceName;
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+            return 'Une erreur est survenue';
+        }
+    }
+
+    public function deleteRace($raceId)
+    {
+        try {
+            // Supprime la race selon l'id
+
+            $bdd = $this->connexionPDO();
+            $req = '
+            DELETE FROM races
+            WHERE id_race  = :raceId';
+
+            // on teste si la connexion pdo a réussi
+            if (is_object($bdd)) {
+                $stmt = $bdd->prepare($req);
+
+                if (!empty ($raceId)) {
+                    $stmt->bindValue(':raceId', $raceId, PDO::PARAM_STR);
+                    if ($stmt->execute()) {
+                        return 'La race a bien été supprimée ';
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+            return 'Une erreur est survenue';
+        }
+    }
+
+    public function updateRace($raceId, $newName)
+    // Modifie la race selon l'id
+    {
+        try {
+            $bdd = $this->connexionPDO();
+            $req = '
+            UPDATE races
+            SET nom_race = :newName
+            WHERE id_race  = :raceId';
+
+            // on teste si la connexion pdo a réussi
+            if (is_object($bdd)) {
+                $stmt = $bdd->prepare($req);
+
+                if (!empty ($raceId) and !empty ($newName)) {
+                    $stmt->bindValue(':raceId', $raceId, PDO::PARAM_INT);
+                    $stmt->bindValue(':newName', $newName, PDO::PARAM_STR);
+                    if ($stmt->execute()) {
+                        return 'La race a bien été modifiée : ' . $newName;
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+            return 'Une erreur est survenue';
+        }
+    }
 }

@@ -42,6 +42,10 @@ $router->addRoute('GET', BASE_URL . 'logout', 'UtilisateurHomeController', 'user
 $router->addRoute('GET', BASE_URL . 'admin/manage-race', 'UtilisateurRaceController', 'adminRacePage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-race/add', 'UtilisateurRaceController', 'adminAddRace');
 $router->addRoute('GET', BASE_URL . 'admin/manage-race/action/success', 'UtilisateurRaceController', 'adminSuccessActionRace');
+$router->addRoute('POST', BASE_URL . 'admin/manage-race/delete', 'UtilisateurRaceController', 'adminDeleteRace');
+$router->addRoute('GET', BASE_URL . 'admin/manage-race/update', 'UtilisateurRaceController', 'adminUpdateRacePage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-race/update', 'UtilisateurRaceController', 'adminUpdateRace');
+
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = strtolower($_SERVER['REQUEST_URI']); // gère les minuscules et les majuscules
