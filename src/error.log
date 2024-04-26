@@ -1,18 +1,0 @@
-2024-04-19- 11:45:01 SQLSTATE[HY000] [1045] Accès refusé pour l'utilisateur: 'zooapp'@'localhost' (mot de passe: OUI) 1045 C:\wamp64\www\zoo\src\Model\Common\Model.php 8
-2024-04-19- 13:13:15 SQLSTATE[42S02]: Base table or view not found: 1146 La table 'zoo.utilisaateurs' n'existe pas 42S02 C:\wamp64\www\zoo\src\Model\Utilisateur.php 27
-2024-04-19- 13:13:26 SQLSTATE[42S02]: Base table or view not found: 1146 La table 'zoo.utilisaateurs' n'existe pas 42S02 C:\wamp64\www\zoo\src\Model\Utilisateur.php 27
-2024-04-19 13:15:44 SQLSTATE[42S02]: Base table or view not found: 1146 La table 'zoo.utilisaateurs' n'existe pas 42S02 C:\wamp64\www\zoo\src\Model\Utilisateur.php 27
-2024-04-19 13:15:51 SQLSTATE[42S02]: Base table or view not found: 1146 La table 'zoo.utilisaateurs' n'existe pas 42S02 C:\wamp64\www\zoo\src\Model\Utilisateur.php 27
-2024-04-19 13:15:57 SQLSTATE[42S02]: Base table or view not found: 1146 La table 'zoo.utilisaateurs' n'existe pas 42S02 C:\wamp64\www\zoo\src\Model\Utilisateur.php 27
-2024-04-22- 08:23:48 SQLSTATE[42000]: Syntax error or access violation: 1044 Accès refusé pour l'utilisateur: 'usertest'@'%'. Base 'testzoo' 42000 C:\wamp64\www\zoo\src\Model\Common\Regenerate.php 11
-2024-04-22 09:09:40 SQLSTATE[42000]: Syntax error or access violation: 1044 Accès refusé pour l'utilisateur: 'usertest'@'%'. Base 'testzoo' 42000 C:\wamp64\www\zoo\src\Model\Common\Regenerate.php 11
-2024-04-22 09:10:14 SQLSTATE[42000]: Syntax error or access violation: 1044 Accès refusé pour l'utilisateur: 'usertest'@'%'. Base 'testzoo' 42000 C:\wamp64\www\zoo\src\Model\Common\Regenerate.php 11
-2024-04-22 09:10:16 SQLSTATE[42000]: Syntax error or access violation: 1044 Accès refusé pour l'utilisateur: 'usertest'@'%'. Base 'testzoo' 42000 C:\wamp64\www\zoo\src\Model\Common\Regenerate.php 11
-2024-04-22 09:10:17 SQLSTATE[42000]: Syntax error or access violation: 1044 Accès refusé pour l'utilisateur: 'usertest'@'%'. Base 'testzoo' 42000 C:\wamp64\www\zoo\src\Model\Common\Regenerate.php 11
-2024-04-22 09:17:21 SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens HY093 C:\wamp64\www\zoo\src\Model\Race.php 96
-2024-04-22 09:17:45 SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens HY093 C:\wamp64\www\zoo\src\Model\Race.php 96
-2024-04-22 09:18:14 SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens HY093 C:\wamp64\www\zoo\src\Model\Race.php 96
-2024-04-22 09:18:27 SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens HY093 C:\wamp64\www\zoo\src\Model\Race.php 96
-2024-04-22 09:19:13 SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens HY093 C:\wamp64\www\zoo\src\Model\Race.php 96
-2024-04-22 09:19:17 SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens HY093 C:\wamp64\www\zoo\src\Model\Race.php 96
-2024-04-22 09:20:06 SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens HY093 C:\wamp64\www\zoo\src\Model\Race.php 96

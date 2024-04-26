@@ -1,21 +1,21 @@
 <?php
 
-require_once './src/Model/Race.php';
+require_once './src/Model/Habitat.php';
 require_once './src/Model/Common/Security.php';
 
-class UtilisateurRaceController
+class UtilisateurHabitatController
 {
-    private $Race;
+    private $Habitat;
     private $Security;
 
     public function __construct()
     {
-        $this->Race = new Race();
+        $this->Habitat = new Habitat();
         $this->Security = new Security();
     }
 
-    public function adminRacePage()
-    // Accueil admin de la section race
+    public function adminHabitatPage()
+    // Accueil admin de la section habitat
     {
 
         //On vérifie si on a le droit d'être là
@@ -39,7 +39,7 @@ class UtilisateurRaceController
 
         //Récupère le résultat de la recherche et la valeur de search pour permettre un get sur le search avec la pagination
         if (isset($_GET['search']) and !empty($_GET['search']) and isset($_GET['tok']) and $this->Security->verifyToken($token, $_GET['tok'])) {
-            $races = $this->Race->getSearchRaceNames($this->Security->filter_form($_GET['search']), $page, $itemsPerPage);
+            $habitat = $this->Habitat->getSearchHabitatNames($this->Security->filter_form($_GET['search']), $page, $itemsPerPage);
             $search = $this->Security->filter_form($_GET['search']);
 
             // on regénère le token
@@ -49,42 +49,49 @@ class UtilisateurRaceController
             $token = $this->Security->getToken();
             
         } else {
-            $races = $this->Race->getPaginationAllRaceNames($page, $itemsPerPage);
+            $habitat = $this->Habitat->getPaginationAllHabitatNames($page, $itemsPerPage);
             $search = '';
         }
 
         // Récupère le nombre de pages, on arrondi au dessus
-        if (!empty($this->Race->getAllRaceNames())) {
-            $pageMax = ceil(count($this->Race->getAllRaceNames()) / $itemsPerPage);
+        if (!empty($this->Habitat->getAllHabitatNames())) {
+            $pageMax = ceil(count($this->Habitat->getAllHabitatNames()) / $itemsPerPage);
         }else{
             $pageMax = 1;
         }
-        
+
         //twig
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
-        $template = $twig->load('utilisateurRace.twig');
+        $template = $twig->load('utilisateurHabitat.twig');
 
         echo $template->render([
             'base_url' => BASE_URL,
-            'pageName' => 'races',
-            'elements' => $races,
+            'pageName' => 'habitat',
+            'elements' => $habitat,
             'pageMax' => $pageMax,
             'activePage' => $page,
             'search' => $search,
-            'deleteUrl' => 'admin/manage-race/delete',
-            'addUrl' => 'admin/manage-race/add',
-            'updateUrl' => 'admin/manage-race/update',
-            'previousUrl' => 'admin/manage-race',
+            'deleteUrl' => 'admin/manage-habitat/delete',
+            'addUrl' => 'admin/manage-habitat/add',
+            'updateUrl' => 'admin/manage-habitat/update',
+            'previousUrl' => 'admin/manage-habitat',
             'token' => $token
         ]);
     }
 
-    public function adminSuccessActionRace()
-    // Résultat succès ou echec après action sur race
+    public function adminSuccessActionHabitat()
+    // Résultat succès ou echec après action sur habitat
     {
         //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
+
+        // On récupère le role
+        $userRole = $this->Security->getRole();
+
+        if ($userRole !== 'admin') {
+            $this->Security->logout();
+        }
 
         // On récupère le role
         $userRole = $this->Security->getRole();
@@ -109,30 +116,30 @@ class UtilisateurRaceController
 
         } else {
 
-            //Si vide on retourne sur la page pays
-            header('Location: ' . BASE_URL . 'admin/manage-race');
+            //Si vide on retourne sur la page habitat
+            header('Location: ' . BASE_URL . 'admin/manage-habitat');
             exit;
 
         }
 
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
-        $template = $twig->load('utilisateurRace.twig');
+        $template = $twig->load('utilisateurHabitat.twig');
 
         echo $template->render([
             'base_url' => BASE_URL,
-            'pageName' => 'races',
+            'pageName' => 'habitat',
             'addResult' => $res,
-            'deleteUrl' => 'admin/manage-race/delete',
-            'addUrl' => 'admin/manage-race/add',
-            'updateUrl' => 'admin/manage-race/update',
-            'previousUrl' => 'admin/manage-race'
+            'deleteUrl' => 'admin/manage-habitat/delete',
+            'addUrl' => 'admin/manage-habitat/add',
+            'updateUrl' => 'admin/manage-habitat/update',
+            'previousUrl' => 'admin/manage-habitat'
         ]);
 
     }
 
-    public function adminAddRace()
-    // Ajout de races
+    public function adminAddHabitat()
+    // Ajout de habitat
     {
         //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
@@ -147,23 +154,32 @@ class UtilisateurRaceController
         // On récupère le token
         $token = $this->Security->getToken();
 
-        // on récupère la race ajoutée
-        (isset($_POST['addElementName']) and !empty($_POST['addElementName']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $raceAction = $this->Security->filter_form($_POST['addElementName']) : $raceAction = '';
+        // on récupère le nouvel habitat ajouté et le token
+        if (isset ($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) {
+            // le nom 
+            (isset ($_POST['addElementName']) and !empty ($_POST['addElementName'])) ? $habitatName = $this->Security->filter_form($_POST['addElementName']) : $habitatName = '';
 
-        // on fait l'ajout en BDD et on récupère le résultat
-        $res = $this->Race->addRace($raceAction);
+            //la description
+            (isset ($_POST['addElementDesc']) and !empty ($_POST['addElementDesc'])) ? $habitatDesc = $this->Security->filter_form($_POST['addElementDesc']) : $habitatDesc = '';
 
-        // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
-        $_SESSION['resultat'] = $res;
+            //les images
+            (isset ($_FILES['addElementImg']) and !empty ($_FILES['addElementImg'])) ? $habitatImg = $this->Security->verifyImg($_FILES['addElementImg']) : $habitatImg = '';
+
+            // on fait l'ajout en BDD et on récupère le résultat
+            $res = $this->Habitat->addHabitat($habitatName, $habitatDesc, $habitatImg);
+
+            // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
+            $_SESSION['resultat'] = $res;
+        }
 
         // on regénère le token
         $this->Security->regenerateToken();
 
-        header('Location: ' . BASE_URL . 'admin/manage-race/action/success');
+        header('Location: ' . BASE_URL . 'admin/manage-habitat/action/success');
         exit;
     }
 
-    public function adminDeleteRace()
+    public function adminDeleteHabitat()
     // Suppression de race
     {
        //On vérifie si on a le droit d'être là
@@ -183,7 +199,7 @@ class UtilisateurRaceController
         (isset($_POST['deleteElementId']) and !empty($_POST['deleteElementId']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $raceAction = $this->Security->filter_form($_POST['deleteElementId']) : $raceAction = '';
 
         // on fait la suppression en BDD et on récupère le résultat
-        $res = $this->Race->deleteRace($raceAction);
+        $res = $this->Habitat->deleteHabitat($raceAction);
 
         // Stockage des résultats et l'id de l'élément dans la session puis redirection pour éviter renvoi au rafraichissement
         $_SESSION['resultat'] = $res;
@@ -198,7 +214,7 @@ class UtilisateurRaceController
 
     }
 
-    public function adminUpdateRacePage()
+    public function adminUpdateHabitatPage()
     // Page permettant la saisie pour la modification de la race
     {
         //On vérifie si on a le droit d'être là
@@ -214,21 +230,21 @@ class UtilisateurRaceController
         // On récupère le token
         $token = $this->Security->getToken();
 
-        //Récupère l'id du pays à modifier
+        //Récupère l'id habitat à modifier
         (isset($_GET['UpdateElementId']) and !empty($_GET['UpdateElementId']) and isset($_GET['tok']) and $this->Security->verifyToken($token, $_GET['tok'])) ? $raceAction = $this->Security->filter_form($_GET['UpdateElementId']) : $raceAction = '';
 
-        // Récupère le pays à modifier
-        $race = $this->Race->getByRaceId($raceAction);
+        // Récupère l'habitat à modifier
+        $race = $this->Habitat->getByHabitatId($raceAction);
         $modifySection = true;
 
         //twig
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
-        $template = $twig->load('utilisateurRace.twig');
+        $template = $twig->load('utilisateurHabitat.twig');
 
         echo $template->render([
             'base_url' => BASE_URL,
-            'pageName' => 'races',
+            'pageName' => 'habitat',
             'elements' => $race,
             'modifySection' => $modifySection,
             'deleteUrl' => 'admin/manage-race/delete',
@@ -240,7 +256,7 @@ class UtilisateurRaceController
 
     }
 
-    public function adminUpdateRace()
+    public function adminUpdateHabitat()
     // Modification de la race
     {
         //On vérifie si on a le droit d'être là
@@ -263,7 +279,7 @@ class UtilisateurRaceController
         (isset($_POST['updatedName']) and !empty($_POST['updatedName']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $newName = $this->Security->filter_form($_POST['updatedName']) : $newName = '';
 
         // on fait la suppression en BDD et on récupère le résultat
-        $res = $this->Race->updateRace($raceAction, $newName);
+        $res = $this->Habitat->updateHabitat($raceAction, $newName);
 
         // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
         $_SESSION['resultat'] = $res;

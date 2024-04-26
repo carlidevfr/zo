@@ -22,6 +22,8 @@ require_once './src/Controller/HomeController.php';
 require_once './src/Controller/UtilisateurHomeController.php';
 require_once './src/Controller/UtilisateurRaceController.php';
 require_once './src/Controller/UtilisateurAvisController.php';
+require_once './src/Controller/UtilisateurHabitatController.php';
+
 
 
 
@@ -53,6 +55,13 @@ $router->addRoute('GET', BASE_URL . 'admin/manage-avis/action/success', 'Utilisa
 $router->addRoute('POST', BASE_URL . 'admin/manage-avis/delete', 'UtilisateurAvisController', 'adminDeleteAvis');
 $router->addRoute('GET', BASE_URL . 'admin/manage-avis/update', 'UtilisateurAvisController', 'adminUpdateAvisPage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-avis/update', 'UtilisateurAvisController', 'adminUpdateAvis');
+
+$router->addRoute('GET', BASE_URL . 'admin/manage-habitat', 'UtilisateurHabitatController', 'adminHabitatPage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-habitat/add', 'UtilisateurHabitatController', 'adminAddHabitat');
+$router->addRoute('GET', BASE_URL . 'admin/manage-habitat/action/success', 'UtilisateurHabitatController', 'adminSuccessActionHabitat');
+$router->addRoute('POST', BASE_URL . 'admin/manage-habitat/delete', 'UtilisateurHabitatController', 'adminDeleteHabitat');
+$router->addRoute('GET', BASE_URL . 'admin/manage-habitat/update', 'UtilisateurHabitatController', 'adminUpdateHabitatPage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-habitat/update', 'UtilisateurHabitatController', 'adminUpdateHabitat');
 
 
 $method = $_SERVER['REQUEST_METHOD'];

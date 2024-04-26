@@ -93,13 +93,6 @@ class UtilisateurAvisController
             $this->Security->logout();
         }
 
-        // On récupère le role
-        $userRole = $this->Security->getRole();
-
-        if ($userRole !== 'admin') {
-            $this->Security->logout();
-        }
-
         $res = null;
         $idElement = null;
 

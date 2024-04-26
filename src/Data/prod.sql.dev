@@ -106,7 +106,8 @@ CREATE TABLE rapport_veterinaire
 CREATE TABLE images
 (
     id_image INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    data BLOB NOT NULL
+    data BLOB NOT NULL,
+    type VARCHAR(50) NOT NULL
 ) engine=INNODB DEFAULT CHARSET=utf8;
 
 -- on crée la table images_animaux
