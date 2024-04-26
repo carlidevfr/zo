@@ -1,0 +1,1 @@
+2024-04-26 09:43:15 SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`zoo`.`animaux`, CONSTRAINT `animaux_ibfk_2` FOREIGN KEY (`habitat_animal`) REFERENCES `habitats` (`id_habitat`)) 23000 C:\wamp64\www\zoo\src\Model\Habitat.php 313

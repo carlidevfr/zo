@@ -208,10 +208,8 @@ class UtilisateurHabitatController
         // on regénère le token
         $this->Security->regenerateToken();
 
-        header('Location: ' . BASE_URL . 'admin/manage-race/action/success');
+        header('Location: ' . BASE_URL . 'admin/manage-habitat/action/success');
         exit;
-
-
     }
 
     public function adminUpdateHabitatPage()

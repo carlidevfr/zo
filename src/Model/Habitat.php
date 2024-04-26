@@ -295,30 +295,40 @@ class Habitat extends Model
         }
     }
 
-    public function deleteRace($raceId)
+    public function deleteHabitat($habitatId)
+    // Supprime l'habitat selon l'id
     {
         try {
-            // Supprime la race selon l'id
+            $bdd = $this->connexionPDO();
 
             $bdd = $this->connexionPDO();
-            $req = '
-            DELETE FROM races
-            WHERE id_race  = :raceId';
 
-            // on teste si la connexion pdo a réussi
-            if (is_object($bdd)) {
-                $stmt = $bdd->prepare($req);
+            // Début de la transaction
+            $bdd->beginTransaction();
 
-                if (!empty($raceId)) {
-                    $stmt->bindValue(':raceId', $raceId, PDO::PARAM_STR);
-                    if ($stmt->execute()) {
-                        return 'La race a bien été supprimée ';
-                    }
-                }
-            } else {
-                return 'une erreur est survenue';
-            }
+            // Supprimer les images associées à cet habitat
+            $deleteImagesQuery = 'DELETE FROM images WHERE id_image IN 
+                                  (SELECT id_image FROM images_habitats WHERE id_habitat = :habitatId)';
+            $stmtDeleteImages = $bdd->prepare($deleteImagesQuery);
+            $stmtDeleteImages->bindValue(':habitatId', $habitatId, PDO::PARAM_INT);
+            $stmtDeleteImages->execute();
+
+            // Supprimer l'habitat lui-même
+            $deleteHabitatQuery = 'DELETE FROM habitats WHERE id_habitat = :habitatId';
+            $stmtDeleteHabitat = $bdd->prepare($deleteHabitatQuery);
+            $stmtDeleteHabitat->bindValue(':habitatId', $habitatId, PDO::PARAM_INT);
+            $stmtDeleteHabitat->execute();
+
+            // Validation de la transaction
+            $bdd->commit();
+
+            // Fermeture des curseurs
+            $stmtDeleteImages->closeCursor();
+            $stmtDeleteHabitat->closeCursor();
+            return 'Suppression réussie';
+
         } catch (Exception $e) {
+            $bdd->rollBack();
             $this->logError($e);
             return 'Une erreur est survenue';
         }
