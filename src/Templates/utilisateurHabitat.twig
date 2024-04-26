@@ -14,45 +14,126 @@
 
 {% block body %}
 
-<a href="{{base_url}}">Accueil</a>
-<a href="/admin">Admin</a>
-<br><br>
-
-{% if addResult is defined and addResult is not empty %}
-
-	{# Page 'résultat' suite à une action créer, update ou delete terminée -------------------------------------#}
-
-	{# résultat de l'action #}
-	{{addResult}}
-	<br>
-
-	{# Liste des éléments liés pouvant empêcher la suppression #}
-		{% if data is defined and data is not empty %}
-			<h2>
-		Liaisons relatives à l'élément à supprimer
-	</h2>
-	{% endif %}
-		<a href="{{ base_url }}{{previousUrl}}"> Retour</a>
-
-{% elseif modifySection is defined and modifySection == true %}
-
-	{# Page 'update' pour mettre le nouveau nom -----------------------------------------------------------------#}
-
-	<h2>Modification
-		{{pageName}}:</h2>
-
-	Ancien nom de la race:
-	{{elements.valeur}}
+	<a href="{{base_url}}">Accueil</a>
+	<a href="/admin">Admin</a>
 	<br><br>
-	Nouveau nom :
-	<br>
-	<form action="{{base_url}}{{updateUrl}}" method="post" enctype='multipart/form-data'>
-		<input type="text" name="updatedName" id="">
-		<input type="hidden" name="updateElementId" value={{ elements.id }}>
+
+	{% if addResult is defined and addResult is not empty %}
+
+		{# Page 'résultat' suite à une action créer, update ou delete terminée -------------------------------------#}
+
+		{# résultat de l'action #}
+		{{addResult}}
+		<br>
+
+		{# Liste des éléments liés pouvant empêcher la suppression #}
+			{% if data is defined and data is not empty %}
+				<h2>
+			Liaisons relatives à l'élément à supprimer
+			</h2>
+				<h3>
+			Peut empêcher la suppression :
+			</h3>
+
+				{% for tableName, items in data %}
+
+				{# utilisé pour animaux ? #}
+					{% if tableName == 'animaux' and tableName is not empty %}
+						<ul>
+							{% for animaux in items %}
+								<li>
+								Nom de l'animal:
+							{{ animaux.nom_animal }}
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endfor %}
+
+		{% endif %}
+			<a href="{{ base_url }}{{previousUrl}}"> Retour</a>
+
+	{% elseif modifySection is defined and modifySection == true %}
+
+		{# Page 'update' pour mettre le nouveau nom -----------------------------------------------------------------#}
+
+		<h2>Modification
+			{{pageName}}:</h2>
+
+		Ancien nom de l'habitat:
+		{{elements.valeur}}
+		<br><br>
+		Ancienne description de l'habitat:
+		{{elements.description}}
+		<br><br>
+		Ancien avis de l'habitat:
+		{{elements.avis}}
+		<br><br>
+		photos de l'habitat :
+
+
+		{% if elements.images is defined %}
+			{# Tableau des éléments #}
+			<table>
+				<thead>
+					<tr>
+						<th>Photos</th>
+						<th>Supprimer</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for key, image in elements.images %}
+						{% set imageIds = elements.id_image|split(',') %}
+						{% set imageId = imageIds[key] %}
+						<tr>
+							<td>
+								<img src="data:{{ image.type }};base64,{{ image.data }}" alt="Image" style="width: 75px; height: 75px;">
+							</td>
+
+							<td>
+								<form method="post" action="{{base_url}}{{deleteUrlImg}}" enctype='multipart/form-data'>
+									<input type="hidden" name="deleteElementId" value={{imageId}}>
+									<input type="hidden" name="tok" value={{ token }}>
+									<button type="submit">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table><br><br>
+		{% else %}
+			Aucune image disponible
+			<br><br>
+
+		{% endif %}
+
+
+		Nouveau :
+		<br>
+
+
+		<form id='addelement' action="{{base_url}}{{updateUrl}}" method="post" enctype='multipart/form-data'>
+			<input type="hidden" name="updateElementId" value="{{elements.id}}">
+
+			<label for="updatedName">Nom modifié :
+			</label><br>
+			<input type="text"  name="updatedName" id="" placeholder="">
+			<br><br>
+
+			<label for="addElementDesc">Description modifiée :
+			</label>
+			<br>
+			<textarea name="addElementDesc"  id="" cols="30" rows="3"></textarea><br><br>
+
+			<label for="addElementImg">Images supplémentaires (jpg, jpeg, png et < 100Ko):
+			</label>
+			<br>
+			<input type="file" name="addElementImg[]" id="addElementImg" multiple></input><br>
+		<br>
+
 		<input type="hidden" name="tok" value={{ token }}>
-
 		<button type="submit">Soumettre</button>
-
 	</form>
 
 	<a href="{{ base_url }}{{previousUrl}}">Retour</a>
@@ -197,51 +278,9 @@
 {# Retour vers page d'accueil admin #}
 <a href="{{base_url}}admin">Retour</a>
 
-<script>
-	function validateFileUpload(event) { // Récupère l'élément input file
-let fileInput = document.getElementById('addElementImg');
+{% endif %}
 
-// Récupère les fichiers à envoyer
-let files = fileInput.files;
+<script src="{{base_url}}public/js/file.js"></script>
 
-// Liste des extensions autorisées (ajoutez ici les extensions que vous souhaitez autoriser)
-let allowedExtensions = ['jpg', 'jpeg', 'png'];
-let maxSizeInBytes = 0.1 * 1024 * 1024;
-// 5 Mo
+{% endblock %}
 
-// Boucle à travers chaque fichier sélectionné
-for (let i = 0; i < files.length; i++) {
-let fileName = files[i].name;
-let fileExtension = fileName.split('.').pop().toLowerCase();
-let fileSize = files[i].size;
-// Taille du fichier en octets
-
-// Vérifie si l'extension du fichier est autorisée
-if (allowedExtensions.indexOf(fileExtension) === -1) {
-event.preventDefault();
-// Empêche l'envoi du formulaire
-// Affiche un message d'erreur
-alert('Le fichier ' + fileName + ' n\'est pas autorisé. Veuillez sélectionner un fichier avec une extension ' + allowedExtensions.join(', '));
-return false; // Empêche l'envoi du formulaire
-}
-
-// Vérifie si la taille du fichier est supérieure à la limite autorisée
-if (fileSize > maxSizeInBytes) {
-event.preventDefault();
-// Empêche l'envoi du formulaire
-
-// Affiche un message d'erreur
-alert('Le fichier ' + fileName + ' dépasse la taille maximale autorisée de 100 Ko.');
-return false; // Empêche l'envoi du formulaire
-}
-}
-
-return true; // Autorise l'envoi du formulaire si tous les fichiers sont valides
-}
-
-// Attache la fonction de validation au formulaire avant l'envoi
-let form = document.getElementById('addelement');
-form.onsubmit = function () {
-return validateFileUpload(event);
-};
-</script>{% endif %}{% endblock %}

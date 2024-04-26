@@ -60,6 +60,7 @@ $router->addRoute('GET', BASE_URL . 'admin/manage-habitat', 'UtilisateurHabitatC
 $router->addRoute('POST', BASE_URL . 'admin/manage-habitat/add', 'UtilisateurHabitatController', 'adminAddHabitat');
 $router->addRoute('GET', BASE_URL . 'admin/manage-habitat/action/success', 'UtilisateurHabitatController', 'adminSuccessActionHabitat');
 $router->addRoute('POST', BASE_URL . 'admin/manage-habitat/delete', 'UtilisateurHabitatController', 'adminDeleteHabitat');
+$router->addRoute('POST', BASE_URL . 'admin/manage-habitat/deleteimg', 'UtilisateurHabitatController', 'adminDeleteHabitatImg');
 $router->addRoute('GET', BASE_URL . 'admin/manage-habitat/update', 'UtilisateurHabitatController', 'adminUpdateHabitatPage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-habitat/update', 'UtilisateurHabitatController', 'adminUpdateHabitat');
 

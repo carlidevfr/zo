@@ -202,28 +202,61 @@ class Habitat extends Model
         }
     }
 
-    public function getByRaceId($raceId)
-    //retourne la race selon l'id
+    public function getByHabitatId($habitatId)
+    //retourne l habitat selon l'id
     {
         try {
+
             $bdd = $this->connexionPDO();
             $req = '
-        SELECT id_race AS id, nom_race AS valeur
-        FROM races
-        WHERE id_race  = :raceId';
+            SELECT habitats.id_habitat AS id,
+            habitats.nom_habitat AS valeur,
+            habitats.description,
+            habitats.avis,
+            GROUP_CONCAT(images.id_image) AS id_image
+            FROM habitats
+            LEFT JOIN images_habitats ON habitats.id_habitat = images_habitats.id_habitat
+            LEFT JOIN images ON images_habitats.id_image = images.id_image
+            WHERE habitats.id_habitat = :habitatId
+            GROUP BY
+            habitats.id_habitat';
 
+            // on teste si la connexion pdo a réussi
             if (is_object($bdd)) {
-                // on teste si la connexion pdo a réussi
                 $stmt = $bdd->prepare($req);
 
-                if (!empty($raceId)) {
-                    $stmt->bindValue(':raceId', $raceId, PDO::PARAM_INT);
-
+                if (!empty($habitatId)) {
+                    $stmt->bindValue(':habitatId', $habitatId, PDO::PARAM_INT);
                     if ($stmt->execute()) {
-                        $race = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $habitats = $stmt->fetch(PDO::FETCH_ASSOC);
                         $stmt->closeCursor();
-                        return $race;
+                        // Parcourir les résultats et récupérer les données et types d'image pour chaque habitat
+
+                        if (isset($habitats['id_image']) and !empty($habitats['id_image'])) { // si non vide
+
+                            $imageIds = explode(',', $habitats['id_image']);
+                            $images = [];
+
+                            foreach ($imageIds as $imageId) {
+                                // Requête pour récupérer les données et types d'image pour chaque identifiant d'image
+                                $reqImage = 'SELECT data, type FROM images WHERE id_image = :id_image';
+                                $stmtImage = $bdd->prepare($reqImage);
+                                $stmtImage->bindValue(':id_image', $imageId, PDO::PARAM_INT);
+                                if ($stmtImage->execute()) {
+                                    $imageInfo = $stmtImage->fetch(PDO::FETCH_ASSOC);
+                                    $images[] = [
+                                        'data' => base64_encode($imageInfo['data']),
+                                        'type' => $imageInfo['type']
+                                    ];
+                                }
+                                $habitats['images'] = $images;
+                            }
+                        }
+
+                        return $habitats;
                     }
+                } else {
+                    return $this->getAllHabitatNames();
                 }
             } else {
                 return 'une erreur est survenue';
@@ -233,6 +266,53 @@ class Habitat extends Model
         }
     }
 
+    public function getRelatedHabitat($habitatId)
+    // Récupère tous les éléments liés à un habitatId
+    {
+        try {
+
+            // Initialisation de la liste des éléments liés
+            $relatedElements = array();
+
+            // Liste des tables avec des clés étrangères vers Country
+            $tables = array(
+                'animaux' => 'habitat_animal',
+            );
+
+            // Boucle sur les tables pour récupérer les éléments liés
+            foreach ($tables as $tableName => $foreignKey) {
+
+                $bdd = $this->connexionPDO();
+                $req = "SELECT * FROM $tableName WHERE $foreignKey = :habitatId";
+
+                // on teste si la connexion pdo a réussi
+                if (is_object($bdd)) {
+                    $stmt = $bdd->prepare($req);
+
+                    if (!empty($habitatId) and !empty($habitatId)) {
+                        $stmt->bindValue(':habitatId', $habitatId, PDO::PARAM_INT);
+                        if ($stmt->execute()) {
+                            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $stmt->closeCursor();
+
+                            // Ajout des résultats à la liste
+                            $relatedElements[$tableName] = $results;
+                        } else {
+                            return 'une erreur est survenue';
+                        }
+                    }
+                } else {
+                    return 'une erreur est survenue';
+                }
+            }
+
+            // Retourne la liste des éléments liés
+            return $relatedElements;
+
+        } catch (Exception $e) {
+            $this->logError($e);
+        }
+    }
     public function addHabitat($habitatName, $habitatDesc, $habitatImg)
     // Ajoute un habitat
     {
@@ -334,31 +414,117 @@ class Habitat extends Model
         }
     }
 
-    public function updateRace($raceId, $newName)
-    // Modifie la race selon l'id
+    public function deleteImg($imgId)
     {
         try {
+            // Supprime l'image selon l'id
+
             $bdd = $this->connexionPDO();
             $req = '
-            UPDATE races
-            SET nom_race = :newName
-            WHERE id_race  = :raceId';
+            DELETE FROM images
+            WHERE id_image  = :imgId';
 
             // on teste si la connexion pdo a réussi
             if (is_object($bdd)) {
                 $stmt = $bdd->prepare($req);
 
-                if (!empty($raceId) and !empty($newName)) {
-                    $stmt->bindValue(':raceId', $raceId, PDO::PARAM_INT);
-                    $stmt->bindValue(':newName', $newName, PDO::PARAM_STR);
+                if (!empty($imgId)) {
+                    $stmt->bindValue(':imgId', $imgId, PDO::PARAM_INT);
                     if ($stmt->execute()) {
-                        return 'La race a bien été modifiée : ' . $newName;
+                        return 'cette image a bien été supprimée ';
                     }
                 }
             } else {
                 return 'une erreur est survenue';
             }
         } catch (Exception $e) {
+            $this->logError($e);
+            return 'Une erreur est survenue';
+        }
+    }
+
+    public function updateHabitat($habAction, $habitatName, $habitatDesc, $habitatImg)
+    // modifie un habitat
+    {
+        try {
+            $bdd = $this->connexionPDO();
+
+            // Commencer la transaction
+            $bdd->beginTransaction();
+            if (empty($habitatName) and empty($habitatDesc)) {
+                $req = 'SELECT habitats.id_habitat AS id
+                FROM habitats
+                WHERE habitats.id_habitat = :id_habitat';
+            } else {
+                // Ajout dans la table habitats
+                $req = '
+            UPDATE habitats
+            SET ';
+
+                $params = [];
+
+                if (!empty($habitatName)) {
+                    $req .= 'nom_habitat = :nom_habitat, ';
+                    $params[':nom_habitat'] = $habitatName;
+                }
+
+                if (!empty($habitatDesc)) {
+                    $req .= 'description = :description, ';
+                    $params[':description'] = $habitatDesc;
+                }
+
+                $req = rtrim($req, ', '); // Supprimer la virgule en trop à la fin de la requête
+
+                $req .= ' WHERE id_habitat = :id_habitat';
+            }
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                if (!empty($habAction)) {
+
+                    foreach ($params as $paramName => $paramValue) {
+                        $stmt->bindValue($paramName, $paramValue, PDO::PARAM_STR);
+                    }
+
+                    $stmt->bindValue(':id_habitat', $habAction, PDO::PARAM_INT);
+
+                    if ($stmt->execute()) {
+                        $habitatId = $habAction;
+
+                        if (!empty($habitatImg)) { // Si image n'est pas vide
+                            // Insertion des images dans la table images et relation dans la table images_habitats
+                            foreach ($habitatImg as $image) {
+                                $imageData = $image['data'];
+                                $imageType = $image['type'];
+
+                                // Insertion de l'image dans la table images
+                                $sqlImage = "INSERT INTO images (data, type) VALUES (:data, :type)";
+                                $stmtImage = $bdd->prepare($sqlImage);
+                                $stmtImage->bindValue(':data', $imageData, PDO::PARAM_LOB);
+                                $stmtImage->bindValue(':type', $imageType, PDO::PARAM_STR);
+                                $stmtImage->execute();
+                                $imageId = $bdd->lastInsertId(); // Récupérer l'ID de l'image insérée
+
+                                // Relation entre l'habitat et l'image dans la table images_habitats
+                                $sqlRelation = "INSERT INTO images_habitats (id_habitat, id_image) VALUES (:id_habitat, :id_image)";
+                                $stmtRelation = $bdd->prepare($sqlRelation);
+                                $stmtRelation->bindValue(':id_habitat', $habitatId, PDO::PARAM_INT);
+                                $stmtRelation->bindValue(':id_image', $imageId, PDO::PARAM_INT);
+                                $stmtRelation->execute();
+                            }
+                        }
+                        // Valider la transaction
+                        $bdd->commit();
+                        return "Habitat modifié avec succès avec ses images.";
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $bdd->rollback();
             $this->logError($e);
             return 'Une erreur est survenue';
         }
