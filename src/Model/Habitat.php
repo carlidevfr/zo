@@ -379,33 +379,37 @@ class Habitat extends Model
     // Supprime l'habitat selon l'id
     {
         try {
-            $bdd = $this->connexionPDO();
 
-            $bdd = $this->connexionPDO();
+            if (!isset($habitatId) or empty($habitatId)) {
+                return null;
 
-            // Début de la transaction
-            $bdd->beginTransaction();
+            } else {
+                $bdd = $this->connexionPDO();
 
-            // Supprimer les images associées à cet habitat
-            $deleteImagesQuery = 'DELETE FROM images WHERE id_image IN 
+                // Début de la transaction
+                $bdd->beginTransaction();
+
+                // Supprimer les images associées à cet habitat
+                $deleteImagesQuery = 'DELETE FROM images WHERE id_image IN 
                                   (SELECT id_image FROM images_habitats WHERE id_habitat = :habitatId)';
-            $stmtDeleteImages = $bdd->prepare($deleteImagesQuery);
-            $stmtDeleteImages->bindValue(':habitatId', $habitatId, PDO::PARAM_INT);
-            $stmtDeleteImages->execute();
+                $stmtDeleteImages = $bdd->prepare($deleteImagesQuery);
+                $stmtDeleteImages->bindValue(':habitatId', $habitatId, PDO::PARAM_INT);
+                $stmtDeleteImages->execute();
 
-            // Supprimer l'habitat lui-même
-            $deleteHabitatQuery = 'DELETE FROM habitats WHERE id_habitat = :habitatId';
-            $stmtDeleteHabitat = $bdd->prepare($deleteHabitatQuery);
-            $stmtDeleteHabitat->bindValue(':habitatId', $habitatId, PDO::PARAM_INT);
-            $stmtDeleteHabitat->execute();
+                // Supprimer l'habitat lui-même
+                $deleteHabitatQuery = 'DELETE FROM habitats WHERE id_habitat = :habitatId';
+                $stmtDeleteHabitat = $bdd->prepare($deleteHabitatQuery);
+                $stmtDeleteHabitat->bindValue(':habitatId', $habitatId, PDO::PARAM_INT);
+                $stmtDeleteHabitat->execute();
 
-            // Validation de la transaction
-            $bdd->commit();
+                // Validation de la transaction
+                $bdd->commit();
 
-            // Fermeture des curseurs
-            $stmtDeleteImages->closeCursor();
-            $stmtDeleteHabitat->closeCursor();
-            return 'Suppression réussie';
+                // Fermeture des curseurs
+                $stmtDeleteImages->closeCursor();
+                $stmtDeleteHabitat->closeCursor();
+                return 'Suppression réussie';
+            }
 
         } catch (Exception $e) {
             $bdd->rollBack();

@@ -4,3 +4,4 @@
 2024-04-26 13:58:19 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_habitat = 8' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Habitat.php 488
 2024-04-26 14:03:17 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'FROM habitats
                 WHERE habitats.id_habitat = 8' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Habitat.php 493
+2024-04-30 13:56:03 SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`zoo`.`animaux`, CONSTRAINT `animaux_ibfk_2` FOREIGN KEY (`habitat_animal`) REFERENCES `habitats` (`id_habitat`)) 23000 C:\wamp64\www\zoo\src\Model\Habitat.php 400

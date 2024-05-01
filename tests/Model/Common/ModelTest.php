@@ -25,8 +25,6 @@ class ModelTest extends TestCase
     {
         $this->TestModel = null;
     }
-
-
     public function testConnexionPDO()
     {
         $bdd = $this->TestModel->connexionPDO();

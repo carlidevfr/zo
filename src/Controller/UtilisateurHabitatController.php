@@ -184,7 +184,7 @@ class UtilisateurHabitatController
     }
 
     public function adminDeleteHabitat()
-    // Suppression de race
+    // Suppression de l'habitat
     {
         //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
@@ -218,7 +218,7 @@ class UtilisateurHabitatController
     }
 
     public function adminDeleteHabitatImg()
-    // Suppression de race
+    // Suppression de l'image de l'habitat
     {
         //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
