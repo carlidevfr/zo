@@ -455,10 +455,8 @@ class Habitat extends Model
 
             // Commencer la transaction
             $bdd->beginTransaction();
-            if (empty($habitatName) and empty($habitatDesc)) {
-                $req = 'SELECT habitats.id_habitat AS id
-                FROM habitats
-                WHERE habitats.id_habitat = :id_habitat';
+            if (empty($habAction)) {
+                return 'une erreur est survenue';
             } else {
                 // Ajout dans la table habitats
                 $req = '

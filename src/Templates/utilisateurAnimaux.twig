@@ -121,13 +121,31 @@
 
 			<label for="updatedName">Nom modifié :
 			</label><br>
-			<input type="text"  name="updatedName" id="" placeholder="">
+			<input type="text" name="updatedName" id="" placeholder="">
 			<br><br>
 
-			<label for="addElementDesc">Description modifiée :
+			<label for="addElementDesc">Etat de santé :
 			</label>
 			<br>
-			<textarea name="addElementDesc"  id="" cols="30" rows="3"></textarea><br><br>
+			<input type="text" name="addElementDesc" id=""><br><br>
+
+			<label for="addElementRace">Race :
+			</label><br>
+			<select name="addElementRace">
+				<option value=""></option>
+				{% for item in races %}
+					<option value="{{ item.id }}">{{ item.valeur }}</option>
+				{% endfor %}
+			</select><br><br>
+
+			<label for="addElementHabitat">Habitat :
+			</label><br>
+			<select name="addElementHabitat">
+				<option value=""></option>
+				{% for item in habitat %}
+					<option value="{{ item.id }}">{{ item.valeur }}</option>
+				{% endfor %}
+			</select><br><br>
 
 			<label for="addElementImg">Images supplémentaires (jpg, jpeg, png et < 100Ko):
 			</label>
@@ -179,7 +197,8 @@
 			<table>
 				<thead>
 					<tr>
-						<th>Nom {{pageName}}</th>
+						<th>Nom
+							{{pageName}}</th>
 						<th>Etat de santé</th>
 						<th>Race</th>
 						<th>Habitat</th>
@@ -255,8 +274,8 @@
 	{% endif %}
 
 	<h2>Souhaitez vous faire un ajout :
-		Animal
-		?</h2>
+				Animal
+				?</h2>
 
 	<form id='addelement' action="{{base_url}}{{addUrl}}" method="post" enctype='multipart/form-data'>
 		<label for="addElementName">Nom du nouvel animal :
@@ -267,7 +286,7 @@
 		<label for="addElementDesc">Etat de santé :
 		</label>
 		<br>
-		<input type="text" required name="addElementDesc"  id="" ><br><br>
+		<input type="text" required name="addElementDesc" id=""><br><br>
 
 		<label for="addElementRace">Race :
 		</label><br>
@@ -296,11 +315,4 @@
 </form>
 
 {# Retour vers page d'accueil admin #}
-<a href="{{base_url}}admin">Retour</a>
-
-{% endif %}
-
-<script src="{{base_url}}public/js/file.js"></script>
-
-{% endblock %}
-
+<a href="{{base_url}}admin">Retour</a>{% endif %}<script src="{{base_url}}public/js/file.js"></script>{% endblock %}

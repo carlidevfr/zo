@@ -75,7 +75,7 @@ class Animaux extends Model
                         return $animaux;
                     }
                 } else {
-                    return $this->getAllAnimauxNames();
+                    return $this->getAllActiveAnimauxNames();
                 }
             } else {
                 return 'une erreur est survenue';
@@ -293,53 +293,6 @@ class Animaux extends Model
         }
     }
 
-    public function getRelatedHabitat($habitatId)
-    // Récupère tous les éléments liés à un habitatId
-    {
-        try {
-
-            // Initialisation de la liste des éléments liés
-            $relatedElements = array();
-
-            // Liste des tables avec des clés étrangères vers Country
-            $tables = array(
-                'animaux' => 'habitat_animal',
-            );
-
-            // Boucle sur les tables pour récupérer les éléments liés
-            foreach ($tables as $tableName => $foreignKey) {
-
-                $bdd = $this->connexionPDO();
-                $req = "SELECT * FROM $tableName WHERE $foreignKey = :habitatId";
-
-                // on teste si la connexion pdo a réussi
-                if (is_object($bdd)) {
-                    $stmt = $bdd->prepare($req);
-
-                    if (!empty($habitatId) and !empty($habitatId)) {
-                        $stmt->bindValue(':habitatId', $habitatId, PDO::PARAM_INT);
-                        if ($stmt->execute()) {
-                            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                            $stmt->closeCursor();
-
-                            // Ajout des résultats à la liste
-                            $relatedElements[$tableName] = $results;
-                        } else {
-                            return 'une erreur est survenue';
-                        }
-                    }
-                } else {
-                    return 'une erreur est survenue';
-                }
-            }
-
-            // Retourne la liste des éléments liés
-            return $relatedElements;
-
-        } catch (Exception $e) {
-            $this->logError($e);
-        }
-    }
     public function addAnimal($animauxName, $animauxDesc, $animauxHab, $animauxRace, $animauxImg)
     // Ajoute un animal
     {
@@ -464,39 +417,47 @@ class Animaux extends Model
         }
     }
 
-    public function updateHabitat($habAction, $habitatName, $habitatDesc, $habitatImg)
-    // modifie un habitat
+    public function updateAnimaux($habAction, $animauxName, $animauxDesc, $animauxHab, $animauxRace, $animauxImg)
+    // modifie un animal
     {
         try {
             $bdd = $this->connexionPDO();
 
             // Commencer la transaction
             $bdd->beginTransaction();
-            if (empty($habitatName) and empty($habitatDesc)) {
-                $req = 'SELECT habitats.id_habitat AS id
-                FROM habitats
-                WHERE habitats.id_habitat = :id_habitat';
+            if (empty($habAction)) {
+                return 'une erreur est survenue';
             } else {
                 // Ajout dans la table habitats
                 $req = '
-            UPDATE habitats
+            UPDATE animaux
             SET ';
 
                 $params = [];
 
-                if (!empty($habitatName)) {
-                    $req .= 'nom_habitat = :nom_habitat, ';
-                    $params[':nom_habitat'] = $habitatName;
+                if (!empty($animauxName)) {
+                    $req .= 'nom_animal = :nom_animal, ';
+                    $params[':nom_animal'] = $animauxName;
                 }
 
-                if (!empty($habitatDesc)) {
-                    $req .= 'description = :description, ';
-                    $params[':description'] = $habitatDesc;
+                if (!empty($animauxDesc)) {
+                    $req .= 'etat = :etat, ';
+                    $params[':etat'] = $animauxDesc;
+                }
+
+                if (!empty($animauxHab)) {
+                    $req .= 'habitat_animal = :habitat_animal, ';
+                    $params[':habitat_animal'] = $animauxHab;
+                }
+
+                if (!empty($animauxRace)) {
+                    $req .= 'race_animal = :race_animal, ';
+                    $params[':race_animal'] = $animauxRace;
                 }
 
                 $req = rtrim($req, ', '); // Supprimer la virgule en trop à la fin de la requête
 
-                $req .= ' WHERE id_habitat = :id_habitat';
+                $req .= ' WHERE id_animal = :id_animal';
             }
 
             if (is_object($bdd)) {
@@ -509,14 +470,14 @@ class Animaux extends Model
                         $stmt->bindValue($paramName, $paramValue, PDO::PARAM_STR);
                     }
 
-                    $stmt->bindValue(':id_habitat', $habAction, PDO::PARAM_INT);
+                    $stmt->bindValue(':id_animal', $habAction, PDO::PARAM_INT);
 
                     if ($stmt->execute()) {
-                        $habitatId = $habAction;
+                        $animalId = $habAction;
 
-                        if (!empty($habitatImg)) { // Si image n'est pas vide
-                            // Insertion des images dans la table images et relation dans la table images_habitats
-                            foreach ($habitatImg as $image) {
+                        if (!empty($animauxImg)) { // Si image n'est pas vide
+                            // Insertion des images dans la table images et relation dans la table images_animaux
+                            foreach ($animauxImg as $image) {
                                 $imageData = $image['data'];
                                 $imageType = $image['type'];
 
@@ -528,17 +489,17 @@ class Animaux extends Model
                                 $stmtImage->execute();
                                 $imageId = $bdd->lastInsertId(); // Récupérer l'ID de l'image insérée
 
-                                // Relation entre l'habitat et l'image dans la table images_habitats
-                                $sqlRelation = "INSERT INTO images_habitats (id_habitat, id_image) VALUES (:id_habitat, :id_image)";
+                                // Relation entre l'habitat et l'image dans la table images_animaux
+                                $sqlRelation = "INSERT INTO images_animaux (id_animal, id_image) VALUES (:id_animal, :id_image)";
                                 $stmtRelation = $bdd->prepare($sqlRelation);
-                                $stmtRelation->bindValue(':id_habitat', $habitatId, PDO::PARAM_INT);
+                                $stmtRelation->bindValue(':id_animal', $animalId, PDO::PARAM_INT);
                                 $stmtRelation->bindValue(':id_image', $imageId, PDO::PARAM_INT);
                                 $stmtRelation->execute();
                             }
                         }
                         // Valider la transaction
                         $bdd->commit();
-                        return "Habitat modifié avec succès avec ses images.";
+                        return "Animal modifié avec succès avec ses images.";
                     }
                 }
             } else {

@@ -280,12 +280,16 @@ class UtilisateurAnimauxController
         // On récupère le token
         $token = $this->Security->getToken();
 
-        //Récupère l'id animaux à modifier
+        //Récupère l'id animal à modifier
         (isset($_GET['UpdateElementId']) and !empty($_GET['UpdateElementId']) and isset($_GET['tok']) and $this->Security->verifyToken($token, $_GET['tok'])) ? $animauxAction = $this->Security->filter_form($_GET['UpdateElementId']) : $animauxAction = '';
 
-        // Récupère l'animaux à modifier
+        // Récupère l'animal à modifier
         $animaux = $this->Animaux->getByAnimalId($animauxAction);
         $modifySection = true;
+
+        // Récupère les habitats et les races
+        $races = $this->Race->getAllRaceNames();
+        $habitats = $this->Habitat->getAllHabitatNames();
 
         //twig
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
@@ -296,6 +300,8 @@ class UtilisateurAnimauxController
             'base_url' => BASE_URL,
             'pageName' => 'animaux',
             'elements' => $animaux,
+            'races' => $races,
+            'habitat' => $habitats,
             'modifySection' => $modifySection,
             'deleteUrl' => 'admin/manage-animaux/delete',
             'deleteUrlImg' => 'admin/manage-animaux/deleteimg',
@@ -332,14 +338,20 @@ class UtilisateurAnimauxController
             // le nom 
             (isset($_POST['updatedName']) and !empty($_POST['updatedName'])) ? $animauxName = $this->Security->filter_form($_POST['updatedName']) : $animauxName = '';
 
-            //la description
+            //l'état
             (isset($_POST['addElementDesc']) and !empty($_POST['addElementDesc'])) ? $animauxDesc = $this->Security->filter_form($_POST['addElementDesc']) : $animauxDesc = '';
+
+            //l'habitat
+            (isset($_POST['addElementHabitat']) and !empty($_POST['addElementHabitat'])) ? $animauxHab = $this->Security->filter_form($_POST['addElementHabitat']) : $animauxHab = '';
+            
+            //la race
+            (isset($_POST['addElementRace']) and !empty($_POST['addElementRace'])) ? $animauxRace = $this->Security->filter_form($_POST['addElementRace']) : $animauxRace = '';
 
             //les images
             (isset($_FILES['addElementImg']) and !empty($_FILES['addElementImg'])) ? $animauxImg = $this->Security->verifyImg($_FILES['addElementImg']) : $animauxImg = '';
 
             // on fait la modif en BDD et on récupère le résultat
-            $res = $this->Animaux->updateAnimaux($habAction, $animauxName, $animauxDesc, $animauxImg);
+            $res = $this->Animaux->updateAnimaux($habAction, $animauxName, $animauxDesc, $animauxHab, $animauxRace, $animauxImg);
 
             // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
             $_SESSION['resultat'] = $res;
