@@ -1,0 +1,306 @@
+{% extends "base.html.twig" %}
+
+{% block head_title %}Arcadia-Gestion des animaux
+{% endblock %}
+
+{% block head_description %}Gestion des animaux
+{% endblock %}
+
+{% block stylesheet %}
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<link rel="stylesheet" href="{{base_url}}public/scss/main.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block body %}
+
+	<a href="{{base_url}}">Accueil</a>
+	<a href="/admin">Admin</a>
+	<br><br>
+
+	{% if addResult is defined and addResult is not empty %}
+
+		{# Page 'résultat' suite à une action créer, update ou delete terminée -------------------------------------#}
+
+		{# résultat de l'action #}
+		{{addResult}}
+		<br>
+
+		{# Liste des éléments liés pouvant empêcher la suppression #}
+			{% if data is defined and data is not empty %}
+				<h2>
+			Liaisons relatives à l'élément à supprimer
+			</h2>
+				<h3>
+			Peut empêcher la suppression :
+			</h3>
+
+				{% for tableName, items in data %}
+
+				{# utilisé pour animaux ? #}
+					{% if tableName == 'animaux' and tableName is not empty %}
+						<ul>
+							{% for animaux in items %}
+								<li>
+								Nom de l'animal:
+							{{ animaux.nom_animal }}
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endfor %}
+
+		{% endif %}
+			<a href="{{ base_url }}{{previousUrl}}"> Retour</a>
+
+	{% elseif modifySection is defined and modifySection == true %}
+
+		{# Page 'update' pour mettre le nouveau nom -----------------------------------------------------------------#}
+
+		<h2>Modification
+			{{pageName}}:</h2>
+
+		Ancien nom de l'animal:
+		{{elements.valeur}}
+		<br><br>
+		Ancienne race de l'animal:
+		{{elements.nom_race}}
+		<br><br>
+		Ancien habitat de l'animal:
+		{{elements.nom_habitat}}
+		<br><br>
+		Ancien état de l'animal:
+		{{elements.etat}}
+		<br><br>
+		photos de l'animal :
+
+
+		{% if elements.images is defined %}
+			{# Tableau des éléments #}
+			<table>
+				<thead>
+					<tr>
+						<th>Photos</th>
+						<th>Supprimer</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for key, image in elements.images %}
+						{% set imageIds = elements.id_image|split(',') %}
+						{% set imageId = imageIds[key] %}
+						<tr>
+							<td>
+								<img src="data:{{ image.type }};base64,{{ image.data }}" alt="Image" style="width: 75px; height: 75px;">
+							</td>
+
+							<td>
+								<form method="post" action="{{base_url}}{{deleteUrlImg}}" enctype='multipart/form-data'>
+									<input type="hidden" name="deleteElementId" value={{imageId}}>
+									<input type="hidden" name="tok" value={{ token }}>
+									<button type="submit">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table><br><br>
+		{% else %}
+			Aucune image disponible
+			<br><br>
+
+		{% endif %}
+
+
+		Nouveau :
+		<br>
+
+
+		<form id='addelement' action="{{base_url}}{{updateUrl}}" method="post" enctype='multipart/form-data'>
+			<input type="hidden" name="updateElementId" value="{{elements.id}}">
+
+			<label for="updatedName">Nom modifié :
+			</label><br>
+			<input type="text"  name="updatedName" id="" placeholder="">
+			<br><br>
+
+			<label for="addElementDesc">Description modifiée :
+			</label>
+			<br>
+			<textarea name="addElementDesc"  id="" cols="30" rows="3"></textarea><br><br>
+
+			<label for="addElementImg">Images supplémentaires (jpg, jpeg, png et < 100Ko):
+			</label>
+			<br>
+			<input type="file" name="addElementImg[]" id="addElementImg" multiple></input><br>
+		<br>
+
+		<input type="hidden" name="tok" value={{ token }}>
+		<button type="submit">Soumettre</button>
+	</form>
+
+	<a href="{{ base_url }}{{previousUrl}}">Retour</a>
+{% else %}
+	{# Page 'main' de la section avec CRUD ----------------------------------------------------------------------#}
+
+	<div class='container-fluid'>
+		<div class='row justify-content-center'>
+			<h1 class="col-11 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-5 text-center">Bienvenue dans votre espace de gestion des animaux</h1>
+		</div>
+	</div>
+
+	<br>
+	<div class='container-fluid'>
+		<div class='row justify-content-center'>
+			<h2 class="col-11 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-5 text-center">Que voulez vous faire ?</h2>
+		</div>
+	</div>
+
+	<div class='container-fluid'>
+		<div class='row justify-content-start'>
+			<h2 class="col-12 m-2">liste des
+				{{pageName}}</h2>
+		</div>
+
+		{# Formulaire de recherche #}
+		<form action="{{base_url}}{{previousUrl}}" method="get" enctype='multipart/form-data'>
+			<input type="text" name='search'>
+			<input type="hidden" name="tok" value={{ token }}>
+			<button type="submit">Recherche
+				{{pageName}}</button>
+			<button onclick="location.href='{{ base_url }}{{previousUrl}}'">Reset</button>
+		</form>
+
+		{% if elements == 'une erreur est survenue' %}
+			<b>une erreur est survenue</b>
+		{% else %}
+
+			{# Tableau des éléments #}
+			<table>
+				<thead>
+					<tr>
+						<th>Nom {{pageName}}</th>
+						<th>Etat de santé</th>
+						<th>Race</th>
+						<th>Habitat</th>
+						<th>Photos</th>
+						<th>Modifier</th>
+						<th>Archiver</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for element in elements %}
+						<tr>
+							<td>{{ element.valeur|raw  }}</td>
+							<td>{{ element.etat|raw }}</td>
+							<td>{{ element.nom_race|raw }}</td>
+							<td>{{ element.nom_habitat|raw }}</td>
+							<td>
+
+								{% if element.images is defined %}
+									<div style="margin-right: 10px; display: flex; gap: 10px;">
+										{% for image in element.images %}
+											<img src="data:{{ image.type }};base64,{{ image.data }}" alt="Image" style="width: 75px; height: 75px;">
+										{% endfor %}
+									</div>
+								{% else %}
+									Aucune image disponible
+								{% endif %}
+
+							</td>
+
+							<td>
+								<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
+									<input type="hidden" name="UpdateElementId" value={{ element.id }}>
+									<input type="hidden" name="tok" value={{ token }}>
+									<button type="submit">Modifier</button>
+								</form>
+							</td>
+
+							<td>
+								<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
+									<input type="hidden" name="deleteElementId" value={{ element.id }}>
+									<input type="hidden" name="tok" value={{ token }}>
+									<button type="submit">Archiver</button>
+								</form>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			{# Pagination #}
+			<div class="pagination">
+				page
+				<br>
+				{% if activePage > 1 %}
+					<a href="?page={{ activePage - 1 }}&search={{search}}&tok={{token}}">Page précédente</a>
+				{% endif %}
+
+				{% for page in 1..pageMax %}
+					{% if page == activePage %}
+						<span class="current-page">{{ page }}</span>
+					{% else %}
+						<a href="?page={{ page }}&search={{search}}&tok={{token}}">{{ page }}</a>
+					{% endif %}
+				{% endfor %}
+
+				{% if activePage < pageMax %}
+					<a href="?page={{ activePage + 1 }}&search={{search}}&tok={{token}}">Page suivante</a>
+				{% endif %}
+			</div><br>
+		</div>
+
+	{% endif %}
+
+	<h2>Souhaitez vous faire un ajout :
+		Animal
+		?</h2>
+
+	<form id='addelement' action="{{base_url}}{{addUrl}}" method="post" enctype='multipart/form-data'>
+		<label for="addElementName">Nom du nouvel animal :
+		</label><br>
+		<input type="text" required name="addElementName" id="" placeholder="Nom de l'animal">
+		<br><br>
+
+		<label for="addElementDesc">Etat de santé :
+		</label>
+		<br>
+		<input type="text" required name="addElementDesc"  id="" ><br><br>
+
+		<label for="addElementRace">Race :
+		</label><br>
+		<select name="addElementRace">
+			{% for item in races %}
+				<option value="{{ item.id }}">{{ item.valeur }}</option>
+			{% endfor %}
+		</select><br><br>
+
+		<label for="addElementHabitat">Habitat :
+		</label><br>
+		<select name="addElementHabitat">
+			{% for item in habitat %}
+				<option value="{{ item.id }}">{{ item.valeur }}</option>
+			{% endfor %}
+		</select><br><br>
+
+		<label for="addElementImg">Images du nouvel habitat (jpg, jpeg, png et < 100Ko):
+		</label>
+		<br>
+		<input type="file" name="addElementImg[]" id="addElementImg" multiple></input><br>
+	<br>
+
+	<input type="hidden" name="tok" value={{ token }}>
+	<button type="submit">Soumettre</button>
+</form>
+
+{# Retour vers page d'accueil admin #}
+<a href="{{base_url}}admin">Retour</a>
+
+{% endif %}
+
+<script src="{{base_url}}public/js/file.js"></script>
+
+{% endblock %}
+

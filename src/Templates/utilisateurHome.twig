@@ -27,6 +27,10 @@
 <button onclick="location.href='/admin/manage-habitat'">Gestion des habitats</button><br><br>
 {% endif %}
 
+{% if user_role == 'admin' %}
+<button onclick="location.href='/admin/manage-animaux'">Gestion des animaux</button><br><br>
+{% endif %}
+
 {% if user_role == 'admin' or user_role == 'employe' %}
 <button onclick="location.href='/admin/manage-avis'">Gestion des avis</button><br><br>
 {% endif %}

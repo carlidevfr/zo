@@ -23,6 +23,8 @@ require_once './src/Controller/UtilisateurHomeController.php';
 require_once './src/Controller/UtilisateurRaceController.php';
 require_once './src/Controller/UtilisateurAvisController.php';
 require_once './src/Controller/UtilisateurHabitatController.php';
+require_once './src/Controller/UtilisateurAnimauxController.php';
+
 
 
 
@@ -63,6 +65,14 @@ $router->addRoute('POST', BASE_URL . 'admin/manage-habitat/delete', 'Utilisateur
 $router->addRoute('POST', BASE_URL . 'admin/manage-habitat/deleteimg', 'UtilisateurHabitatController', 'adminDeleteHabitatImg');
 $router->addRoute('GET', BASE_URL . 'admin/manage-habitat/update', 'UtilisateurHabitatController', 'adminUpdateHabitatPage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-habitat/update', 'UtilisateurHabitatController', 'adminUpdateHabitat');
+
+$router->addRoute('GET', BASE_URL . 'admin/manage-animaux', 'UtilisateurAnimauxController', 'adminAnimauxPage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-animaux/add', 'UtilisateurAnimauxController', 'adminAddAnimaux');
+$router->addRoute('GET', BASE_URL . 'admin/manage-animaux/action/success', 'UtilisateurAnimauxController', 'adminSuccessActionAnimaux');
+$router->addRoute('POST', BASE_URL . 'admin/manage-animaux/delete', 'UtilisateurAnimauxController', 'adminArchiveAnimaux');
+$router->addRoute('POST', BASE_URL . 'admin/manage-animaux/deleteimg', 'UtilisateurAnimauxController', 'adminDeleteAnimauxImg');
+$router->addRoute('GET', BASE_URL . 'admin/manage-animaux/update', 'UtilisateurAnimauxController', 'adminUpdateAnimauxPage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-animaux/update', 'UtilisateurAnimauxController', 'adminUpdateAnimaux');
 
 
 $method = $_SERVER['REQUEST_METHOD'];
