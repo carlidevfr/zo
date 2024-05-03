@@ -27,7 +27,8 @@
 		<br>
 
 		{# Liste des éléments liés pouvant empêcher la suppression #}
-			{% if data is defined and data is not empty %}<h2>
+			{% if data is defined and data is not empty %}
+				<h2>
 			Liaisons relatives à l'élément à supprimer
 		</h2>
 		{% endif %}
@@ -40,17 +41,23 @@
 		<h2>Modification
 			{{pageName}}:</h2>
 
-		Ancienne date du rapport : {{elements.valeur}}
+		Ancienne date du rapport :
+		{{elements.valeur}}
 		<br>
-		Ancien animal du rapport : {{ elements.nom_animal }}<br>
-		Ancienne état de l'animal du rapport : {{ elements.etat|raw  }}<br>
-		Ancienne nourriture à donner : {{ elements.nourriture_propose|raw }}<br>
-		Ancienne quantité de nourriture : {{ elements.quantite_nourriture|raw }}<br>
-		Ancien rapport : {{ elements.detail|raw  }}<br><br>
+		Ancien animal du rapport :
+		{{ elements.nom_animal }}<br>
+		Ancienne état de l'animal du rapport :
+		{{ elements.etat|raw  }}<br>
+		Ancienne nourriture à donner :
+		{{ elements.nourriture_propose|raw }}<br>
+		Ancienne quantité de nourriture :
+		{{ elements.quantite_nourriture|raw }}<br>
+		Ancien rapport :
+		{{ elements.detail|raw  }}<br><br>
 		Nouveau :
 		<br>
 		<form action="{{base_url}}{{updateUrl}}" method="post" enctype='multipart/form-data'>
-			
+
 			<input type="hidden" name="updateElementId" value={{ elements.id }}>
 			<input type="hidden" name="tok" value={{ token }}>
 			<input type="hidden" name="addElementAnimal" value={{ elements.animal }}>
@@ -136,8 +143,10 @@
 							<th>Nourriture proposée</th>
 							<th>Quantité</th>
 							<th>Rapport</th>
-							<th>Modifier</th>
-							<th>Supprimer</th>
+							{% if user_role == 'veterinaire' %}
+								<th>Modifier</th>
+								<th>Supprimer</th>
+							{% endif %}
 						</tr>
 					</thead>
 
@@ -151,22 +160,23 @@
 								<td>{{ element.quantite_nourriture|raw  }}</td>
 								<td>{{ element.detail|raw  }}</td>
 
+								{% if user_role == 'veterinaire' %}
+									<td>
+										<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
+											<input type="hidden" name="UpdateElementId" value={{ element.id }}>
+											<input type="hidden" name="tok" value={{ token }}>
+											<button type="submit">Modifier</button>
+										</form>
+									</td>
 
-								<td>
-									<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
-										<input type="hidden" name="UpdateElementId" value={{ element.id }}>
-										<input type="hidden" name="tok" value={{ token }}>
-										<button type="submit">Modifier</button>
-									</form>
-								</td>
-
-								<td>
-									<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
-										<input type="hidden" name="deleteElementId" value={{ element.id }}>
-										<input type="hidden" name="tok" value={{ token }}>
-										<button type="submit">Supprimer</button>
-									</form>
-								</td>
+									<td>
+										<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
+											<input type="hidden" name="deleteElementId" value={{ element.id }}>
+											<input type="hidden" name="tok" value={{ token }}>
+											<button type="submit">Supprimer</button>
+										</form>
+									</td>
+								{% endif %}
 							</tr>
 						{% endfor %}
 					</tbody>
@@ -195,6 +205,8 @@
 			</div>
 
 		{% endif %}
+		
+		{% if user_role == 'veterinaire' %}
 
 		<h2>Souhaitez vous faire un ajout : Rapport vétérinaire ?</h2>
 
@@ -241,7 +253,7 @@
 			<input type="hidden" name="tok" value={{ token }}>
 			<button type="submit">Soumettre</button>
 		</form>
-
+		{% endif %}
 		{# Retour vers page d'accueil admin #}
 		<a href="{{base_url}}admin">Retour</a>
 

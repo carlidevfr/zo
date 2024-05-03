@@ -28,7 +28,7 @@ class UtilisateurRapportVeteController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'veterinaire') {
+        if ($userRole !== 'veterinaire' and $userRole !== 'employe' and $userRole !== 'admin') {
             $this->Security->logout();
         }
 
@@ -78,6 +78,7 @@ class UtilisateurRapportVeteController
             'elements' => $rapports,
             'animaux' => $animaux,
             'pageMax' => $pageMax,
+            'user_role' => $userRole,
             'activePage' => $page,
             'search' => $search,
             'deleteUrl' => 'admin/manage-rapport/delete',

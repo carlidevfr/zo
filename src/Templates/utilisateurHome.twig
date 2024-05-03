@@ -39,7 +39,7 @@
 <button onclick="location.href='/admin/manage-habitat-vete'">Avis sur les habitats</button><br><br>
 {% endif %}
 
-{% if user_role == 'veterinaire' %}
+{% if user_role == 'veterinaire' or user_role == 'employe' or user_role == 'admin'%}
 <button onclick="location.href='/admin/manage-rapport'">Rapports vétérinaires</button><br><br>
 {% endif %}
 
