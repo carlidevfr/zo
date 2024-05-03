@@ -27,6 +27,10 @@
 <button onclick="location.href='/admin/manage-habitat'">Gestion des habitats</button><br><br>
 {% endif %}
 
+{% if user_role == 'veterinaire' %}
+<button onclick="location.href='/admin/manage-habitat-vete'">Avis sur les habitats</button><br><br>
+{% endif %}
+
 {% if user_role == 'admin' %}
 <button onclick="location.href='/admin/manage-animaux'">Gestion des animaux</button><br><br>
 {% endif %}

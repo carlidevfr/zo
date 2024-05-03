@@ -531,4 +531,36 @@ class Habitat extends Model
             return 'Une erreur est survenue';
         }
     }
+    public function updateAvisHabitat($habAction, $habitatName)
+    // Modifie l'avis habitat selon l'id
+    {
+        try {
+            $bdd = $this->connexionPDO();
+            $req = '
+            UPDATE habitats
+            SET avis = :habitatName
+            WHERE id_habitat  = :habAction';
+
+            // on teste si la connexion pdo a réussi
+            if (is_object($bdd)) {
+                $stmt = $bdd->prepare($req);
+
+                if (!empty($habAction) and !empty($habitatName)) {
+                    $stmt->bindValue(':habAction', $habAction, PDO::PARAM_INT);
+                    $stmt->bindValue(':habitatName', $habitatName, PDO::PARAM_STR);
+                    if ($stmt->execute()) {
+                        return 'Cet avis a bien été modifié : ' . $habitatName;
+                    }
+                } else {
+                    return 'une erreur est survenue';
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+            return 'Une erreur est survenue';
+        }
+    }
+
 }

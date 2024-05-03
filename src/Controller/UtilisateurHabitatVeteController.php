@@ -3,7 +3,7 @@
 require_once './src/Model/Habitat.php';
 require_once './src/Model/Common/Security.php';
 
-class UtilisateurHabitatController
+class UtilisateurHabitatVeteController
 {
     private $Habitat;
     private $Security;
@@ -24,7 +24,7 @@ class UtilisateurHabitatController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'admin') {
+        if ($userRole !== 'veterinaire') {
             $this->Security->logout();
         }
 
@@ -63,7 +63,7 @@ class UtilisateurHabitatController
         //twig
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
-        $template = $twig->load('utilisateurHabitat.twig');
+        $template = $twig->load('utilisateurHabitatVete.twig');
 
         echo $template->render([
             'base_url' => BASE_URL,
@@ -72,10 +72,8 @@ class UtilisateurHabitatController
             'pageMax' => $pageMax,
             'activePage' => $page,
             'search' => $search,
-            'deleteUrl' => 'admin/manage-habitat/delete',
-            'addUrl' => 'admin/manage-habitat/add',
-            'updateUrl' => 'admin/manage-habitat/update',
-            'previousUrl' => 'admin/manage-habitat',
+            'updateUrl' => 'admin/manage-habitat-vete/update',
+            'previousUrl' => 'admin/manage-habitat-vete',
             'token' => $token
         ]);
     }
@@ -89,7 +87,7 @@ class UtilisateurHabitatController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'admin') {
+        if ($userRole !== 'veterinaire') {
             $this->Security->logout();
         }
 
@@ -113,129 +111,28 @@ class UtilisateurHabitatController
         } else {
 
             //Si vide on retourne sur la page habitat
-            header('Location: ' . BASE_URL . 'admin/manage-habitat');
+            header('Location: ' . BASE_URL . 'admin/manage-habitat-vete');
             exit;
 
         }
 
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
-        $template = $twig->load('utilisateurHabitat.twig');
+        $template = $twig->load('utilisateurHabitatVete.twig');
 
         echo $template->render([
             'base_url' => BASE_URL,
             'pageName' => 'habitat',
             'data' => $data,
             'addResult' => $res,
-            'deleteUrl' => 'admin/manage-habitat/delete',
-            'addUrl' => 'admin/manage-habitat/add',
-            'updateUrl' => 'admin/manage-habitat/update',
-            'previousUrl' => 'admin/manage-habitat'
+            'deleteUrl' => 'admin/manage-habitat-vete/delete',
+            'addUrl' => 'admin/manage-habitat-vete/add',
+            'updateUrl' => 'admin/manage-habitat-vete/update',
+            'previousUrl' => 'admin/manage-habitat-vete'
         ]);
 
     }
 
-    public function adminAddHabitat()
-    // Ajout de habitat
-    {
-        //On vérifie si on a le droit d'être là
-        $this->Security->verifyAccess();
-
-        // On récupère le role
-        $userRole = $this->Security->getRole();
-
-        if ($userRole !== 'admin') {
-            $this->Security->logout();
-        }
-
-        // On récupère le token
-        $token = $this->Security->getToken();
-
-        // on récupère le nouvel habitat ajouté et le token
-        if (isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) {
-            // le nom 
-            (isset($_POST['addElementName']) and !empty($_POST['addElementName'])) ? $habitatName = $this->Security->filter_form($_POST['addElementName']) : $habitatName = '';
-
-            //la description
-            (isset($_POST['addElementDesc']) and !empty($_POST['addElementDesc'])) ? $habitatDesc = $this->Security->filter_form($_POST['addElementDesc']) : $habitatDesc = '';
-
-            //les images
-            (isset($_FILES['addElementImg']) and !empty($_FILES['addElementImg'])) ? $habitatImg = $this->Security->verifyImg($_FILES['addElementImg']) : $habitatImg = '';
-
-            // on fait l'ajout en BDD et on récupère le résultat
-            $res = $this->Habitat->addHabitat($habitatName, $habitatDesc, $habitatImg);
-
-            // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
-            $_SESSION['resultat'] = $res;
-        }
-
-        // on regénère le token
-        $this->Security->regenerateToken();
-
-        header('Location: ' . BASE_URL . 'admin/manage-habitat/action/success');
-        exit;
-    }
-
-    public function adminDeleteHabitat()
-    // Suppression de l'habitat
-    {
-        //On vérifie si on a le droit d'être là
-        $this->Security->verifyAccess();
-
-        // On récupère le role
-        $userRole = $this->Security->getRole();
-
-        if ($userRole !== 'admin') {
-            $this->Security->logout();
-        }
-
-        // On récupère le token
-        $token = $this->Security->getToken();
-
-        // on récupère l'id habitat à supprimer
-        (isset($_POST['deleteElementId']) and !empty($_POST['deleteElementId']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $HabAction = $this->Security->filter_form($_POST['deleteElementId']) : $HabAction = '';
-
-
-        // on fait la suppression en BDD et on récupère le résultat
-        $res = $this->Habitat->deleteHabitat($HabAction);
-
-        // Stockage des résultats et l'id de l'élément dans la session puis redirection pour éviter renvoi au rafraichissement
-        $_SESSION['resultat'] = $res;
-        $_SESSION['idElement'] = $HabAction;
-
-        // on regénère le token
-        $this->Security->regenerateToken();
-
-        header('Location: ' . BASE_URL . 'admin/manage-habitat/action/success');
-        exit;
-    }
-
-    public function adminDeleteHabitatImg()
-    // Suppression de l'image de l'habitat
-    {
-        //On vérifie si on a le droit d'être là
-        $this->Security->verifyAccess();
-
-        // On récupère le role
-        $userRole = $this->Security->getRole();
-
-        if ($userRole !== 'admin') {
-            $this->Security->logout();
-        }
-
-        // On récupère le token
-        $token = $this->Security->getToken();
-
-        // on récupère l'id image à supprimer
-        (isset($_POST['deleteElementId']) and !empty($_POST['deleteElementId']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $ImgAction = $this->Security->filter_form($_POST['deleteElementId']) : $ImgAction = '';
-
-
-        // on fait la suppression en BDD et on récupère le résultat
-        $res = $this->Habitat->deleteImg($ImgAction);
-
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit;
-    }
 
     public function adminUpdateHabitatPage()
     // Page permettant la saisie pour la modification de l'habitat'
@@ -246,7 +143,7 @@ class UtilisateurHabitatController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'admin') {
+        if ($userRole !== 'veterinaire') {
             $this->Security->logout();
         }
 
@@ -263,18 +160,16 @@ class UtilisateurHabitatController
         //twig
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
-        $template = $twig->load('utilisateurHabitat.twig');
+        $template = $twig->load('utilisateurHabitatVete.twig');
 
         echo $template->render([
             'base_url' => BASE_URL,
             'pageName' => 'habitat',
             'elements' => $habitat,
             'modifySection' => $modifySection,
-            'deleteUrl' => 'admin/manage-habitat/delete',
-            'deleteUrlImg' => 'admin/manage-habitat/deleteimg',
-            'addUrl' => 'admin/manage-habitat/add',
-            'updateUrl' => 'admin/manage-habitat/update',
-            'previousUrl' => 'admin/manage-habitat',
+            'addUrl' => 'admin/manage-habitat-vete/add',
+            'updateUrl' => 'admin/manage-habitat-vete/update',
+            'previousUrl' => 'admin/manage-habitat-vete',
             'token' => $token
         ]);
 
@@ -289,7 +184,7 @@ class UtilisateurHabitatController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ($userRole !== 'admin') {
+        if ($userRole !== 'veterinaire') {
             $this->Security->logout();
         }
 
@@ -305,14 +200,9 @@ class UtilisateurHabitatController
             // le nom 
             (isset($_POST['updatedName']) and !empty($_POST['updatedName'])) ? $habitatName = $this->Security->filter_form($_POST['updatedName']) : $habitatName = '';
 
-            //la description
-            (isset($_POST['addElementDesc']) and !empty($_POST['addElementDesc'])) ? $habitatDesc = $this->Security->filter_form($_POST['addElementDesc']) : $habitatDesc = '';
-
-            //les images
-            (isset($_FILES['addElementImg']) and !empty($_FILES['addElementImg'])) ? $habitatImg = $this->Security->verifyImg($_FILES['addElementImg']) : $habitatImg = '';
 
             // on fait la modif en BDD et on récupère le résultat
-            $res = $this->Habitat->updateHabitat($habAction, $habitatName, $habitatDesc, $habitatImg);
+            $res = $this->Habitat->updateAvisHabitat($habAction, $habitatName);
 
             // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
             $_SESSION['resultat'] = $res;
@@ -321,7 +211,7 @@ class UtilisateurHabitatController
         // on regénère le token
         $this->Security->regenerateToken();
 
-        header('Location: ' . BASE_URL . 'admin/manage-habitat/action/success');
+        header('Location: ' . BASE_URL . 'admin/manage-habitat-vete/action/success');
         exit;
 
 
