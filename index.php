@@ -25,6 +25,7 @@ require_once './src/Controller/UtilisateurAvisController.php';
 require_once './src/Controller/UtilisateurHabitatController.php';
 require_once './src/Controller/UtilisateurAnimauxController.php';
 require_once './src/Controller/UtilisateurHabitatVeteController.php';
+require_once './src/Controller/UtilisateurRapportVeteController.php';
 
 
 
@@ -81,6 +82,12 @@ $router->addRoute('POST', BASE_URL . 'admin/manage-animaux/deleteimg', 'Utilisat
 $router->addRoute('GET', BASE_URL . 'admin/manage-animaux/update', 'UtilisateurAnimauxController', 'adminUpdateAnimauxPage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-animaux/update', 'UtilisateurAnimauxController', 'adminUpdateAnimaux');
 
+$router->addRoute('GET', BASE_URL . 'admin/manage-rapport', 'UtilisateurRapportVeteController', 'adminRapportPage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-rapport/add', 'UtilisateurRapportVeteController', 'adminAddRapport');
+$router->addRoute('GET', BASE_URL . 'admin/manage-rapport/action/success', 'UtilisateurRapportVeteController', 'adminSuccessActionRapport');
+$router->addRoute('POST', BASE_URL . 'admin/manage-rapport/delete', 'UtilisateurRapportVeteController', 'adminDeleteRapport');
+$router->addRoute('GET', BASE_URL . 'admin/manage-rapport/update', 'UtilisateurRapportVeteController', 'adminUpdateRapportPage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-rapport/update', 'UtilisateurRapportVeteController', 'adminUpdateRapport');
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = strtolower($_SERVER['REQUEST_URI']); // gère les minuscules et les majuscules
