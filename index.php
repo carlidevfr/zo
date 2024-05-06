@@ -26,8 +26,7 @@ require_once './src/Controller/UtilisateurHabitatController.php';
 require_once './src/Controller/UtilisateurAnimauxController.php';
 require_once './src/Controller/UtilisateurHabitatVeteController.php';
 require_once './src/Controller/UtilisateurRapportVeteController.php';
-
-
+require_once './src/Controller/ConsommationNourritureController.php';
 
 
 
@@ -88,6 +87,13 @@ $router->addRoute('GET', BASE_URL . 'admin/manage-rapport/action/success', 'Util
 $router->addRoute('POST', BASE_URL . 'admin/manage-rapport/delete', 'UtilisateurRapportVeteController', 'adminDeleteRapport');
 $router->addRoute('GET', BASE_URL . 'admin/manage-rapport/update', 'UtilisateurRapportVeteController', 'adminUpdateRapportPage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-rapport/update', 'UtilisateurRapportVeteController', 'adminUpdateRapport');
+
+$router->addRoute('GET', BASE_URL . 'admin/manage-nourriture', 'ConsommationNourritureController', 'adminNourriturePage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-nourriture/add', 'ConsommationNourritureController', 'adminAddNourriture');
+$router->addRoute('GET', BASE_URL . 'admin/manage-nourriture/action/success', 'ConsommationNourritureController', 'adminSuccessActionNourriture');
+$router->addRoute('POST', BASE_URL . 'admin/manage-nourriture/delete', 'ConsommationNourritureController', 'adminDeleteNourriture');
+$router->addRoute('GET', BASE_URL . 'admin/manage-nourriture/update', 'ConsommationNourritureController', 'adminUpdateNourriturePage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-nourriture/update', 'ConsommationNourritureController', 'adminUpdateNourriture');
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = strtolower($_SERVER['REQUEST_URI']); // gère les minuscules et les majuscules

@@ -26,6 +26,7 @@ class RapportVeterinaire extends Model
             INNER JOIN animaux ON rapport_veterinaire.animal = animaux.id_animal
             WHERE rapport_veterinaire.nourriture_propose LIKE :search OR
             rapport_veterinaire.detail LIKE :search OR
+            DATE_FORMAT(rapport_veterinaire.date_rapport, '%d/%m/%Y') LIKE :search OR
             animaux.nom_animal LIKE :search
             ORDER BY rapport_veterinaire.id_rapport DESC
             LIMIT :offset, :itemsPerPage";
