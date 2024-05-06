@@ -1,0 +1,1 @@
+2024-05-06 12:10:24 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_service = 3' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Service.php 247

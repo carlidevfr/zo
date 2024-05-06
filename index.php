@@ -24,6 +24,7 @@ require_once './src/Controller/UtilisateurRaceController.php';
 require_once './src/Controller/UtilisateurAvisController.php';
 require_once './src/Controller/UtilisateurHabitatController.php';
 require_once './src/Controller/UtilisateurAnimauxController.php';
+require_once './src/Controller/UtilisateurServiceController.php';
 require_once './src/Controller/UtilisateurHabitatVeteController.php';
 require_once './src/Controller/UtilisateurRapportVeteController.php';
 require_once './src/Controller/ConsommationNourritureController.php';
@@ -53,6 +54,13 @@ $router->addRoute('GET', BASE_URL . 'admin/manage-race/action/success', 'Utilisa
 $router->addRoute('POST', BASE_URL . 'admin/manage-race/delete', 'UtilisateurRaceController', 'adminDeleteRace');
 $router->addRoute('GET', BASE_URL . 'admin/manage-race/update', 'UtilisateurRaceController', 'adminUpdateRacePage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-race/update', 'UtilisateurRaceController', 'adminUpdateRace');
+
+$router->addRoute('GET', BASE_URL . 'admin/manage-service', 'UtilisateurServiceController', 'adminServicePage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-service/add', 'UtilisateurServiceController', 'adminAddService');
+$router->addRoute('GET', BASE_URL . 'admin/manage-service/action/success', 'UtilisateurServiceController', 'adminSuccessActionService');
+$router->addRoute('POST', BASE_URL . 'admin/manage-service/delete', 'UtilisateurServiceController', 'adminDeleteService');
+$router->addRoute('GET', BASE_URL . 'admin/manage-service/update', 'UtilisateurServiceController', 'adminUpdateServicePage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-service/update', 'UtilisateurServiceController', 'adminUpdateService');
 
 $router->addRoute('GET', BASE_URL . 'admin/manage-avis', 'UtilisateurAvisController', 'adminAvisPage');
 $router->addRoute('GET', BASE_URL . 'admin/manage-avis/action/success', 'UtilisateurAvisController', 'adminSuccessActionAvis');

@@ -47,6 +47,10 @@
 <button onclick="location.href='/admin/manage-nourriture'">Nourrissage</button><br><br>
 {% endif %}
 
+{% if user_role == 'employe' or user_role == 'admin'%}
+<button onclick="location.href='/admin/manage-service'">Services</button><br><br>
+{% endif %}
+
 <button onclick="location.href='/logout'">Déconnexion</button>
 
 {% endblock %}

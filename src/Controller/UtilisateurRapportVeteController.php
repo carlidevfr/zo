@@ -283,7 +283,7 @@ class UtilisateurRapportVeteController
         // On récupère le token
         $token = $this->Security->getToken();
 
-        // on récupère l'id de la race à Modifier
+        // on récupère l'id  à Modifier
         (isset($_POST['updateElementId']) and !empty($_POST['updateElementId']) and isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) ? $raceAction = $this->Security->filter_form($_POST['updateElementId']) : $raceAction = '';
 
         // la date
