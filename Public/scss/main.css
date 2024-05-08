@@ -18,20 +18,20 @@ th {
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: 40px;
 }
 
 h2 {
-  font-size: 2.4rem;
+  font-size: 32px;
 }
 
 h3 {
-  font-size: 2rem;
+  font-size: 24px;
 }
 
 p,
 li {
-  font-size: 1.6rem;
+  font-size: 16px;
   text-align: justify;
 }
 
@@ -44,6 +44,14 @@ a:hover {
 }
 a:visited, a:active {
   color: #000000;
+}
+
+.background__primary {
+  background-color: #009338;
+}
+
+.background__secondary {
+  background-color: #F4BD0F;
 }
 
 html {
