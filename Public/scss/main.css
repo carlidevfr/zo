@@ -25,19 +25,20 @@ h2 {
   font-size: 32px;
 }
 
-h3 {
+h3, .h3 {
   font-size: 24px;
 }
 
 p,
 li {
-  font-size: 16px;
+  font-size: 17px;
   text-align: justify;
 }
 
 a {
   text-decoration: none;
   color: #000000;
+  font-size: 17px;
 }
 a:hover {
   opacity: 0.6;
@@ -52,6 +53,10 @@ a:visited, a:active {
 
 .background__secondary {
   background-color: #F4BD0F;
+}
+
+.table-description-size {
+  min-width: 300px;
 }
 
 html {

@@ -26,38 +26,38 @@
 
 	<div class='container-fluid d-flex flex-column mt-5 pt-5 pb-5 justify-content-center align-items-center'>
 	{% if user_role == 'admin' %}
-		<button class='col-12 col-sm-6 p-5 display-6 background__secondary border-0' onclick="location.href='/admin/manage-race'">Gestion des races</button><br><br>
+		<button class='col-12 col-sm-4 p-5 background__secondary border-0 h3' onclick="location.href='/admin/manage-race'">Gestion des races</button><br><br>
     {% endif %}
 
 	{% if user_role == 'admin' %}
-		<button class='col-12 col-sm-6 p-5 display-6 background__secondary border-0' onclick="location.href='/admin/manage-habitat'">Gestion des habitats</button><br><br>
+		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0' onclick="location.href='/admin/manage-habitat'">Gestion des habitats</button><br><br>
 	{% endif %}
 
 	{% if user_role == 'admin' %}
-		<button class='col-12 col-sm-6 p-5 display-6 background__secondary border-0' onclick="location.href='/admin/manage-animaux'">Gestion des animaux</button><br><br>
+		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0' onclick="location.href='/admin/manage-animaux'">Gestion des animaux</button><br><br>
 	{% endif %}
 
 	{% if user_role == 'admin' or user_role == 'employe' %}
-		<button class='col-12 col-sm-6 p-5 display-6 background__secondary border-0' onclick="location.href='/admin/manage-avis'">Gestion des avis</button><br><br>
+		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0' onclick="location.href='/admin/manage-avis'">Gestion des avis</button><br><br>
 	{% endif %}
 
 	{% if user_role == 'veterinaire' %}
-		<button class='col-12 col-sm-6 p-5 display-6 background__secondary border-0' onclick="location.href='/admin/manage-habitat-vete'">Avis sur les habitats</button><br><br>
+		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0' onclick="location.href='/admin/manage-habitat-vete'">Avis sur les habitats</button><br><br>
 	{% endif %}
 
 	{% if user_role == 'veterinaire' or user_role == 'employe' or user_role == 'admin'%}
-		<button class='col-12 col-sm-6 p-5 display-6 background__secondary border-0' class='col-12 col-sm-6 p-5 display-6 background__secondary border-0' onclick="location.href='/admin/manage-rapport'">Rapports vétérinaires</button><br><br>
+		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0'  onclick="location.href='/admin/manage-rapport'">Rapports vétérinaires</button><br><br>
 	{% endif %}
 
 	{% if user_role == 'employe' or user_role == 'admin'%}
-		<button class='col-12 col-sm-6 p-5 display-6 background__secondary border-0' onclick="location.href='/admin/manage-nourriture'">Nourrissage</button><br><br>
+		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0' onclick="location.href='/admin/manage-nourriture'">Nourrissage</button><br><br>
 	{% endif %}
 
 	{% if user_role == 'employe' or user_role == 'admin'%}
-		<button class='col-12 col-sm-6 p-5 display-6 background__secondary border-0' onclick="location.href='/admin/manage-service'">Services</button><br><br>
+		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0' onclick="location.href='/admin/manage-service'">Services</button><br><br>
 	{% endif %}
 
-	<button class='col-12 col-sm-6 p-5 display-6 alert alert-danger border-0' onclick="location.href='/logout'">Déconnexion</button>
+	<button class='col-12 col-sm-4 p-5 h3 alert alert-danger border-0' onclick="location.href='/logout'">Déconnexion</button>
 
     </div>
 
