@@ -23,7 +23,9 @@
 		{# Page 'résultat' suite à une action créer, update ou delete terminée -------------------------------------#}
 
 		{# résultat de l'action #}
-		{{addResult}}
+			<p>
+		{{ addResult }}
+		</p>
 		<br>
 
 		{# Liste des éléments liés pouvant empêcher la suppression #}
@@ -32,87 +34,111 @@
 			Liaisons relatives à l'élément à supprimer
 		</h2>
 		{% endif %}
-			<a href="{{ base_url }}{{previousUrl}}"> Retour</a>
-
+			<div class='m-1 '> <a class="btn btn-danger ps-4 pe-4" href="{{ base_url }}{{ previousUrl }}">Retour</a>
+		</div>
 	{% elseif modifySection is defined and modifySection == true %}
 
 		{# Page 'update' pour mettre le nouveau nom -----------------------------------------------------------------#}
 
-		<h2>Modification
-			{{pageName}}:</h2>
-
-		Ancienne date du rapport :
-		{{elements.valeur}}
-		<br>
-		Ancien animal du rapport :
-		{{ elements.nom_animal }}<br>
-
-		Ancienne nourriture donnée :
-		{{ elements.nourriture_donnee|raw }}<br>
-		Ancienne quantité de nourriture :
-		{{ elements.nourriture_donnee_quantite|raw }}<br>
-
-		Nouveau :
-		<br>
-		<form action="{{base_url}}{{updateUrl}}" method="post" enctype='multipart/form-data'>
-
-			<input type="hidden" name="updateElementId" value={{ elements.id }}>
-			<input type="hidden" name="tok" value={{ token }}>
-			<input type="hidden" name="addElementAnimal" value={{ elements.animal }}>
-			
-			<label for="addElementDate">Date du nourrissage :
-			</label><br>
-			<input type="datetime-local" name="addElementDate" id="">
-			<br><br>
-
-			<label for="addElementNou">Nourriture donnée:
-			</label>
+		<div class='container-fluid d-flex flex-column text-center background__primary text-white mt-5 mb-5 pt-5 pb-5 justify-content-center'>
+			<h1 class="">Bienvenue dans votre espace de gestion des services</h1>
 			<br>
-			<input type="text" name="addElementNou" id=""><br><br>
+			<h2>Modification
+				{{ pageName }}
+				:
+			</h2>
+		</div>
 
-			<label for="addElementQuant">Quantité de nourriture :
-			</label>
-			<br>
-			<input type="text"  name="addElementQuant" id=""><br><br>
 
-			<br>
+		<div class='container-fluid'>
+			<div class='row justify-content-center'>
+				<p>Ancienne date du rapport :
+					{{elements.valeur}}</p>
+			</div>
 
-			<button type="submit">Soumettre</button>
+			<div class='row justify-content-center'>
+				<p>Ancien animal du rapport :
+					{{ elements.nom_animal }}</p>
+			</div>
 
-		</form>
+			<div class='row justify-content-center'>
+				<p>Ancienne nourriture donnée :
+					{{ elements.nourriture_donnee|raw }}</p>
+			</div>
 
-		<a href="{{ base_url }}{{previousUrl}}">Retour</a>
+			<div class='row justify-content-center'>
+				<p>Ancienne quantité de nourriture :
+					{{ elements.nourriture_donnee_quantite|raw }}</p>
+			</div>
+
+
+			<h3>Nouveau :</h3>
+
+			<form class='container-fluid' action="{{base_url}}{{updateUrl}}" method="post" enctype='multipart/form-data'>
+
+				<input type="hidden" name="updateElementId" value={{ elements.id }}>
+				<input type="hidden" name="tok" value={{ token }}>
+				<input type="hidden" name="addElementAnimal" value={{ elements.animal }}>
+
+				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
+					<label for="addElementDate">Date du nourrissage :
+					</label>
+					<input class="form-control" type="datetime-local" name="addElementDate" id="">
+				</div>
+
+				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
+					<label for="addElementNou">Nourriture donnée:
+					</label>
+					<input class="form-control" type="text" name="addElementNou" id="">
+				</div>
+
+				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
+					<label for="addElementQuant">Quantité de nourriture :
+					</label>
+					<input class="form-control" type="text" name="addElementQuant" id="">
+				</div>
+
+
+				<button class="btn btn-primary col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2" type="submit">Soumettre</button>
+
+			</form>
+
+			<div class='m-1 '>
+				<a class="btn btn-danger ps-4 pe-4" href="{{ base_url }}{{ previousUrl }}">
+					Retour
+				</a>
+			</div>
+		</div>
+
 	{% else %}
-
-		<div class='container-fluid'>
-			<div class='row justify-content-center'>
-				<h1 class="col-11 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-5 text-center">Bienvenue dans votre espace de gestion du nourrissage</h1>
-			</div>
-		</div>
-
-		<br>
-		<div class='container-fluid'>
-			<div class='row justify-content-center'>
-				<h2 class="col-11 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-5 text-center">Que voulez vous faire ?</h2>
-			</div>
-		</div>
-
-
 		{# Page 'main' de la section avec CRUD ----------------------------------------------------------------------#}
+
+
+		<div class='container-fluid d-flex flex-column text-center background__primary text-white mt-5 mb-5 pt-5 pb-5 justify-content-center'>
+			<h1 class="">Bienvenue dans votre espace de gestion du nourrissage</h1>
+			<br>
+			<h2 class="">Que voulez vous faire ?</h2>
+		</div>
 
 		<div class='container-fluid'>
 			<div class='row justify-content-start'>
-				<h2 class="col-12 m-2">liste des
-					nourrissages</h2>
+				<h2 class="col-12 m-2 mb-5">
+					Liste du nourrissage effectué
+				</h2>
 			</div>
-
 			{# Formulaire de recherche #}
-			<form action="{{base_url}}{{previousUrl}}" method="get" enctype='multipart/form-data'>
-				<input type="text" name='search'>
+			<form class='justify-content-center justify-content-md-start row mb-5 g-3' action="{{ base_url }}{{ previousUrl }}" method="get" enctype='multipart/form-data'>
+				<div class=" col-12 col-md-3 col-xxl-2">
+					<input class="form-control" type="text" name='search' placeholder='Recherche'>
+				</div>
 				<input type="hidden" name="tok" value={{ token }}>
-				<button type="submit">Recherche
-					{{pageName}}</button>
-				<button onclick="location.href='{{ base_url }}{{previousUrl}}'">Reset</button>
+				<button class=" btn btn-success col-11 col-md-3 col-xl-2 col-xxl-1 ms-2" type="submit">
+					Recherche
+				</button>
+				<button class="btn btn-secondary col-11 col-md-3 col-xl-2 col-xxl-1 ms-2" onclick="location.href='{{ base_url }}{{ previousUrl }}'">
+					Reset
+				</button>
+
 			</form>
 
 			{% if elements == 'une erreur est survenue' %}
@@ -120,118 +146,160 @@
 			{% else %}
 
 				{# Tableau des éléments #}
-				<table>
-					<thead>
-						<tr>
-							<th>Date et heure</th>
-							<th>Animal</th>
-							<th>Nourriture donnée</th>
-							<th>Quantité</th>
-							<th>Etat Animal</th>
-							<th>Nourriture proposée par le vétérinaire</th>
-							<th>Quantité proposée par le vétérinaire</th>
-							<th>Dernier rapport vétérinaire</th>
-							<th>Modifier</th>
-							<th>Supprimer</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						{% for element in elements %}
+				<div class="table-responsive">
+					<table class="table table-sm table-bordered border-dark table-hover text-justify align-middle">
+						<thead class='text-uppercase align-middle'>
 							<tr>
-								<td>{{ element.valeur|raw  }}</td>
-								<td>{{ element.nom_animal }}</td>
-								<td>{{ element.nourriture_donnee|raw  }}</td>
-								<td>{{ element.nourriture_donnee_quantite|raw }}</td>
-								<td>{{ element.etat_sante|raw  }}</td>
-								<td>{{ element.info_veterinaire|raw  }}</td>
-								<td>{{ element.quantite_veterinaire|raw  }}</td>
-								<td>{{ element.date_rapport_veterinaire_format|raw  }}</td>
-
-								<td>
-									<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
-										<input type="hidden" name="UpdateElementId" value={{ element.id }}>
-										<input type="hidden" name="tok" value={{ token }}>
-										<button type="submit">Modifier</button>
-									</form>
-								</td>
-
-								<td>
-									<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
-										<input type="hidden" name="deleteElementId" value={{ element.id }}>
-										<input type="hidden" name="tok" value={{ token }}>
-										<button type="submit">Supprimer</button>
-									</form>
-								</td>
+								<th>Date et heure</th>
+								<th>Animal</th>
+								<th>Nourriture donnée</th>
+								<th>Quantité</th>
+								<th>Etat Animal</th>
+								<th>Nourriture proposée par le vétérinaire</th>
+								<th>Quantité proposée par le vétérinaire</th>
+								<th>Dernier rapport vétérinaire</th>
+								<th>Modifier</th>
+								<th>Supprimer</th>
 							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
+						</thead>
 
+						<tbody>
+							{% for element in elements %}
+								<tr>
+									<td>{{ element.valeur|raw  }}</td>
+									<td>{{ element.nom_animal }}</td>
+									<td>{{ element.nourriture_donnee|raw  }}</td>
+									<td>{{ element.nourriture_donnee_quantite|raw }}</td>
+									<td>{{ element.etat_sante|raw  }}</td>
+									<td>{{ element.info_veterinaire|raw  }}</td>
+									<td>{{ element.quantite_veterinaire|raw  }}</td>
+									<td>{{ element.date_rapport_veterinaire_format|raw  }}</td>
+
+									<td>
+										<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
+											<input type="hidden" name="UpdateElementId" value={{ element.id }}>
+											<input type="hidden" name="tok" value={{ token }}>
+											<button class='btn btn-primary m-2' type="submit">Modifier</button>
+										</form>
+									</td>
+
+									<td>
+										<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
+											<input type="hidden" name="deleteElementId" value={{ element.id }}>
+											<input type="hidden" name="tok" value={{ token }}>
+											<button class='btn btn-danger m-2' type="submit">Supprimer</button>
+										</form>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
 				{# Pagination #}
-				<div class="pagination">
-					page
-					<br>
-					{% if activePage > 1 %}
-						<a href="?page={{ activePage - 1 }}&search={{search}}&tok={{token}}">Page précédente</a>
-					{% endif %}
+				<ul class="pagination">
 
+					{% if activePage > 1 %}
+						{# Si on est sur page 2 et + #}
+						<li class="page-item">
+							<a class="page-link" href="?page={{ activePage - 1 }}&search={{ search }}&tok={{ token }}">
+								Page précédente
+							</a>
+						</li>
+					{% endif %}
 					{% for page in 1..pageMax %}
 						{% if page == activePage %}
-							<span class="current-page">{{ page }}</span>
+							<li class="page-item">
+								<span class="current-page page-link">
+									{{ page }}
+								</span>
+							</li>
 						{% else %}
-							<a href="?page={{ page }}&search={{search}}&tok={{token}}">{{ page }}</a>
+							<li class="page-item">
+								<a class="page-link" href="?page={{ page }}&search={{ search }}&tok={{ token }}">
+									{{ page }}
+								</a>
+							</li>
 						{% endif %}
 					{% endfor %}
-
 					{% if activePage < pageMax %}
-						<a href="?page={{ activePage + 1 }}&search={{search}}&tok={{token}}">Page suivante</a>
+						<li class="page-item">
+							<a class="page-link" href="?page={{ activePage + 1 }}&search={{ search }}&tok={{ token }}">
+								Page suivante
+							</a>
+						</li>
 					{% endif %}
-				</div><br>
+				</ul>
+				<br>
+
+			{% endif %}
+
+			<!-- Button trigger modal -->
+
+			<button type="button" class="btn btn-primary ps-4 pe-4 m-1" data-bs-toggle="modal" data-bs-target="#addModal">
+				Ajout
+			</button>
+
+			<!-- Modal -->
+			<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="addModalLabel">Ajout</h5>
+							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<h2>Souhaitez vous faire un ajout : Nourrissage ?</h2>
+
+							<form id='addelement' action="{{base_url}}{{addUrl}}" method="post" enctype='multipart/form-data'>
+								<label for="addElementDate">Date du nourrissage :
+								</label><br>
+								<input type="datetime-local" required name="addElementDate" id="">
+								<br><br>
+
+								<!-- Champ de saisie pour la recherche -->
+								<label for="searchInput">Recherche de l'animal pour le select:</label><br>
+								<input type="text" id="searchInput" onkeyup="rechercheSelect()" placeholder="Rechercher..."><br><br>
+
+								<label for="addElementAnimal">Animal :
+								</label><br>
+								<select name="addElementAnimal" id="select_animal">
+									<option value=""></option>
+									{% for item in animaux %}
+										<option value="{{ item.id }}">{{ item.valeur }}</option>
+									{% endfor %}
+								</select><br><br>
+
+								<label for="addElementNou">Nourriture donnée:
+								</label>
+								<br>
+								<input type="text" required name="addElementNou" id=""><br><br>
+
+								<label for="addElementQuant">Quantité de nourriture :
+								</label>
+								<br>
+								<input type="text" required name="addElementQuant" id=""><br><br>
+
+								<br>
+
+								<input type="hidden" name="tok" value={{ token }}>
+								<button type="submit" class='btn btn-success ps-4 pe-4'>Soumettre</button>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
 			</div>
 
-		{% endif %}
 
-
-		<h2>Souhaitez vous faire un ajout : Nourrissage ?</h2>
-
-		<form id='addelement' action="{{base_url}}{{addUrl}}" method="post" enctype='multipart/form-data'>
-			<label for="addElementDate">Date du nourrissage :
-			</label><br>
-			<input type="datetime-local" required name="addElementDate" id="">
-			<br><br>
-
-			<!-- Champ de saisie pour la recherche -->
-			<label for="searchInput">Recherche de l'animal pour le select:</label><br>
-			<input type="text" id="searchInput" onkeyup="rechercheSelect()" placeholder="Rechercher..."><br><br>
-
-			<label for="addElementAnimal">Animal :
-			</label><br>
-			<select name="addElementAnimal" id="select_animal">
-				<option value=""></option>
-				{% for item in animaux %}
-					<option value="{{ item.id }}">{{ item.valeur }}</option>
-				{% endfor %}
-			</select><br><br>
-
-			<label for="addElementNou">Nourriture donnée:
-			</label>
-			<br>
-			<input type="text" required name="addElementNou" id=""><br><br>
-
-			<label for="addElementQuant">Quantité de nourriture :
-			</label>
-			<br>
-			<input type="text" required name="addElementQuant" id=""><br><br>
-
-			<br>
-
-			<input type="hidden" name="tok" value={{ token }}>
-			<button type="submit">Soumettre</button>
-		</form>
-		{# Retour vers page d'accueil admin #}
-		<a href="{{base_url}}admin">Retour</a>
-
+			{# Retour vers page d'accueil admin #}
+			<div class='m-1 '>
+				<a class="btn btn-danger ps-4 pe-4" href="{{ base_url }}admin">Retour</a>
+			</div>
+		</div>
 		<script>
 			// Fonction de recherche
 function rechercheSelect() { // Récupérer la valeur de recherche
