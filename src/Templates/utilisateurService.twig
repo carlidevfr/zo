@@ -29,7 +29,7 @@
 			Liaisons relatives à l'élément à supprimer
 		</h2>
 		{% endif %}
-			<div class='m-1 '> <a class="btn btn-danger ps-4 pe-4" href="{{ base_url }}{{ previousUrl }}">Retour</a>
+			<div class='m-1 '> <a class="btn btn-danger text-white ps-4 pe-4" href="{{ base_url }}{{ previousUrl }}">Retour</a>
 		</div>
 	{% elseif modifySection is defined and modifySection == true %}
 		{# Page 'update' pour mettre le nouveau nom -----------------------------------------------------------------#}
@@ -71,7 +71,7 @@
 				<button class="btn btn-primary col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2" type="submit">Soumettre</button>
 			</form>
 			<div class='m-1 '>
-				<a class="btn btn-danger ps-4 pe-4" href="{{ base_url }}{{ previousUrl }}">
+				<a class="btn btn-danger text-white ps-4 pe-4" href="{{ base_url }}{{ previousUrl }}">
 					Retour
 				</a>
 			</div>
@@ -250,7 +250,7 @@
 
 			{# Retour vers page d'accueil admin #}
 			<div class='m-1 '>
-				<a class="btn btn-danger ps-4 pe-4" href="{{ base_url }}admin">Retour</a>
+				<a class="btn text-white btn-danger ps-4 pe-4" href="{{ base_url }}admin">Retour</a>
 			</div>
 		</div>
 	{% endif %}

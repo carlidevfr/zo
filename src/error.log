@@ -3,3 +3,7 @@
 2024-05-06 12:18:53 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_service = 1' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Service.php 247
 2024-05-06 12:19:18 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_service = 1' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Service.php 247
 2024-05-06 12:19:39 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_service = 1' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Service.php 247
+2024-05-09 09:39:35 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_habitat = 4' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Habitat.php 495
+2024-05-09 09:40:00 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_animal = 10' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Animaux.php 475
+2024-05-09 09:55:34 SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`zoo`.`animaux`, CONSTRAINT `animaux_ibfk_2` FOREIGN KEY (`habitat_animal`) REFERENCES `habitats` (`id_habitat`)) 23000 C:\wamp64\www\zoo\src\Model\Habitat.php 403
+2024-05-09 10:05:31 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_habitat = 4' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Habitat.php 495

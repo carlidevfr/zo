@@ -180,7 +180,6 @@ class UtilisateurAvisController
 
         // On récupère le token
         $token = $this->Security->getToken();
-        var_dump($_SESSION['csrf_token']);
 
         //Récupère l'id de l'avis à modifier
         (isset($_GET['UpdateElementId']) and !empty($_GET['UpdateElementId']) and isset($_GET['tok']) and $this->Security->verifyToken($token, $_GET['tok'])) ? $avisAction = $this->Security->filter_form($_GET['UpdateElementId']) : $avisAction = '';
