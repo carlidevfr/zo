@@ -11,6 +11,45 @@ $primary__color: #009338;
 $secondary__color: #F4BD0F;
 $tertiary__color: #A6569C;
 
+@mixin small-desktop{
+    @media screen and (min-width : 576px ) {
+        @content;
+    }
+}
+
+@mixin medium-desktop{
+    @media screen and (min-width : 768px ) {
+        @content;
+    }
+}
+
+@mixin desktop{
+    @media screen and (min-width : 1145px ) {
+        @content;
+    }
+}
+
+@mixin article__card {
+    min-height: 335px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    padding: 15px;
+
+    @include small-desktop{
+        padding: 40px 50px 30px 50px;
+    }
+
+    >p {
+        color: $body__color;
+    }
+
+    &>* { // tous les enfants
+        margin: 0;
+    }
+}
 
 table {
     border-collapse: collapse;
@@ -28,4 +67,3 @@ td,
 th {
     color: #000000; /* Changer la couleur du texte si nécessaire */
 }
-

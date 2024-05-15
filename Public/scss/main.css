@@ -19,6 +19,7 @@ th {
 
 h1 {
   font-size: 40px;
+  font-weight: 900;
 }
 
 h2 {
@@ -59,6 +60,33 @@ a:visited, a:active {
   min-width: 300px;
 }
 
+.bg-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.main__articleCard-xl {
+  min-height: 335px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+  padding: 15px;
+}
+@media screen and (min-width: 576px) {
+  .main__articleCard-xl {
+    padding: 40px 50px 30px 50px;
+  }
+}
+.main__articleCard-xl > p {
+  color: #FFF9E9;
+}
+.main__articleCard-xl > * {
+  margin: 0;
+}
+
 html {
   /* base de "10px" au lieu de "16px" */
   scroll-behavior: smooth;
@@ -68,4 +96,14 @@ body {
   font-family: "Roboto", sans-serif;
   color: #000000;
   background-color: #FFF9E9;
+  font-size: 17px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 60px;
+  gap: 60px;
 }/*# sourceMappingURL=main.css.map */

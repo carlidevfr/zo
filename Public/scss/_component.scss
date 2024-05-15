@@ -1,5 +1,7 @@
 h1 {
     font-size: $header__font-size-xl;
+    font-weight: 900;
+
 }
 
 h2 {
@@ -42,3 +44,15 @@ a {
 .table-description-size{
     min-width: 300px;
 }
+
+.bg-image{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+.main__articleCard-xl {
+    @include article__card;
+}
+
+

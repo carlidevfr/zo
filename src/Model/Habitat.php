@@ -202,6 +202,67 @@ class Habitat extends Model
         }
     }
 
+    public function getAllHabitatsNamesWithFirstImg()
+    //Récupère les habitats avec la 1ere image
+    {
+        try {
+            $bdd = $this->connexionPDO();
+            $req = '
+            SELECT habitats.id_habitat AS id,
+            habitats.nom_habitat AS valeur,
+            habitats.description,
+            habitats.avis,
+            MIN(images.id_image) AS id_image
+            FROM habitats
+            LEFT JOIN images_habitats ON habitats.id_habitat = images_habitats.id_habitat
+            LEFT JOIN images ON images_habitats.id_image = images.id_image
+            WHERE images.id_image IS NOT NULL
+            GROUP BY
+            habitats.id_habitat
+            ORDER BY habitats.id_habitat';
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                    if ($stmt->execute()) {
+                        $habitats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $stmt->closeCursor();
+
+                        // Parcourir les résultats et récupérer les données et types d'image pour chaque habitat
+                        foreach ($habitats as &$habitat) {
+                            if (isset($habitat['id_image']) and !empty($habitat['id_image'])) { // si non vide
+
+                                $imageIds = explode(',', $habitat['id_image']);
+                                $images = [];
+
+                                foreach ($imageIds as $imageId) {
+                                    // Requête pour récupérer les données et types d'image pour chaque identifiant d'image
+                                    $reqImage = 'SELECT data, type FROM images WHERE id_image = :id_image';
+                                    $stmtImage = $bdd->prepare($reqImage);
+                                    $stmtImage->bindValue(':id_image', $imageId, PDO::PARAM_INT);
+                                    if ($stmtImage->execute()) {
+                                        $imageInfo = $stmtImage->fetch(PDO::FETCH_ASSOC);
+                                        $images[] = [
+                                            'data' => base64_encode($imageInfo['data']),
+                                            'type' => $imageInfo['type']
+                                        ];
+                                    }
+                                    $habitat['images'] = $images;
+                                }
+                            }
+                        }
+                        return $habitats;
+                    }
+                
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+        }
+    }
+
     public function getByHabitatId($habitatId)
     //retourne l habitat selon l'id
     {

@@ -8,4 +8,14 @@ body {
     font-family: $font-family;
     color: $text__color;
     background-color: $body__color;
+    font-size: $p__font-size-xl;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; // centre sur petit écran
+    margin-bottom: 60px; // marge pour séparer les sections
+    gap: 60px;
 }

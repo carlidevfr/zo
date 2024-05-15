@@ -2,15 +2,32 @@
 
 require_once './src/Model/Common/Security.php';
 require_once './src/Model/Common/Regenerate.php';
+require_once './src/Model/Animaux.php';
+require_once './src/Model/Habitat.php';
+require_once './src/Model/Service.php';
+
+
+
 
 class HomeController
 {
     private $Security;
+    private $Animaux;
+    private $Habitat;
+    private $Service;
+
+
+
     private $Regenerate;
 
     public function __construct(){
         $this->Security = new Security();
         $this->Regenerate = new Regenerate();
+        $this->Animaux = new Animaux();
+        $this->Habitat = new Habitat();
+        $this->Service = new Service();
+
+
     }
 
     public function index(){
@@ -41,5 +58,27 @@ class HomeController
         }else{
             echo 'une erreur est survenue, consultez les logs';
         }
+    }
+
+    public function apiGetImgAnimaux(){
+
+        //récupération et envoi des 1ere images animaux en json
+        //On veut les images des 15 premiers animaux afin d'alléger la page
+        $res = $this->Animaux->getRandomActiveAnimauxNamesWithFirstImg(15);
+        Model::sendJSON($res) ;     
+    }
+
+    public function apiGetImgHabitats(){
+
+        //récupération et envoi des 1ere images habitats en json
+        $res = $this->Habitat->getAllHabitatsNamesWithFirstImg();
+        Model::sendJSON($res) ;     
+    }
+
+    public function apiGetServices(){
+
+        //récupération et envoi des services en json
+        $res = $this->Service->getAllServiceNames();
+        Model::sendJSON($res) ;     
     }
 }

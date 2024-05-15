@@ -103,6 +103,14 @@ $router->addRoute('POST', BASE_URL . 'admin/manage-nourriture/delete', 'Consomma
 $router->addRoute('GET', BASE_URL . 'admin/manage-nourriture/update', 'ConsommationNourritureController', 'adminUpdateNourriturePage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-nourriture/update', 'ConsommationNourritureController', 'adminUpdateNourriture');
 
+$router->addRoute('GET', BASE_URL . 'apigetimganimaux', 'HomeController', 'apiGetImgAnimaux');
+$router->addRoute('GET', BASE_URL . 'apigetimghabitats', 'HomeController', 'apiGetImgHabitats');
+$router->addRoute('GET', BASE_URL . 'apigetservices', 'HomeController', 'apiGetServices');
+
+
+
+
+
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = strtolower($_SERVER['REQUEST_URI']); // gère les minuscules et les majuscules
 

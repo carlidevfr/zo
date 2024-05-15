@@ -224,6 +224,78 @@ class Animaux extends Model
         }
     }
 
+    public function getRandomActiveAnimauxNamesWithFirstImg($itemsPerPage)
+    //Récupère les animaux avec la premiere image avec une limite dans un ordre aléatoire
+    {
+        try {
+
+            $bdd = $this->connexionPDO();
+            $req = '
+            SELECT animaux.id_animal AS id,
+            animaux.nom_animal AS valeur,
+            animaux.etat,
+            animaux.race_animal,
+            animaux.active_animal,
+            races.nom_race AS nom_race,
+            animaux.habitat_animal,
+            habitats.nom_habitat AS nom_habitat,
+            MIN(images.id_image) AS id_image
+            FROM animaux
+            LEFT JOIN images_animaux ON animaux.id_animal = images_animaux.id_animal
+            LEFT JOIN images ON images_animaux.id_image = images.id_image
+            LEFT JOIN races ON animaux.race_animal = races.id_race
+            LEFT JOIN habitats ON animaux.habitat_animal = habitats.id_habitat
+            WHERE animaux.active_animal = 1
+            AND images.id_image IS NOT NULL
+            GROUP BY animaux.id_animal
+            ORDER BY RAND() -- Ordonner de manière aléatoire
+            LIMIT :itemsPerPage';
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                if (!empty($itemsPerPage)) {
+                    $stmt->bindValue(':itemsPerPage', $itemsPerPage, PDO::PARAM_INT);
+
+                    if ($stmt->execute()) {
+                        $animaux = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $stmt->closeCursor();
+
+                        // Parcourir les résultats et récupérer les données et types d'image pour chaque animal
+                        foreach ($animaux as &$animal) {
+                            if (isset($animal['id_image']) and !empty($animal['id_image'])) { // si non vide
+
+                                $imageIds = explode(',', $animal['id_image']);
+                                $images = [];
+
+                                foreach ($imageIds as $imageId) {
+                                    // Requête pour récupérer les données et types d'image pour chaque identifiant d'image
+                                    $reqImage = 'SELECT data, type FROM images WHERE id_image = :id_image';
+                                    $stmtImage = $bdd->prepare($reqImage);
+                                    $stmtImage->bindValue(':id_image', $imageId, PDO::PARAM_INT);
+                                    if ($stmtImage->execute()) {
+                                        $imageInfo = $stmtImage->fetch(PDO::FETCH_ASSOC);
+                                        $images[] = [
+                                            'data' => base64_encode($imageInfo['data']),
+                                            'type' => $imageInfo['type']
+                                        ];
+                                    }
+                                    $animal['images'] = $images;
+                                }
+                            }
+                        }
+                        return $animaux;
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+        }
+    }
+
     public function getByAnimalId($animalId)
     //retourne l animal selon l'id
     {

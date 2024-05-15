@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block stylesheet %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-<link rel="stylesheet" href="./public/scss/main.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<link rel="stylesheet" href="./public/scss/main.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block body %}
@@ -19,7 +19,148 @@
 	<a href="./admin">Admin</a>
 	<br><br>
 
-	<h1>Bienvenue à ARCADIA</h1>
 
+	<div class="container-fluid d-flex flex-column justify-content-center bg-image vh-100" style="background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url('{{base_url}}Public/assets/arcadia-zoo-accueil.jpg')">
+		<div class="row">
+			<div
+				class="col-12 ms-lg-5 ps-lg-5">
+				<!-- Contenu de votre bloc ici -->
+				<h1 class=" text-center text-md-start ms-md-5 pb-5 ps-md-5 text-white">ARCADIA,
+					<br>
+					UN ZOO ECORESPONSABLE</h1>
+				<div class="text-center text-md-start ms-md-5">
+					<button class='btn btn-success h3 p-2 pe-5 ps-5 ms-md-5'>Nos Animaux</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<main class='container-fluid '>
+		<article class="main__articleCard-xl background__primary col-11 col-xl-10 col-xxl-9 mt-5 text-white">
+			<h2>Pourquoi Visiter ARCADIA ?</h2>
+			<p>Pour vous assurer un accompagnement serein à chaque étape de la transition, nous nous adapterons à votre
+																												                rythme sans négliger les impératifs légaux.<br>
+				<br>
+				Nous construirons ensemble une solution pour votre entreprise grâce à des outils performants.<br>
+				Avec Démat'ère, nous traitons vos documents afin de les rendre infalsifiables via le certificat
+																												                d'authenticité RGS**.<br>
+				<br>
+				Un suivi de traitement mis à votre disposition vous permet de suivre au plus près chaque facture, aussi
+																												                bien dans son traitement que sa date d'envoi.<br>
+				<br>
+				Et la facturation papier reste possible ! Nous nous adaptons à votre demande d'hybridation spécifique pour
+																												                vous assurer une transition progressive : combinaison de l'envoi papier et dématérialisé, envoi uniquement
+																												                dématérialisé pour une catégorie de clientèle particulière ou inversement !
+				<br>
+				<br>
+				Avec Démat'ère, vous gagnerez surtout du temps.<br>
+				<br>
+				Avec nos 10 ans d'expérience dans l'envoi papier & dématérialisé, nous avons décidé de nous spécialiser dans
+																												                les flux de gestion et de créer cette structure dédiée au traitement des factures.<br>
+				<br>
+				Les plateformes actuelles ont tendance à individualiser les processus, un document après l'autre. Nous
+																												                vous permettons un dépôt multiple, nous traitons vos factures et nous les envoyons pour vous !
+			</p>
+		</article>
+
+		<section class='col-11 col-xl-10 col-xxl-9'>
+			<h2 class='mb-5'>Nos Valeurs</h2>
+
+			<div class="d-flex justify-content-evenly flex-wrap gap-4">
+
+				<div class="card" style="width: 18rem;">
+					<img src="{{base_url}}Public/assets/arcadia-zoo-accueil.jpg" class="card-img-top" alt="...">
+					<div class="card-body">
+						<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+					</div>
+				</div>
+
+				<div class="card" style="width: 18rem;">
+					<img src="{{base_url}}Public/assets/arcadia-zoo-accueil.jpg" class="card-img-top" alt="...">
+					<div class="card-body">
+						<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+					</div>
+				</div>
+
+				<div class="card" style="width: 18rem;">
+					<img src="{{base_url}}Public/assets/arcadia-zoo-accueil.jpg" class="card-img-top" alt="...">
+					<div class="card-body">
+						<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+					</div>
+				</div>
+
+			</div>
+		</section>
+
+
+		<h2 class='col-11 col-xl-10 col-xxl-9'>Nos Services</h2>
+		<div class= 'col-11 col-xl-7 col-xxl-6' id='home-display-services'></div>
+
+
+		<h2 class='col-11 col-xl-10 col-xxl-9'>Un Aperçu de nos Animaux</h2>
+		<div id='home-display-animaux'></div>
+
+		<h2 class='col-11 col-xl-10 col-xxl-9'>Un Aperçu de nos Habitats</h2>
+		<div id='home-display-habitats'></div>
+
+		<article class='col-11 col-xl-10 col-xxl-9'>
+			<h2 class='mb-5'>Horaires du Zoo</h2>
+			<ul>
+				<li>Lundi : 8h/17h</li>
+				<li>Mardi : 8h/17h</li>
+				<li>Mercredi : 8h/17h</li>
+				<li>Jeudi : 8h/17h</li>
+				<li>Vendredi : 8h/17h</li>
+				<li>Samedi : 8h/17h</li>
+				<li>Dimanche : 8h/17h</li>
+			</ul>
+
+			<p>Informations : Le zoo sera fermé le 24 décembre</p>
+
+		</article>
+
+		<section class='col-11 col-xl-10 col-xxl-9'>
+		<h2 class='mb-5'>Laissez nous votre avis !</h2>
+
+		<form class='col-11 col-xl-4 col-xxl-3' action="{{base_url}}login" method="post" enctype="multipart/form-data">
+			<div class='row '>
+				<div class="form-group  m-2">
+					<label for="id">Pseudo</label>
+					<input class="form-control" required name="id">
+				</div>
+			</div>
+			<div class='row'>
+
+				<div class="form-group  m-2">
+					<label for="message">Message</label>
+					<textarea class="form-control"  name="message" cols="30" rows="3"></textarea>
+				</div>
+			</div>
+
+			<div class="row ">
+				<button class="btn btn-warning text-white background__secondary  m-2" type="submit">Connexion</button>
+
+			</div>
+
+		</form>
+		</section>
+
+				<article class='col-11 col-xl-10 col-xxl-9'>
+			<h2 class='mb-5'>Avis précédents</h2>
+			<ul>
+				<li>20/05/2006 - José : blablaba</li>
+				<li>20/05/2006 - José : blablab</li>
+				<li>20/05/2006 - José : blablab</li>
+				<li>20/05/2006 - José : blablab</li>
+				<li>20/05/2006 - José : blablab</li>
+				<li>20/05/2006 - José : blablab</li>
+				<li>20/05/2006 - José : blablab</li>
+			</ul>
+
+		</article>
+
+	</main>
+
+<script type="module" src="{{base_url}}public/js/home.js" async defer></script>
 
 {% endblock %}
