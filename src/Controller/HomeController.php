@@ -48,6 +48,15 @@ class HomeController
         ]);
     }
 
+    public function habitatsPage(){
+        $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
+        $twig = new Twig\Environment($loader);
+        $template = $twig->load('habitatsPage.twig');
+        echo  $template->render([
+            'base_url' => BASE_URL,
+        ]);
+    }
+
     public function createBddProd(){
         
         // Création de la base de données prod
@@ -81,6 +90,13 @@ class HomeController
 
         //récupération et envoi des 1ere images habitats en json
         $res = $this->Habitat->getAllHabitatsNamesWithFirstImg();
+        Model::sendJSON($res) ;     
+    }
+
+    public function apiGetAllHabitats(){
+
+        //récupération et envoi des habitats en json
+        $res = $this->Habitat->getAllHabitatNames();
         Model::sendJSON($res) ;     
     }
 

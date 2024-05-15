@@ -54,8 +54,16 @@ export default class Display {
 
         let img = document.createElement('img');
         img.classList.add('d-block', 'w-100');
-        img.setAttribute('src', 'data:' + sanitizeHtml(animal.images[0].type) + ';base64,' + sanitizeHtml(animal.images[0].data)); // Utiliser la première image
-        img.setAttribute('alt', sanitizeHtml(animal.valeur));
+
+        if (animal.images !== undefined && animal.images.length > 0) {
+          // S'il y a une entrée "image" dans le json
+          img.setAttribute('src', 'data:' + sanitizeHtml(animal.images[0].type) + ';base64,' + sanitizeHtml(animal.images[0].data)); // Utiliser la première image
+          img.setAttribute('alt', sanitizeHtml(animal.valeur));
+        } else {
+          // Si on traite directement le flux image
+          img.setAttribute('src', 'data:' + sanitizeHtml(animal.type) + ';base64,' + sanitizeHtml(animal.data)); // Utiliser la première image
+          img.setAttribute('alt', sanitizeHtml(animal.valeur));
+        }
 
         carouselItem.appendChild(img);
         carouselInner.appendChild(carouselItem);
@@ -213,6 +221,63 @@ export default class Display {
         secondColumnContent.textContent = sanitizeHtml(item.description);
 
         secondColumn.appendChild(secondColumnContent);
+
+        // Ajout des colonnes à l'article
+        article.appendChild(firstColumn);
+        article.appendChild(secondColumn);
+
+        // Ajouter l'article au conteneur
+        container.appendChild(article);
+      });
+
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de l'affichage des articles :", error);
+    }
+  }
+
+  displayHabitatsPage(sanitizeHtml, data, resDom, id, displayImg) {
+    try {
+
+      // Sélection de l'élément conteneur
+      let container = resDom;
+
+      // Vérifier si l'élément conteneur existe
+      if (!container) {
+        throw new Error("L'élément conteneur n'existe pas.");
+      }
+
+      // Vider le container
+      container.innerHTML = '';
+
+      // Parcourir les données et créer chaque article
+      data.forEach((item, index) => {
+    
+        // Création de l'article
+        let article = document.createElement('article');
+        article.classList.add('col-11', 'col-xl-10', 'col-xxl-11', 'mt-5', 'row', 'row', 'justify-content-between', 'align-items-center');
+
+        // Création de la première colonne (avec le titre)
+        let firstColumn = document.createElement('div');
+        firstColumn.classList.add('col-sm-12', 'col-lg-3', 'col-xl-4', 'col-xxl-4', 'background__tertiary', 'p-3', 'm-md-3', 'd-flex', 'justify-content-center', 'align-items-center');
+
+        let firstColumnHeader = document.createElement('h2');
+        firstColumnHeader.classList.add('text-white', 'text-center');
+        firstColumnHeader.textContent = sanitizeHtml(item.valeur);
+
+        firstColumn.appendChild(firstColumnHeader);
+
+        // Création de la deuxième colonne (avec l'image)
+        let secondColumn = document.createElement('div');
+        secondColumn.classList.add('col-sm-12', 'col-lg-8', 'col-xl-7', 'col-xxl-7', 'p-3', 'm-md-3', 'mt-3', 'd-flex', 'justify-content-center' );
+
+        if (item.images !== undefined && item.images.length > 0) {
+          // S'il y a des images
+          displayImg(sanitizeHtml, item.images, secondColumn, index);
+
+        } else {
+          // Si aucune image
+          secondColumn.textContent = 'Aucune image disponible';
+        }
 
         // Ajout des colonnes à l'article
         article.appendChild(firstColumn);

@@ -40,6 +40,8 @@ $router = new Router();
 
 $router->addRoute('GET', BASE_URL . '/', 'homecontroller', 'index');
 $router->addRoute('GET', BASE_URL . 'nos-services', 'homecontroller', 'servicePage');
+$router->addRoute('GET', BASE_URL . 'nos-habitats', 'homecontroller', 'habitatsPage');
+
 
 
 $router->addRoute('GET', BASE_URL . 'createbddprod', 'homecontroller', 'createBddProd');
@@ -107,6 +109,7 @@ $router->addRoute('POST', BASE_URL . 'admin/manage-nourriture/update', 'Consomma
 
 $router->addRoute('GET', BASE_URL . 'apigetimganimaux', 'HomeController', 'apiGetImgAnimaux');
 $router->addRoute('GET', BASE_URL . 'apigetimghabitats', 'HomeController', 'apiGetImgHabitats');
+$router->addRoute('GET', BASE_URL . 'apigetallhabitats', 'HomeController', 'apiGetAllHabitats');
 $router->addRoute('GET', BASE_URL . 'apigetservices', 'HomeController', 'apiGetServices');
 
 
