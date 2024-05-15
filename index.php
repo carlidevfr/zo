@@ -39,6 +39,8 @@ require_once './src/Model/Common/Regenerate.php';
 $router = new Router();
 
 $router->addRoute('GET', BASE_URL . '/', 'homecontroller', 'index');
+$router->addRoute('GET', BASE_URL . 'nos-services', 'homecontroller', 'servicePage');
+
 
 $router->addRoute('GET', BASE_URL . 'createbddprod', 'homecontroller', 'createBddProd');
 $router->addRoute('GET', BASE_URL . 'createbddtest', 'homecontroller', 'createBddTest');

@@ -4,15 +4,15 @@ export default class Display {
     // Créez un élément HTML temporaire de type "div"
     const tempHtml = document.createElement('span');
 
-    // Affectez le texte reçu en tant que contenu texte de l'élément "tempHtml"
-    tempHtml.textContent = text;
+    // Affectez le texte à l'élément temporaire pour que les entités HTML soient converties
+    tempHtml.innerHTML = text;
 
-    // Utilisez .innerHTML pour récupérer le contenu de "tempHtml"
+    // Récupérez le contenu de l'élément temporaire
     // Cela va "neutraliser" ou "échapper" tout code HTML potentiellement malveillant
-    return tempHtml.innerHTML;
+    return tempHtml.textContent;
   }
 
-  displayImg(data, resDom, id) {
+  displayImg(sanitizeHtml, data, resDom, id) {
     // Param : json des images +  element du dom pour print le res
 
     try {
@@ -54,8 +54,8 @@ export default class Display {
 
         let img = document.createElement('img');
         img.classList.add('d-block', 'w-100');
-        img.setAttribute('src', 'data:' + animal.images[0].type + ';base64,' + animal.images[0].data); // Utiliser la première image
-        img.setAttribute('alt', animal.valeur);
+        img.setAttribute('src', 'data:' + sanitizeHtml(animal.images[0].type) + ';base64,' + sanitizeHtml(animal.images[0].data)); // Utiliser la première image
+        img.setAttribute('alt', sanitizeHtml(animal.valeur));
 
         carouselItem.appendChild(img);
         carouselInner.appendChild(carouselItem);
@@ -101,7 +101,7 @@ export default class Display {
     }
   }
 
-  displayAccordion(data, resDom, id) {
+  displayAccordion(sanitizeHtml, data, resDom, id) {
     try {
 
       // Sélection de l'élément conteneur
@@ -138,7 +138,7 @@ export default class Display {
         button.setAttribute('data-bs-target', `#${id}collapse${index}`);
         button.setAttribute('aria-expanded', index === 0 ? 'true' : 'false');
         button.setAttribute('aria-controls', `${id}collapse${index}`);
-        button.textContent = item.valeur;
+        button.textContent = sanitizeHtml(item.valeur);
 
         // Ajouter le bouton à l'en-tête
         header.appendChild(button);
@@ -156,7 +156,7 @@ export default class Display {
 
         let body = document.createElement('div');
         body.classList.add('accordion-body');
-        body.textContent = item.description;
+        body.textContent = sanitizeHtml(item.description);
 
         // Ajouter le corps à la section collapse
         collapse.appendChild(body);
@@ -176,10 +176,59 @@ export default class Display {
     }
   }
 
+  displayServices(sanitizeHtml, data, resDom) {
+    try {
+      // Sélection de l'élément conteneur
+      let container = resDom;
 
+      // Vérifier si l'élément conteneur existe
+      if (!container) {
+        throw new Error("L'élément conteneur n'existe pas.");
+      }
+
+      // Vider le container
+      container.innerHTML = '';
+
+      // Parcourir les données et créer chaque article
+      data.forEach((item, index) => {
+        // Création de l'article
+        let article = document.createElement('article');
+        article.classList.add('col-11', 'col-xl-10', 'col-xxl-9', 'mt-5', 'row', 'row', 'justify-content-between', 'align-items-center');
+
+        // Création de la première colonne (avec le titre)
+        let firstColumn = document.createElement('div');
+        firstColumn.classList.add('col-sm-12', 'col-lg-3', 'col-xl-3', 'col-xxl-3', 'background__tertiary', 'p-3', 'm-md-3', 'd-flex', 'justify-content-center', 'align-items-center');
+
+        let firstColumnHeader = document.createElement('h2');
+        firstColumnHeader.classList.add('text-white', 'text-center');
+        firstColumnHeader.textContent = sanitizeHtml(item.valeur);
+
+        firstColumn.appendChild(firstColumnHeader);
+
+        // Création de la deuxième colonne (avec le paragraphe)
+        let secondColumn = document.createElement('div');
+        secondColumn.classList.add('col-sm-12', 'col-lg-8', 'col-xl-8', 'col-xxl-8', 'background__secondary', 'p-3', 'm-md-3', 'mt-3');
+
+        let secondColumnContent = document.createElement('p');
+        secondColumnContent.textContent = sanitizeHtml(item.description);
+
+        secondColumn.appendChild(secondColumnContent);
+
+        // Ajout des colonnes à l'article
+        article.appendChild(firstColumn);
+        article.appendChild(secondColumn);
+
+        // Ajouter l'article au conteneur
+        container.appendChild(article);
+      });
+
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de l'affichage des articles :", error);
+    }
+  }
 
   sayHello() {
-    console.log(this.sanitizeHtml('test'))
+    console.log(this.sanitizeHtml('"<>test'))
   }
 
 }

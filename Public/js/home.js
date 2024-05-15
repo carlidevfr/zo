@@ -13,12 +13,12 @@ window.addEventListener("load", () => {
     // Evènements au chargement de la page
 
     let animauxUrl = './apigetimganimaux';
-    DATA.getFetchData(animauxUrl, DISPLAY.displayImg, animauxContainer, 'carroussel-animaux-api')
+    DATA.getFetchData(animauxUrl, DISPLAY.sanitizeHtml, DISPLAY.displayImg, animauxContainer, 'carroussel-animaux-api')
 
     let habitatsUrl = './apigetimghabitats';
-    DATA.getFetchData(habitatsUrl, DISPLAY.displayImg, habitatsContainer, 'carroussel-habitats-api')
+    DATA.getFetchData(habitatsUrl, DISPLAY.sanitizeHtml, DISPLAY.displayImg, habitatsContainer, 'carroussel-habitats-api')
 
     let servicesUrl = './apigetservices';
-    DATA.getFetchData(servicesUrl, DISPLAY.displayAccordion, servicesContainer, 'accordeon-services-api')
+    DATA.getFetchData(servicesUrl, DISPLAY.sanitizeHtml, DISPLAY.displayAccordion, servicesContainer, 'accordeon-services-api')
 
 })

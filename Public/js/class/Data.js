@@ -1,6 +1,6 @@
 export default class Data {
 
-    getFetchData(apiUrl, ResAction, resDom, id) {
+    getFetchData(apiUrl, sanitizeHtml, ResAction, resDom, id) {
         // Param : url à interroger + fonction de traitement du résultat + element du dom pour print le res
 
         fetch(apiUrl)    // Utilisation de fetch pour interroger l'API
@@ -12,7 +12,7 @@ export default class Data {
                 }
             })
             .then((data) => {
-                ResAction(data, resDom, id)
+                ResAction(sanitizeHtml, data, resDom, id)
             })
             .catch((error) => { console.error('Erreur de récupération des données:' + error) });
     }

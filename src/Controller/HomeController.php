@@ -39,6 +39,15 @@ class HomeController
         ]);
     }
 
+    public function servicePage(){
+        $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
+        $twig = new Twig\Environment($loader);
+        $template = $twig->load('servicePage.twig');
+        echo  $template->render([
+            'base_url' => BASE_URL,
+        ]);
+    }
+
     public function createBddProd(){
         
         // Création de la base de données prod

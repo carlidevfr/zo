@@ -56,6 +56,10 @@ a:visited, a:active {
   background-color: #F4BD0F;
 }
 
+.background__tertiary {
+  background-color: #A6569C;
+}
+
 .table-description-size {
   min-width: 300px;
 }
@@ -99,7 +103,7 @@ body {
   font-size: 17px;
 }
 
-main {
+main, .main {
   display: flex;
   flex-direction: column;
   justify-content: center;
