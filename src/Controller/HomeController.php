@@ -57,6 +57,23 @@ class HomeController
         ]);
     }
 
+    public function habitatByIdPage(){
+        //récupération et envoi d'un habitat selon son id
+
+        (isset($_GET['habitat'])) ? $habitatId = $this->Security->filter_form($_GET['habitat']) : $habitatId = '';
+        $res = $this->Habitat->getByHabitatId($habitatId);
+
+        
+        $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
+        $twig = new Twig\Environment($loader);
+        $template = $twig->load('habitatByIdPage.twig');
+        echo  $template->render([
+            'base_url' => BASE_URL,
+            'res' => $res
+        ]);    
+    }
+
+
     public function createBddProd(){
         
         // Création de la base de données prod
@@ -86,6 +103,13 @@ class HomeController
         Model::sendJSON($res) ;     
     }
 
+    public function apiGetAnimauxByHabitat(){
+        //récupération et envoi des animaux d'un habitat en json
+        (isset($_GET['habitat'])) ? $habitatId = $this->Security->filter_form($_GET['habitat']) : $habitatId = '';
+        $res = $this->Animaux->getActiveAnimauxNamesByHabitat($habitatId);
+        Model::sendJSON($res) ;     
+    }
+
     public function apiGetImgHabitats(){
 
         //récupération et envoi des 1ere images habitats en json
@@ -93,12 +117,13 @@ class HomeController
         Model::sendJSON($res) ;     
     }
 
-    public function apiGetAllHabitats(){
-
+    public function apiGetAllHabitats(){        
         //récupération et envoi des habitats en json
+
         $res = $this->Habitat->getAllHabitatNames();
         Model::sendJSON($res) ;     
     }
+
 
     public function apiGetServices(){
 

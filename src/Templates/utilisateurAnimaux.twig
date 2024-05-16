@@ -242,10 +242,10 @@
 					<tbody>
 						{% for element in elements %}
 							<tr>
-								<td>{{ element.valeur|raw  }}</td>
-								<td>{{ element.etat|raw }}</td>
-								<td>{{ element.nom_race|raw }}</td>
-								<td>{{ element.nom_habitat|raw }}</td>
+								<td>{{ element.valeur|striptags|raw}}</td>
+								<td>{{ element.etat|striptags|raw }}</td>
+								<td>{{ element.nom_race|striptags|raw }}</td>
+								<td>{{ element.nom_habitat|striptags|raw }}</td>
 								<td>
 
 									{% if element.images is defined %}

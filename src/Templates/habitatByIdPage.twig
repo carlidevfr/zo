@@ -1,0 +1,68 @@
+{% extends "base.html.twig" %}
+
+{% block head_title %}Arcadia-l'habitat
+	{{res.valeur}}
+{% endblock %}
+
+{% block head_description %}Arcadia-l'habitat
+	{{res.valeur}}
+{% endblock %}
+
+{% block stylesheet %}
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<link rel="stylesheet" href="/public/scss/main.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block body %}
+
+
+	<a href="{{base_url}}">Accueil</a>
+	<a href="/admin">Admin</a>
+	<br><br>
+
+	{% if res.images[0].data is not empty %}
+		<!-- S'il y a une image -->
+		<div class="container-fluid d-flex flex-column justify-content-center bg-image vh-100" style="background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url(data:{{res.images[0].type}};base64,{{res.images[0].data}})">
+			<div class="row">
+				<div class="col-12 ms-lg-5 ps-lg-5">
+					<h1 class=" text-center text-md-start ms-md-5 pb-5 ps-md-5 text-white">NOTRE HABITAT
+						{{res.valeur|upper }}</h1>
+
+				</div>
+			</div>
+		</div>
+
+	{% else %}
+		<div class="container-fluid">
+			<div class="row mt-5 align-items-center justify-content-center">
+				<div class="col-11 col-xl-10 col-xxl-9 mt-5 mb-5">
+					<h1 class="mt-5 mb-5">NOTRE HABITAT
+						{{res.valeur|upper|striptags|raw }}</h1>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+
+	<main class='container-fluid '>
+
+		<article class="main__articleCard-xl background__primary col-11 col-xl-10 col-xxl-9 mt-5 text-white">
+			<h2>Pourquoi cet habitat&#8239;?</h2>
+			<p>{{res.description|striptags|raw}}</p>
+		</article>
+
+		<div id='habitats-display-animaux' class="main col-11 col-xl-10 col-xxl-9"></div>
+
+		<article class="col-11 col-xl-10 col-xxl-9">
+			<h2 class='mb-5'>Notes du vétérinaire</h2>
+			<p>{{res.avis|striptags|raw}}</p>
+		</article>
+
+	</main>
+
+	<div id='data' data="{{ res.id|striptags|raw }}"></div>
+
+	<script type="module" src="{{base_url}}public/js/habitatbyIdPage.js" async defer></script>
+
+{% endblock %}

@@ -257,8 +257,67 @@ export default class Display {
         article.classList.add('col-11', 'col-xl-10', 'col-xxl-11', 'mt-5', 'row', 'row', 'justify-content-between', 'align-items-center');
 
         // Création de la première colonne (avec le titre)
-        let firstColumn = document.createElement('div');
+        let firstColumn = document.createElement('a');
         firstColumn.classList.add('col-sm-12', 'col-lg-3', 'col-xl-4', 'col-xxl-4', 'background__tertiary', 'p-3', 'm-md-3', 'd-flex', 'justify-content-center', 'align-items-center');
+        firstColumn.href = '/nos-habitats/habitat?habitat=' + sanitizeHtml(item.id);
+
+        let firstColumnHeader = document.createElement('h2');
+        firstColumnHeader.classList.add('text-white', 'text-center');
+        firstColumnHeader.textContent = sanitizeHtml(item.valeur);
+
+        firstColumn.appendChild(firstColumnHeader);
+
+        // Création de la deuxième colonne (avec l'image)
+        let secondColumn = document.createElement('div');
+        secondColumn.classList.add('col-sm-12', 'col-lg-8', 'col-xl-7', 'col-xxl-7', 'p-3', 'm-md-3', 'mt-3', 'd-flex', 'justify-content-center' );
+
+        if (item.images !== undefined && item.images.length > 0) {
+          // S'il y a des images
+          displayImg(sanitizeHtml, item.images, secondColumn, index);
+
+        } else {
+          // Si aucune image
+          secondColumn.textContent = 'Aucune image disponible';
+        }
+
+        // Ajout des colonnes à l'article
+        article.appendChild(firstColumn);
+        article.appendChild(secondColumn);
+
+        // Ajouter l'article au conteneur
+        container.appendChild(article);
+      });
+
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de l'affichage des articles :", error);
+    }
+  }
+
+  displayAnimauxInHabitat(sanitizeHtml, data, resDom, id, displayImg) {
+    try {
+
+      // Sélection de l'élément conteneur
+      let container = resDom;
+
+      // Vérifier si l'élément conteneur existe
+      if (!container) {
+        throw new Error("L'élément conteneur n'existe pas.");
+      }
+
+      // Vider le container
+      container.innerHTML = '';
+
+      // Parcourir les données et créer chaque article
+      data.forEach((item, index) => {
+    
+        // Création de l'article
+        let article = document.createElement('article');
+        article.classList.add('col-11', 'col-xl-10', 'col-xxl-11', 'mt-5', 'row', 'row', 'justify-content-between', 'align-items-center');
+
+        // Création de la première colonne (avec le titre)
+        let firstColumn = document.createElement('a');
+        firstColumn.classList.add('col-sm-12', 'col-lg-3', 'col-xl-4', 'col-xxl-4', 'background__tertiary', 'p-3', 'm-md-3', 'd-flex', 'justify-content-center', 'align-items-center');
+        firstColumn.href = '/animal?animal=' + sanitizeHtml(item.id);
 
         let firstColumnHeader = document.createElement('h2');
         firstColumnHeader.classList.add('text-white', 'text-center');

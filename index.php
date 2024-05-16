@@ -41,6 +41,8 @@ $router = new Router();
 $router->addRoute('GET', BASE_URL . '/', 'homecontroller', 'index');
 $router->addRoute('GET', BASE_URL . 'nos-services', 'homecontroller', 'servicePage');
 $router->addRoute('GET', BASE_URL . 'nos-habitats', 'homecontroller', 'habitatsPage');
+$router->addRoute('GET', BASE_URL . 'nos-habitats/habitat', 'homecontroller', 'habitatByIdPage');
+
 
 
 
@@ -111,6 +113,8 @@ $router->addRoute('GET', BASE_URL . 'apigetimganimaux', 'HomeController', 'apiGe
 $router->addRoute('GET', BASE_URL . 'apigetimghabitats', 'HomeController', 'apiGetImgHabitats');
 $router->addRoute('GET', BASE_URL . 'apigetallhabitats', 'HomeController', 'apiGetAllHabitats');
 $router->addRoute('GET', BASE_URL . 'apigetservices', 'HomeController', 'apiGetServices');
+$router->addRoute('GET', BASE_URL . 'apigetanimauxbyhabitat', 'HomeController', 'apiGetAnimauxByHabitat');
+
 
 
 
