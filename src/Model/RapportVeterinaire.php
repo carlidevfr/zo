@@ -174,6 +174,45 @@ class RapportVeterinaire extends Model
         }
     }
 
+    public function getByRapportByIdAnimal($rapportId)
+    //retourne les rapports selon l'id animal
+    {
+        try {
+            $bdd = $this->connexionPDO();
+            $req = "
+            SELECT rapport_veterinaire.id_rapport AS id,
+            DATE_FORMAT(rapport_veterinaire.date_rapport, '%d/%m/%Y') AS valeur,
+            rapport_veterinaire.animal,
+            rapport_veterinaire.nourriture_propose,
+            rapport_veterinaire.quantite_nourriture,
+            rapport_veterinaire.detail,
+            animaux.nom_animal,
+            animaux.etat
+            FROM rapport_veterinaire
+            INNER JOIN animaux ON rapport_veterinaire.animal = animaux.id_animal
+            WHERE rapport_veterinaire.animal = :rapportId";
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                if (!empty($rapportId)) {
+                    $stmt->bindValue(':rapportId', $rapportId, PDO::PARAM_INT);
+
+                    if ($stmt->execute()) {
+                        $race = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $stmt->closeCursor();
+                        return $race;
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+        }
+    }
+
     public function addRapport($addDate, $addAnimal, $addSante, $addNou, $addQte, $addRapport)
     // Ajoute un rapport
     {

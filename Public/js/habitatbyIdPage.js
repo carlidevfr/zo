@@ -8,7 +8,6 @@ const DATA = new Data();
 
 let animauxContainer = document.getElementById('habitats-display-animaux');
 let idHabitat = document.getElementById('data').getAttribute('data');
-console.log(idHabitat)
 
 window.addEventListener("load", () => {
     // Evènements au chargement de la page

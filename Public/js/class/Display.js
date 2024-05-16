@@ -27,6 +27,11 @@ export default class Display {
       // Vider le container
       container.innerHTML = '';
 
+      // Si data n'est pas un tableau, le convertir en un tableau contenant uniquement cet élément
+      if (!Array.isArray(data)) {
+        data = [data];
+      }
+
       // Créer le carroussel et Mettre les attributs
       let carousel = document.createElement('div');
       carousel.classList.add('carousel', 'slide');
@@ -43,41 +48,73 @@ export default class Display {
       carouselInner.classList.add('carousel-inner', 'col-11', 'col-xl-7', 'col-xxl-6');
 
 
+      if (data[0].images !== undefined && data[0].images.length > 0) {
+        // Comme on est dans deux boucles foreach on initialise un index pour l'id
+        let index = 0;
+        // S'il y a une entrée "image" dans le json on va directement la chercher pour chaque entrée
+        data.forEach((element, lot) => {
 
-      // Ajouter chaque élément au carrousel
-      data.forEach((animal, index) => {
-        let carouselItem = document.createElement('div');
-        carouselItem.classList.add('carousel-item');
-        if (index === 0) {
-          carouselItem.classList.add('active');
-        }
+          element.images.forEach((animal, souslot) => {
 
-        let img = document.createElement('img');
-        img.classList.add('d-block', 'w-100');
+            let carouselItem = document.createElement('div');
+            carouselItem.classList.add('carousel-item');
+            if (index === 0) {
+              carouselItem.classList.add('active');
+            }
 
-        if (animal.images !== undefined && animal.images.length > 0) {
-          // S'il y a une entrée "image" dans le json
-          img.setAttribute('src', 'data:' + sanitizeHtml(animal.images[0].type) + ';base64,' + sanitizeHtml(animal.images[0].data)); // Utiliser la première image
-          img.setAttribute('alt', sanitizeHtml(animal.valeur));
-        } else {
+            let img = document.createElement('img');
+            img.classList.add('d-block', 'w-100');
+
+            img.setAttribute('src', 'data:' + sanitizeHtml(animal.type) + ';base64,' + sanitizeHtml(animal.data));
+            img.setAttribute('alt', sanitizeHtml(animal.valeur));
+
+            carouselItem.appendChild(img);
+            carouselInner.appendChild(carouselItem);
+
+            // Créer un indicateur pour chaque élément
+            let indicator = document.createElement('button');
+            indicator.setAttribute('type', 'button');
+            indicator.setAttribute('data-bs-target', '#' + id);
+            indicator.setAttribute('data-bs-slide-to', index.toString());
+            if (index === 0) {
+              indicator.classList.add('active');
+            }
+            indicators.appendChild(indicator);
+            index += 1;
+          });
+        });
+      } else {
+        // Si on traite directement le flux image
+        data.forEach((animal, index) => {
+          let carouselItem = document.createElement('div');
+          carouselItem.classList.add('carousel-item');
+          if (index === 0) {
+            carouselItem.classList.add('active');
+          }
+
+          let img = document.createElement('img');
+          img.classList.add('d-block', 'w-100');
+
+
           // Si on traite directement le flux image
           img.setAttribute('src', 'data:' + sanitizeHtml(animal.type) + ';base64,' + sanitizeHtml(animal.data)); // Utiliser la première image
           img.setAttribute('alt', sanitizeHtml(animal.valeur));
-        }
 
-        carouselItem.appendChild(img);
-        carouselInner.appendChild(carouselItem);
 
-        // Créer un indicateur pour chaque élément
-        let indicator = document.createElement('button');
-        indicator.setAttribute('type', 'button');
-        indicator.setAttribute('data-bs-target', '#' + id);
-        indicator.setAttribute('data-bs-slide-to', index.toString());
-        if (index === 0) {
-          indicator.classList.add('active');
-        }
-        indicators.appendChild(indicator);
-      });
+          carouselItem.appendChild(img);
+          carouselInner.appendChild(carouselItem);
+
+          // Créer un indicateur pour chaque élément
+          let indicator = document.createElement('button');
+          indicator.setAttribute('type', 'button');
+          indicator.setAttribute('data-bs-target', '#' + id);
+          indicator.setAttribute('data-bs-slide-to', index.toString());
+          if (index === 0) {
+            indicator.classList.add('active');
+          }
+          indicators.appendChild(indicator);
+        });
+      }
 
       // Ajouter les boutons de contrôle au carrousel
       let prevButton = document.createElement('button');
@@ -251,7 +288,7 @@ export default class Display {
 
       // Parcourir les données et créer chaque article
       data.forEach((item, index) => {
-    
+
         // Création de l'article
         let article = document.createElement('article');
         article.classList.add('col-11', 'col-xl-10', 'col-xxl-11', 'mt-5', 'row', 'row', 'justify-content-between', 'align-items-center');
@@ -269,7 +306,7 @@ export default class Display {
 
         // Création de la deuxième colonne (avec l'image)
         let secondColumn = document.createElement('div');
-        secondColumn.classList.add('col-sm-12', 'col-lg-8', 'col-xl-7', 'col-xxl-7', 'p-3', 'm-md-3', 'mt-3', 'd-flex', 'justify-content-center' );
+        secondColumn.classList.add('col-sm-12', 'col-lg-8', 'col-xl-7', 'col-xxl-7', 'p-3', 'm-md-3', 'mt-3', 'd-flex', 'justify-content-center');
 
         if (item.images !== undefined && item.images.length > 0) {
           // S'il y a des images
@@ -309,7 +346,7 @@ export default class Display {
 
       // Parcourir les données et créer chaque article
       data.forEach((item, index) => {
-    
+
         // Création de l'article
         let article = document.createElement('article');
         article.classList.add('col-11', 'col-xl-10', 'col-xxl-11', 'mt-5', 'row', 'row', 'justify-content-between', 'align-items-center');
@@ -327,7 +364,7 @@ export default class Display {
 
         // Création de la deuxième colonne (avec l'image)
         let secondColumn = document.createElement('div');
-        secondColumn.classList.add('col-sm-12', 'col-lg-8', 'col-xl-7', 'col-xxl-7', 'p-3', 'm-md-3', 'mt-3', 'd-flex', 'justify-content-center' );
+        secondColumn.classList.add('col-sm-12', 'col-lg-8', 'col-xl-7', 'col-xxl-7', 'p-3', 'm-md-3', 'mt-3', 'd-flex', 'justify-content-center');
 
         if (item.images !== undefined && item.images.length > 0) {
           // S'il y a des images
@@ -350,6 +387,80 @@ export default class Display {
       console.error("Une erreur s'est produite lors de l'affichage des articles :", error);
     }
   }
+
+  displayRapportsVete(sanitizeHtml, data, resDom) {
+    try {
+        // Sélection de l'élément conteneur
+        let container = resDom;
+
+        // Vérifier si l'élément conteneur existe
+        if (!container) {
+            throw new Error("L'élément conteneur n'existe pas.");
+        }
+
+        // Vider le container
+        container.innerHTML = '';
+
+        // Parcourir les données et créer chaque élément
+        data.forEach((item, index) => {
+            // Création du div contenant le bouton et le modal
+            let columnDiv = document.createElement('div');
+            columnDiv.classList.add('col-12');
+
+            // Création du bouton d'ajout
+            let addButton = document.createElement('button');
+            addButton.type = 'button';
+            addButton.classList.add('btn', 'btn-success', 'ps-4', 'pe-4');
+            addButton.dataset.bsToggle = 'modal';
+            addButton.dataset.bsTarget = '#addModal_' + index; // Utilisation de l'index pour générer un id unique
+            addButton.textContent = `Date du Rapport: ${item.valeur}`;
+
+            // Création du modal
+            let modalDiv = document.createElement('div');
+            modalDiv.classList.add('modal', 'fade');
+            modalDiv.id = 'addModal_' + index; // Utilisation de l'index pour générer un id unique
+            modalDiv.tabIndex = '-1';
+            modalDiv.role = 'dialog';
+            modalDiv.setAttribute('aria-labelledby', 'addModalLabel_' + index); // Utilisation de l'index pour générer un id unique
+            modalDiv.setAttribute('aria-hidden', 'true');
+
+            // Contenu du modal
+            modalDiv.innerHTML = `
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content text-white background__primary">
+                        <div class="modal-header background__primary">
+                            <h5 class="modal-title" id="addModalLabel_${index}">Date du Rapport: ${item.valeur}</h5>
+                            <button type="button" class="close btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body background__primary">
+                            <h2>Notes du vétérinaire - ${sanitizeHtml(item.valeur)}</h2>
+                            <h2>Animal - ${sanitizeHtml(item.nom_animal)}</h2>
+                            <p>${sanitizeHtml(item.detail)}</p>
+                            <p>Nourriture proposée : ${sanitizeHtml(item.nourriture_propose)}</p>
+                            <p>Quantité : ${sanitizeHtml(item.quantite_nourriture)}</p>
+                        </div>
+                        <div class="modal-footer background__primary">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Ajout des éléments au div de colonne
+            columnDiv.appendChild(addButton);
+            columnDiv.appendChild(modalDiv);
+
+            // Ajout du div de colonne au conteneur
+            container.appendChild(columnDiv);
+        });
+
+    } catch (error) {
+        console.error("Une erreur s'est produite lors de l'affichage des services :", error);
+    }
+}
+
 
   sayHello() {
     console.log(this.sanitizeHtml('"<>test'))

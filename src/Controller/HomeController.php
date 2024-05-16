@@ -5,6 +5,8 @@ require_once './src/Model/Common/Regenerate.php';
 require_once './src/Model/Animaux.php';
 require_once './src/Model/Habitat.php';
 require_once './src/Model/Service.php';
+require_once './src/Model/RapportVeterinaire.php';
+
 
 
 
@@ -15,6 +17,8 @@ class HomeController
     private $Animaux;
     private $Habitat;
     private $Service;
+    private $RapportVeterinaire;
+
 
 
 
@@ -26,8 +30,7 @@ class HomeController
         $this->Animaux = new Animaux();
         $this->Habitat = new Habitat();
         $this->Service = new Service();
-
-
+        $this->RapportVeterinaire = new RapportVeterinaire();
     }
 
     public function index(){
@@ -73,6 +76,22 @@ class HomeController
         ]);    
     }
 
+    public function animalByIdPage(){
+        //récupération et envoi d'un habitat selon son id
+
+        (isset($_GET['animal'])) ? $animalId = $this->Security->filter_form($_GET['animal']) : $animalId = '';
+        $res = $this->Animaux->getByAnimalId($animalId);
+
+        
+        $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
+        $twig = new Twig\Environment($loader);
+        $template = $twig->load('animalByIdPage.twig');
+        echo  $template->render([
+            'base_url' => BASE_URL,
+            'res' => $res
+        ]);    
+    }
+
 
     public function createBddProd(){
         
@@ -107,6 +126,20 @@ class HomeController
         //récupération et envoi des animaux d'un habitat en json
         (isset($_GET['habitat'])) ? $habitatId = $this->Security->filter_form($_GET['habitat']) : $habitatId = '';
         $res = $this->Animaux->getActiveAnimauxNamesByHabitat($habitatId);
+        Model::sendJSON($res) ;     
+    }
+
+    public function apiGetAnimauxByIdAnimal(){
+        //récupération et envoi de l'animal selon un id en json
+        (isset($_GET['animal'])) ? $animalId = $this->Security->filter_form($_GET['animal']) : $animalId = '';
+        $res = $this->Animaux->getByAnimalId($animalId);
+        Model::sendJSON($res) ;     
+    }
+
+    public function apiGetRapportByIdAnimal(){
+        //récupération et envoi des rapports vétérinaires selon un id animalen json
+        (isset($_GET['animal'])) ? $animalId = $this->Security->filter_form($_GET['animal']) : $animalId = '';
+        $res = $this->RapportVeterinaire->getByRapportByIdAnimal($animalId);
         Model::sendJSON($res) ;     
     }
 
