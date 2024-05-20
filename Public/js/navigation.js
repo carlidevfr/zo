@@ -6,12 +6,9 @@ const DISPLAY = new Display();
 const DATA = new Data();
 
 
-let habitatsContainer = document.getElementById('habitats-display-habitats');
-
 window.addEventListener("load", () => {
     // Evènements au chargement de la page
-
+    let habitatsMenuContainer = document.getElementById('habitat-menu');
     let habitatsUrl = '/apigetallhabitats';
-    DATA.getFetchData(habitatsUrl, DISPLAY.sanitizeHtml, DISPLAY.displayHabitatsPage, habitatsContainer, 'carroussel-habitats-api', DISPLAY.displayImg)
-
+    DATA.getFetchData(habitatsUrl, DISPLAY.sanitizeHtml, DISPLAY.displayMenuHabitats, habitatsMenuContainer)
 })

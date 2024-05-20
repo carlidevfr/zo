@@ -390,42 +390,42 @@ export default class Display {
 
   displayRapportsVete(sanitizeHtml, data, resDom) {
     try {
-        // Sélection de l'élément conteneur
-        let container = resDom;
+      // Sélection de l'élément conteneur
+      let container = resDom;
 
-        // Vérifier si l'élément conteneur existe
-        if (!container) {
-            throw new Error("L'élément conteneur n'existe pas.");
-        }
+      // Vérifier si l'élément conteneur existe
+      if (!container) {
+        throw new Error("L'élément conteneur n'existe pas.");
+      }
 
-        // Vider le container
-        container.innerHTML = '';
+      // Vider le container
+      container.innerHTML = '';
 
-        // Parcourir les données et créer chaque élément
-        data.forEach((item, index) => {
-            // Création du div contenant le bouton et le modal
-            let columnDiv = document.createElement('div');
-            columnDiv.classList.add('col-12');
+      // Parcourir les données et créer chaque élément
+      data.forEach((item, index) => {
+        // Création du div contenant le bouton et le modal
+        let columnDiv = document.createElement('div');
+        columnDiv.classList.add('col-12');
 
-            // Création du bouton d'ajout
-            let addButton = document.createElement('button');
-            addButton.type = 'button';
-            addButton.classList.add('btn', 'btn-success', 'ps-4', 'pe-4');
-            addButton.dataset.bsToggle = 'modal';
-            addButton.dataset.bsTarget = '#addModal_' + index; // Utilisation de l'index pour générer un id unique
-            addButton.textContent = `Date du Rapport: ${item.valeur}`;
+        // Création du bouton d'ajout
+        let addButton = document.createElement('button');
+        addButton.type = 'button';
+        addButton.classList.add('btn', 'btn-success', 'ps-4', 'pe-4');
+        addButton.dataset.bsToggle = 'modal';
+        addButton.dataset.bsTarget = '#addModal_' + index; // Utilisation de l'index pour générer un id unique
+        addButton.textContent = `Date du Rapport: ${item.valeur}`;
 
-            // Création du modal
-            let modalDiv = document.createElement('div');
-            modalDiv.classList.add('modal', 'fade');
-            modalDiv.id = 'addModal_' + index; // Utilisation de l'index pour générer un id unique
-            modalDiv.tabIndex = '-1';
-            modalDiv.role = 'dialog';
-            modalDiv.setAttribute('aria-labelledby', 'addModalLabel_' + index); // Utilisation de l'index pour générer un id unique
-            modalDiv.setAttribute('aria-hidden', 'true');
+        // Création du modal
+        let modalDiv = document.createElement('div');
+        modalDiv.classList.add('modal', 'fade');
+        modalDiv.id = 'addModal_' + index; // Utilisation de l'index pour générer un id unique
+        modalDiv.tabIndex = '-1';
+        modalDiv.role = 'dialog';
+        modalDiv.setAttribute('aria-labelledby', 'addModalLabel_' + index); // Utilisation de l'index pour générer un id unique
+        modalDiv.setAttribute('aria-hidden', 'true');
 
-            // Contenu du modal
-            modalDiv.innerHTML = `
+        // Contenu du modal
+        modalDiv.innerHTML = `
                 <div class="modal-dialog" role="document">
                     <div class="modal-content text-white background__primary">
                         <div class="modal-header background__primary">
@@ -448,19 +448,54 @@ export default class Display {
                 </div>
             `;
 
-            // Ajout des éléments au div de colonne
-            columnDiv.appendChild(addButton);
-            columnDiv.appendChild(modalDiv);
+        // Ajout des éléments au div de colonne
+        columnDiv.appendChild(addButton);
+        columnDiv.appendChild(modalDiv);
 
-            // Ajout du div de colonne au conteneur
-            container.appendChild(columnDiv);
-        });
+        // Ajout du div de colonne au conteneur
+        container.appendChild(columnDiv);
+      });
 
     } catch (error) {
-        console.error("Une erreur s'est produite lors de l'affichage des services :", error);
+      console.error("Une erreur s'est produite lors de l'affichage des services :", error);
     }
-}
+  }
 
+  displayMenuHabitats(sanitizeHtml, data, resDom) {
+    try {
+      // Sélection de l'élément conteneur à partir de resDom
+      let container = resDom;
+
+      // Vérifier si l'élément conteneur existe
+      if (!container) {
+        throw new Error("L'élément conteneur n'existe pas.");
+      }
+
+      // Vider le container
+      container.innerHTML = '';
+
+      // Parcourir les données et créer chaque élément de menu
+      data.forEach((item) => {
+        // Création de l'élément <li>
+        let listItem = document.createElement('li');
+
+        // Création du lien <a>
+        let link = document.createElement('a');
+        link.classList.add('dropdown-item');
+        link.href = `/nos-habitats/habitat?habitat=${sanitizeHtml(item.id)}`;
+        link.textContent = sanitizeHtml(item.valeur);
+
+        // Ajouter le lien à l'élément <li>
+        listItem.appendChild(link);
+
+        // Ajouter l'élément <li> au conteneur <ul>
+        container.appendChild(listItem);
+      });
+
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de la génération du menu déroulant :", error);
+    }
+  }
 
   sayHello() {
     console.log(this.sanitizeHtml('"<>test'))

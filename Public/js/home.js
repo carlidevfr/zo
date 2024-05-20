@@ -12,13 +12,13 @@ let servicesContainer = document.getElementById('home-display-services');
 window.addEventListener("load", () => {
     // Evènements au chargement de la page
 
-    let animauxUrl = './apigetimganimaux';
+    let animauxUrl = '/apigetimganimaux';
     DATA.getFetchData(animauxUrl, DISPLAY.sanitizeHtml, DISPLAY.displayImg, animauxContainer, 'carroussel-animaux-api')
 
-    let habitatsUrl = './apigetimghabitats';
+    let habitatsUrl = '/apigetimghabitats';
     DATA.getFetchData(habitatsUrl, DISPLAY.sanitizeHtml, DISPLAY.displayImg, habitatsContainer, 'carroussel-habitats-api')
 
-    let servicesUrl = './apigetservices';
+    let servicesUrl = '/apigetservices';
     DATA.getFetchData(servicesUrl, DISPLAY.sanitizeHtml, DISPLAY.displayAccordion, servicesContainer, 'accordeon-services-api')
 
 })

@@ -22,7 +22,6 @@ class UtilisateurHomeController
 
         // On récupère le role
         $userRole = $this->Security->getRole();
-        echo $userRole;
 
         // Affiche la page back office
         $loader = new Twig\Loader\FilesystemLoader('./src/templates');

@@ -17,15 +17,11 @@
 {% block body %}
 
 
-	<a href="{{base_url}}">Accueil</a>
-	<a href="/admin">Admin</a>
-	<br><br>
-
 	{% if res.images[0].data is not empty %}
 		<!-- S'il y a une image -->
 		<div class="container-fluid d-flex flex-column justify-content-center bg-image vh-100" style="background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url(data:{{res.images[0].type}};base64,{{res.images[0].data}})">
 			<div class="row">
-				<div class="col-12 ms-lg-5 ps-lg-5">
+				<div class="col-11 ms-lg-5 ps-lg-5">
 					<h1 class=" text-center text-md-start ms-md-5 pb-5 ps-md-5 text-white">NOTRE HABITAT
 						{{res.valeur|upper }}</h1>
 

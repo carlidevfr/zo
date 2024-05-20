@@ -59,4 +59,15 @@ a {
     @include article__card;
 }
 
+nav {
+    .navbar-brand{
+        font-size: 40px;
+        font-weight: 900;
+    }
+
+    li{
+        font-weight: 500;
+    }
+}
+
 

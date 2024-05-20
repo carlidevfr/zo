@@ -91,6 +91,14 @@ a:visited, a:active {
   margin: 0;
 }
 
+nav .navbar-brand {
+  font-size: 40px;
+  font-weight: 900;
+}
+nav li {
+  font-weight: 500;
+}
+
 html {
   /* base de "10px" au lieu de "16px" */
   scroll-behavior: smooth;
