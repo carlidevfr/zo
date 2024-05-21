@@ -70,4 +70,83 @@ nav {
     }
 }
 
+.header__cardContact{
+    @include desktop {
+        justify-content: center; // position centrée même sur grand écran
+    }
+}
+
+.form__h1{ 
+    font-size: $h2__font-size-xl;
+}
+
+.cardContact{ // mise en page de la carte formulaire
+    background-color: $primary__color;
+    width: 100%;
+    max-width: 928px;
+    min-height: 586px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column-reverse; // pour le responsive
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    @include desktop {
+        flex-direction: row; // pour le desktop
+        width: 80%;
+    }
+
+    .cardContact__contact{ // partie de droite
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding-top: 30px;
+
+        @include desktop {
+            padding: 50px;
+            padding-left: 0px;
+        }
+    }
+
+    .cardContact__form{ // partie de gauche
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding-bottom: 30px;
+        max-width: 80%; // taille max des sections
+
+        @include small-desktop{
+            max-width: 60%; // taille max des sections
+        }
+
+        @include desktop {
+            padding: 50px;
+            padding-right: 30px;
+        }
+    }
+
+    .contact__contactUs{ // logo et texte coordonnées
+        display: flex;
+        flex-direction: row;
+
+        &>*{
+            padding-left: 5px;
+        }
+    }
+
+    .form{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+    }
+
+    input, textarea{
+        min-height: 50px;
+        max-height: 300px;
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
 

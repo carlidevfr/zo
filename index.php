@@ -45,6 +45,8 @@ $router->addRoute('GET', BASE_URL . 'nos-habitats', 'homecontroller', 'habitatsP
 $router->addRoute('GET', BASE_URL . 'nos-habitats/habitat', 'homecontroller', 'habitatByIdPage');
 $router->addRoute('GET', BASE_URL . 'animal', 'homecontroller', 'animalByIdPage');
 $router->addRoute('GET', BASE_URL . 'contact', 'ContactController', 'contactPage');
+$router->addRoute('POST', BASE_URL . 'contact', 'ContactController', 'contactForm');
+
 
 
 
