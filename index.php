@@ -19,6 +19,7 @@ define("BASE_URL", '/');
 require_once './src/Model/Common/Router.php';
 require_once './src/Config/env.php';
 require_once './src/Controller/HomeController.php';
+require_once './src/Controller/ContactController.php';
 require_once './src/Controller/UtilisateurHomeController.php';
 require_once './src/Controller/UtilisateurRaceController.php';
 require_once './src/Controller/UtilisateurAvisController.php';
@@ -43,6 +44,7 @@ $router->addRoute('GET', BASE_URL . 'nos-services', 'homecontroller', 'servicePa
 $router->addRoute('GET', BASE_URL . 'nos-habitats', 'homecontroller', 'habitatsPage');
 $router->addRoute('GET', BASE_URL . 'nos-habitats/habitat', 'homecontroller', 'habitatByIdPage');
 $router->addRoute('GET', BASE_URL . 'animal', 'homecontroller', 'animalByIdPage');
+$router->addRoute('GET', BASE_URL . 'contact', 'ContactController', 'contactPage');
 
 
 
