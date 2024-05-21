@@ -99,6 +99,83 @@ nav li {
   font-weight: 500;
 }
 
+@media screen and (min-width: 1145px) {
+  .header__cardContact {
+    justify-content: center;
+  }
+}
+
+.form__h1 {
+  font-size: 32px;
+}
+
+.cardContact {
+  background-color: #009338;
+  width: 100%;
+  max-width: 928px;
+  min-height: 586px;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+@media screen and (min-width: 1145px) {
+  .cardContact {
+    flex-direction: row;
+    width: 80%;
+  }
+}
+.cardContact .cardContact__contact {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-top: 30px;
+}
+@media screen and (min-width: 1145px) {
+  .cardContact .cardContact__contact {
+    padding: 50px;
+    padding-left: 0px;
+  }
+}
+.cardContact .cardContact__form {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-bottom: 30px;
+  max-width: 80%;
+}
+@media screen and (min-width: 576px) {
+  .cardContact .cardContact__form {
+    max-width: 60%;
+  }
+}
+@media screen and (min-width: 1145px) {
+  .cardContact .cardContact__form {
+    padding: 50px;
+    padding-right: 30px;
+  }
+}
+.cardContact .contact__contactUs {
+  display: flex;
+  flex-direction: row;
+}
+.cardContact .contact__contactUs > * {
+  padding-left: 5px;
+}
+.cardContact .form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cardContact input, .cardContact textarea {
+  min-height: 50px;
+  max-height: 300px;
+  min-width: 100%;
+  max-width: 100%;
+}
+
 html {
   /* base de "10px" au lieu de "16px" */
   scroll-behavior: smooth;

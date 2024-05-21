@@ -14,23 +14,51 @@
 
 {% block body %}
 
+	<main class='container-fluid mt-5'>
 
-	<div class="container-fluid">
-		<div class="row mt-5 align-items-center justify-content-center">
-			<div
-				class="col-11 col-xl-10 col-xxl-9 mt-5 mb-5">
-				<!-- Contenu de votre bloc ici -->
-				<h1 class="mt-5 mb-5">LES SERVICES DU ZOO</h1>
+		<header class="header__cardContact row col-12 col-sm-11 text-white mt-sm-5">
+			<div class="cardContact">
+				<section class="cardContact__form">
+					<h1 class="form__h1">Envoyez-nous un message !</h1>
+					<form class="form" action="{{base_url}}contact" method="post" enctype='multipart/form-data'>
+						<label for="societe">Nom<br>
+							<input name="Nom" id="Nom" type="text" required>
+						</label>
+						<label id="email-label" for="email">Email<br>
+							<input name="email" id="email" type="email" required>
+						</label>
+						<label for="message">Message<br>
+							<textarea name="message" id="message" rows="7" required></textarea>
+						</label>
+						<button type="submit" class="button__submit btn btn-warning">ENVOYER</button>
+					</form>
+					<p id="submit-state">
+						{% if res is defined %}
+							{# Le code à exécuter si res existe #}
+							{{ res|striptags|raw }}
+						{% endif %}
+					</p>
+				</section>
+
+				<div class="cardContact__contact">
+					<div class="main__sectionImg">
+						<img src="/Public/assets/contactez-nous.svg" alt="Contactez nous">
+					</div>
+					<div class="contact__contactUs mt-3">
+						<p>
+							<a class="text-white mt-3" href="tel:09704547854739">09704547854739</a>
+						</p>
+					</div>
+					<div class="contact__contactUs">
+						<p>
+							<a class="text-white" href="mailto:contact@dzzdzdzdzz.fr">contact@dzzdzdzdzz.fr</a>
+						</p>
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
-
-	<main class='container-fluid '>
-
-		<div id="services-display-services" class="main"></div>
-
+		</header>
 	</main>
 
-	<script type="module" src="{{base_url}}public/js/servicePage.js" async defer></script>
+	<script type="module" src="{{base_url}}public/js/form.js" async defer></script>
 
 {% endblock %}
