@@ -41,7 +41,7 @@
 			<h1 class="">Bienvenue dans votre espace de gestion des Avis</h1>
 			<br>
 			<h2>Modification
-				{{ pageName }}
+				{{ pageName|striptags|raw  }}
 				:
 			</h2>
 		</div>
@@ -59,17 +59,17 @@
 
 
 			<div class='row justify-content-start'>
-				<p>Date de l'avis :{{element.date_avis}}</p>
+				<p>Date de l'avis :{{element.date_avis|striptags|raw }}</p>
 			</div>
 
 			<div class='row justify-content-start'>
 				<p>Pseudo :
-					{{element.valeur}}</p>
+					{{element.valeur|striptags|raw }}</p>
 			</div>
 
 			<div class='row justify-content-start'>
 				<p>Contenu :
-					{{element.contenu_avis}}</p>
+					{{element.contenu_avis|striptags|raw }}</p>
 			</div>
 		</div>
 
@@ -82,8 +82,8 @@
 					<option value="1">Oui</option>
 				</select>
 			</div>
-			<input type="hidden" name="updateElementId" value={{ element.id }}>
-			<input type="hidden" name="tok" value={{ token }}>
+			<input type="hidden" name="updateElementId" value={{ element.id|striptags|raw  }}>
+			<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 
 			<button class="btn text-white btn-primary col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2" type="submit">Soumettre</button>
 
@@ -109,7 +109,7 @@
 			<div class='row justify-content-start'>
 				<h2 class="col-12 m-2 mb-5">
 					Liste des
-					{{ pageName }}
+					{{ pageName|striptags|raw  }}
 				</h2>
 			</div>
 
@@ -118,7 +118,7 @@
 				<div class=" col-12 col-md-3 col-xxl-2">
 					<input class="form-control" type="text" name='search' placeholder='Recherche'>
 				</div>
-				<input type="hidden" name="tok" value={{ token }}>
+				<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 				<button class=" btn btn-success col-11 col-md-3 col-xl-2 col-xxl-1 ms-2" type="submit">
 					Recherche
 				</button>
@@ -165,16 +165,16 @@
 
 									<td>
 										<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
-											<input type="hidden" name="UpdateElementId" value={{ element.id }}>
-											<input type="hidden" name="tok" value={{ token }}>
+											<input type="hidden" name="UpdateElementId" value={{ element.id|striptags|raw  }}>
+											<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 											<button class='btn btn-primary m-2' type="submit">Valider</button>
 										</form>
 									</td>
 
 									<td>
 										<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
-											<input type="hidden" name="deleteElementId" value={{ element.id }}>
-											<input type="hidden" name="tok" value={{ token }}>
+											<input type="hidden" name="deleteElementId" value={{ element.id|striptags|raw  }}>
+											<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 											<button class='btn btn-danger m-2' type="submit">Supprimer</button>
 										</form>
 									</td>
@@ -189,7 +189,7 @@
 					{% if activePage > 1 %}
 						{# Si on est sur page 2 et + #}
 						<li class="page-item">
-							<a class="page-link" href="?page={{ activePage - 1 }}&search={{ search }}&tok={{ token }}">
+							<a class="page-link" href="?page={{ activePage - 1 }}&search={{ search|striptags|raw  }}&tok={{ token|striptags|raw  }}">
 								Page précédente
 							</a>
 						</li>
@@ -203,7 +203,7 @@
 							</li>
 						{% else %}
 							<li class="page-item">
-								<a class="page-link" href="?page={{ page }}&search={{ search }}&tok={{ token }}">
+								<a class="page-link" href="?page={{ page }}&search={{ search|striptags|raw  }}&tok={{ token|striptags|raw  }}">
 									{{ page }}
 								</a>
 							</li>
@@ -211,7 +211,7 @@
 					{% endfor %}
 					{% if activePage < pageMax %}
 						<li class="page-item">
-							<a class="page-link" href="?page={{ activePage + 1 }}&search={{ search }}&tok={{ token }}">
+							<a class="page-link" href="?page={{ activePage + 1 }}&search={{ search|striptags|raw  }}&tok={{ token|striptags|raw  }}">
 								Page suivante
 							</a>
 						</li>

@@ -60,22 +60,22 @@
 
 			<div class='row justify-content-start'>
 				<p>Ancien état de l'animal du rapport :
-					{{ elements.etat|raw  }}</p>
+					{{ elements.etat|striptags|raw  }}</p>
 			</div>
 
 			<div class='row justify-content-start'>
 				<p>Ancienne nourriture à donner :
-					{{ elements.nourriture_propose|raw }}</p>
+					{{ elements.nourriture_propose|striptags|raw }}</p>
 			</div>
 
 			<div class='row justify-content-start'>
 				<p>Ancienne quantité de nourriture :
-					{{ elements.quantite_nourriture|raw }}</p>
+					{{ elements.quantite_nourriture|striptags|raw }}</p>
 			</div>
 
 			<div class='row justify-content-start'>
 				<p>Ancien rapport :
-					{{ elements.detail|raw  }}</p>
+					{{ elements.detail|striptags|raw  }}</p>
 			</div>
 
 			<h3>Nouveau :</h3>
@@ -187,12 +187,12 @@
 						<tbody>
 							{% for element in elements %}
 								<tr>
-									<td>{{ element.valeur|raw  }}</td>
+									<td>{{ element.valeur|striptags|raw  }}</td>
 									<td>{{ element.nom_animal }}</td>
-									<td>{{ element.etat|raw  }}</td>
-									<td>{{ element.nourriture_propose|raw }}</td>
-									<td>{{ element.quantite_nourriture|raw  }}</td>
-									<td>{{ element.detail|raw  }}</td>
+									<td>{{ element.etat|striptags|raw  }}</td>
+									<td>{{ element.nourriture_propose|striptags|raw }}</td>
+									<td>{{ element.quantite_nourriture|striptags|raw  }}</td>
+									<td>{{ element.detail|striptags|raw  }}</td>
 
 									{% if user_role == 'veterinaire' %}
 										<td>

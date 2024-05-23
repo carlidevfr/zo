@@ -1,29 +1,27 @@
 {% extends "base.html.twig" %}
-
-{% block head_title %}Arcadia-Gestion du nourrissage
+{% block head_title %}
+	Arcadia-Gestion des utilisateurs
 {% endblock %}
 
-{% block head_description %}Gestion du nourrissage
+{% block head_description %}
+	Gestion des utilisateurs
 {% endblock %}
 
 {% block stylesheet %}
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<link rel="stylesheet" href="{{base_url}}Public/scss/main.css">
+	<link rel="stylesheet" href="{{ base_url }}Public/scss/main.css">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block body %}
 
 	{% if addResult is defined and addResult is not empty %}
-
 		{# Page 'résultat' suite à une action créer, update ou delete terminée -------------------------------------#}
-
 		{# résultat de l'action #}
 			<p>
-		{{ addResult|striptags|raw  }}
+		{{ addResult }}
 		</p>
 		<br>
-
 		{# Liste des éléments liés pouvant empêcher la suppression #}
 			{% if data is defined and data is not empty %}
 				<h2>
@@ -33,85 +31,54 @@
 			<div class='m-1 '> <a class="btn btn-danger text-white ps-4 pe-4" href="{{ base_url }}{{ previousUrl }}">Retour</a>
 		</div>
 	{% elseif modifySection is defined and modifySection == true %}
-
 		{# Page 'update' pour mettre le nouveau nom -----------------------------------------------------------------#}
-
 		<div class='container-fluid d-flex flex-column text-center background__primary text-white mt-5 mb-5 pt-5 pb-5 justify-content-center'>
-			<h1 class="">Bienvenue dans votre espace de gestion des services</h1>
+			<h1 class="">Bienvenue dans votre espace de gestion des utilisateurs</h1>
 			<br>
 			<h2>Modification
-				{{ pageName|striptags|raw  }}
+				{{ pageName }}
 				:
 			</h2>
 		</div>
 
-
 		<div class='container-fluid'>
-			<div class='row justify-content-center'>
-				<p>Ancienne date du rapport :
-					{{elements.valeur|striptags|raw }}</p>
+			<div class='row justify-content-start'>
+				<p>Ancien nom du service:
+					{{ elements.valeur }}</p>
 			</div>
-
-			<div class='row justify-content-center'>
-				<p>Ancien animal du rapport :
-					{{ elements.nom_animal|striptags|raw  }}</p>
+			<div class='row justify-content-start'>
+				<p>Ancienne description du service:
+					{{ elements.description }}</p>
 			</div>
-
-			<div class='row justify-content-center'>
-				<p>Ancienne nourriture donnée :
-					{{ elements.nourriture_donnee|striptags|raw }}</p>
-			</div>
-
-			<div class='row justify-content-center'>
-				<p>Ancienne quantité de nourriture :
-					{{ elements.nourriture_donnee_quantite|striptags|raw }}</p>
-			</div>
-
 
 			<h3>Nouveau :</h3>
-
-			<form class='container-fluid' action="{{base_url}}{{updateUrl}}" method="post" enctype='multipart/form-data'>
-
+			<br>
+			<form class='container-fluid' action="{{ base_url }}{{ updateUrl }}" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="updateElementId" value={{ elements.id }}>
 				<input type="hidden" name="tok" value={{ token }}>
-				<input type="hidden" name="addElementAnimal" value={{ elements.animal }}>
 
 				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
-					<label for="addElementDate">Date du nourrissage :
-					</label>
-					<input class="form-control" type="datetime-local" name="addElementDate" id="">
+					<label for="addElementName">
+						Nom du service :</label>
+					<input class="form-control" type="text" name="addElementName" id="" placeholder="{{ pageName }}">
 				</div>
 
 				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
-					<label for="addElementNou">Nourriture donnée:
-					</label>
-					<input class="form-control" type="text" name="addElementNou" id="">
+					<label for="addElementDesc">Description :</label>
+					<textarea class="form-control" name="addElementDesc" id="" cols="30" rows="3"></textarea>
 				</div>
-
-				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
-					<label for="addElementQuant">Quantité de nourriture :
-					</label>
-					<input class="form-control" type="text" name="addElementQuant" id="">
-				</div>
-
-
 				<button class="btn btn-primary col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2" type="submit">Soumettre</button>
-
 			</form>
-
 			<div class='m-1 '>
 				<a class="btn btn-danger text-white ps-4 pe-4" href="{{ base_url }}{{ previousUrl }}">
 					Retour
 				</a>
 			</div>
 		</div>
-
 	{% else %}
 		{# Page 'main' de la section avec CRUD ----------------------------------------------------------------------#}
-
-
 		<div class='container-fluid d-flex flex-column text-center background__primary text-white mt-5 mb-5 pt-5 pb-5 justify-content-center'>
-			<h1 class="">Bienvenue dans votre espace de gestion du nourrissage</h1>
+			<h1 class="">Bienvenue dans votre espace de gestion des utilisateurs</h1>
 			<br>
 			<h2 class="">Que voulez vous faire ?</h2>
 		</div>
@@ -119,7 +86,8 @@
 		<div class='container-fluid'>
 			<div class='row justify-content-start'>
 				<h2 class="col-12 m-2 mb-5">
-					Liste du nourrissage effectué
+					Liste des
+					{{ pageName }}
 				</h2>
 			</div>
 			{# Formulaire de recherche #}
@@ -136,54 +104,68 @@
 				</button>
 
 			</form>
-
 			{% if elements == 'une erreur est survenue' %}
-				<b>une erreur est survenue</b>
+				<b>
+					une erreur est survenue
+				</b>
 			{% else %}
-
 				{# Tableau des éléments #}
 				<div class="table-responsive">
 					<table class="table table-sm table-bordered border-dark table-hover text-justify align-middle">
 						<thead class='text-uppercase align-middle'>
 							<tr>
-								<th>Date et heure</th>
-								<th>Animal</th>
-								<th>Nourriture donnée</th>
-								<th>Quantité</th>
-								<th>Etat Animal</th>
-								<th>Nourriture proposée par le vétérinaire</th>
-								<th>Quantité proposée par le vétérinaire</th>
-								<th>Dernier rapport vétérinaire</th>
-								<th>Modifier</th>
-								<th>Supprimer</th>
+								<th>Email
+									{{ pageName }}</th>
+								<th class="table-description-size">
+									Role
+								</th>
+								<th class="table-description-size">
+									Nom
+								</th>
+								<th class="table-description-size">
+									Prénom
+								</th>
+								<th>
+									Modifier
+								</th>
+								<th>
+									Supprimer
+								</th>
 							</tr>
 						</thead>
-
-						<tbody>
+						<tbody class="">
 							{% for element in elements %}
 								<tr>
-									<td>{{ element.valeur|striptags|raw  }}</td>
-									<td>{{ element.nom_animal }}</td>
-									<td>{{ element.nourriture_donnee|striptags|raw  }}</td>
-									<td>{{ element.nourriture_donnee_quantite|striptags|raw }}</td>
-									<td>{{ element.etat_sante|striptags|raw  }}</td>
-									<td>{{ element.info_veterinaire|striptags|raw  }}</td>
-									<td>{{ element.quantite_veterinaire|striptags|raw  }}</td>
-									<td>{{ element.date_rapport_veterinaire_format|striptags|raw  }}</td>
-
 									<td>
-										<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
-											<input type="hidden" name="UpdateElementId" value={{ element.id }}>
-											<input type="hidden" name="tok" value={{ token }}>
-											<button class='btn btn-primary m-2' type="submit">Modifier</button>
-										</form>
+										{{ element.valeur }}
+									</td>
+									<td>
+										{{ element.role|striptags|raw  }}
 									</td>
 
 									<td>
-										<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
+										{{ element.lastname|striptags|raw  }}
+									</td>
+
+									<td>
+										{{ element.firstname|striptags|raw  }}
+									</td>
+									<td>
+										<form method="get" action="{{ base_url }}{{ updateUrl }}" enctype='multipart/form-data'>
+											<input type="hidden" name="UpdateElementId" value={{ element.id }}>
+											<input type="hidden" name="tok" value={{ token }}>
+											<button class='btn btn-primary m-2' type="submit">
+												Modifier
+											</button>
+										</form>
+									</td>
+									<td>
+										<form method="post" action="{{ base_url }}{{ deleteUrl }}" enctype='multipart/form-data'>
 											<input type="hidden" name="deleteElementId" value={{ element.id }}>
 											<input type="hidden" name="tok" value={{ token }}>
-											<button class='btn btn-danger m-2' type="submit">Supprimer</button>
+											<button class='btn btn-danger m-2' type="submit">
+												Supprimer
+											</button>
 										</form>
 									</td>
 								</tr>
@@ -246,41 +228,43 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<h2>Souhaitez vous faire un ajout : Nourrissage ?</h2>
+							<h2>
+								Souhaitez vous faire un ajout :
+																?
+							</h2>
+							<form action="{{ base_url }}{{ addUrl }}" method="post" id="form" enctype='multipart/form-data'>
+								<label for="addElementName">
+									Nom du nouvel utilisateur :
+								</label>
+								<input type="text" name="addElementName" required>
+								<br>
+								<br>
+								<label for="addElementFirstName">
+									Prénom du nouvel utilisateur :
+								</label>
+								<input type="text" name="addElementFirstName" required>
+								<br>
+								<br>
+								<label id="email-label" for="email">Email
+									<input name="email" id="email" type="email" required>
+								</label>
 
-							<form id='addelement' action="{{base_url}}{{addUrl}}" method="post" enctype='multipart/form-data'>
-								<label for="addElementDate">Date du nourrissage :
+								<label for="password">Mot de passe (12 caract, maj, min, chiffre, caractère spécial)
+									<input name="password" id="password" type="password" required>
+								</label>
+								<br>
+								<br>
+								<label for="addElementRole">Rôle :
 								</label><br>
-								<input type="datetime-local" required name="addElementDate" id="">
-								<br><br>
-
-								<!-- Champ de saisie pour la recherche -->
-								<label for="searchInput">Recherche de l'animal pour le select:</label><br>
-								<input type="text" id="searchInput" onkeyup="rechercheSelect()" placeholder="Rechercher..."><br><br>
-
-								<label for="addElementAnimal">Animal :
-								</label><br>
-								<select name="addElementAnimal" id="select_animal">
-									<option value=""></option>
-									{% for item in animaux %}
-										<option value="{{ item.id }}">{{ item.valeur }}</option>
+								<select name="addElementRole" required>
+									{% for item in roles %}
+										<option value="{{ item.id|striptags|raw }}">{{ item.valeur|striptags|raw  }}</option>
 									{% endfor %}
 								</select><br><br>
-
-								<label for="addElementNou">Nourriture donnée:
-								</label>
-								<br>
-								<input type="text" required name="addElementNou" id=""><br><br>
-
-								<label for="addElementQuant">Quantité de nourriture :
-								</label>
-								<br>
-								<input type="text" required name="addElementQuant" id=""><br><br>
-
-								<br>
-
 								<input type="hidden" name="tok" value={{ token }}>
-								<button type="submit" class='btn btn-success ps-4 pe-4'>Soumettre</button>
+								<button class='btn btn-success ps-4 pe-4' type="submit">
+									Soumettre
+								</button>
 							</form>
 						</div>
 						<div class="modal-footer">
@@ -296,32 +280,8 @@
 				<a class="btn text-white btn-danger ps-4 pe-4" href="{{ base_url }}admin">Retour</a>
 			</div>
 		</div>
-		<script>
-			// Fonction de recherche
-function rechercheSelect() { // Récupérer la valeur de recherche
-let input,
-filter,
-select,
-options,
-option,
-i,
-txtValue;
-input = document.getElementById("searchInput");
-filter = input.value.toUpperCase();
-select = document.getElementById("select_animal");
-options = select.getElementsByTagName("option");
-
-// Masquer les options qui ne correspondent pas à la recherche
-for (i = 0; i < options.length; i++) {
-option = options[i];
-txtValue = option.textContent || option.innerText;
-if (txtValue.toUpperCase().indexOf(filter) > -1) {
-option.style.display = "";
-} else {
-option.style.display = "none";
-}
-}
-}
-		</script>
 	{% endif %}
+		<script type="module" src="{{base_url}}Public/js/form.js" async defer></script>
+
+
 {% endblock %}

@@ -29,6 +29,7 @@ require_once './src/Controller/UtilisateurServiceController.php';
 require_once './src/Controller/UtilisateurHabitatVeteController.php';
 require_once './src/Controller/UtilisateurRapportVeteController.php';
 require_once './src/Controller/ConsommationNourritureController.php';
+require_once './src/Controller/UtilisateurCompteController.php';
 
 
 
@@ -113,6 +114,13 @@ $router->addRoute('GET', BASE_URL . 'admin/manage-nourriture/action/success', 'C
 $router->addRoute('POST', BASE_URL . 'admin/manage-nourriture/delete', 'ConsommationNourritureController', 'adminDeleteNourriture');
 $router->addRoute('GET', BASE_URL . 'admin/manage-nourriture/update', 'ConsommationNourritureController', 'adminUpdateNourriturePage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-nourriture/update', 'ConsommationNourritureController', 'adminUpdateNourriture');
+
+$router->addRoute('GET', BASE_URL . 'admin/manage-utilisateur', 'UtilisateurCompteController', 'adminUtilisateurPage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-utilisateur/add', 'UtilisateurCompteController', 'adminAddUtilisateur');
+$router->addRoute('GET', BASE_URL . 'admin/manage-utilisateur/action/success', 'UtilisateurCompteController', 'adminSuccessActionUtilisateur');
+$router->addRoute('POST', BASE_URL . 'admin/manage-utilisateur/delete', 'UtilisateurCompteController', 'adminDeleteUtilisateur');
+$router->addRoute('GET', BASE_URL . 'admin/manage-utilisateur/update', 'UtilisateurCompteController', 'adminUpdateUtilisateurPage');
+$router->addRoute('POST', BASE_URL . 'admin/manage-utilisateur/update', 'UtilisateurCompteController', 'adminUpdateUtilisateur');
 
 $router->addRoute('GET', BASE_URL . 'apigetimganimaux', 'HomeController', 'apiGetImgAnimaux');
 $router->addRoute('GET', BASE_URL . 'apigetimghabitats', 'HomeController', 'apiGetImgHabitats');

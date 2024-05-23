@@ -17,7 +17,7 @@
 	{% if addResult is defined and addResult is not empty %}
 
 		{# Page 'résultat' suite à une action créer, update ou delete terminée -------------------------------------#}
-		{# résultat de l'action #}<p>{{addResult}}
+		{# résultat de l'action #}<p>{{addResult|striptags|raw }}
 		</p>
 		<br>
 
@@ -38,7 +38,7 @@
 							{% for animaux in items %}
 								<li>
 								Nom de l'animal:
-							{{ animaux.nom_animal }}
+							{{ animaux.nom_animal|striptags|raw  }}
 						</li>
 					{% endfor %}
 				</ul>
@@ -58,7 +58,7 @@
 			<h1 class="">Bienvenue dans votre espace de gestion des Habitats</h1>
 			<br>
 			<h2>Modification
-				{{ pageName }}
+				{{ pageName|striptags|raw  }}
 				:
 			</h2>
 		</div>
@@ -67,16 +67,16 @@
 			<div class='row justify-content-start'>
 				<p>
 					Ancien nom de l'habitat:
-					{{elements.valeur}}</p>
+					{{elements.valeur|striptags|raw }}</p>
 			</div>
 			<div class='row justify-content-start'>
 				<p>Ancienne description de l'habitat:
-					{{elements.description}}</p>
+					{{elements.description|striptags|raw }}</p>
 			</div>
 
 			<div class='row justify-content-start'>
 				<p>Ancien avis de l'habitat:
-					{{elements.avis}}</p>
+					{{elements.avis|striptags|raw }}</p>
 			</div>
 
 			<h3>photos de l'habitat :</h3>
@@ -97,13 +97,13 @@
 							{% set imageId = imageIds[key] %}
 							<tr>
 								<td>
-									<img src="data:{{ image.type }};base64,{{ image.data }}" alt="Image" style="width: 75px; height: 75px;">
+									<img src="data:{{ image.type|striptags|raw  }};base64,{{ image.data|striptags|raw  }}" alt="Image" style="width: 75px; height: 75px;">
 								</td>
 
 								<td>
 									<form method="post" action="{{base_url}}{{deleteUrlImg}}" enctype='multipart/form-data'>
-										<input type="hidden" name="deleteElementId" value={{imageId}}>
-										<input type="hidden" name="tok" value={{ token }}>
+										<input type="hidden" name="deleteElementId" value={{imageId|striptags|raw }}>
+										<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 										<button class='btn btn-danger text-white m-2' type="submit">Supprimer</button>
 									</form>
 								</td>
@@ -119,13 +119,13 @@
 			<h3>Nouveau :</h3>
 			<br>
 			<form id='addelement' class='container-fluid' action="{{ base_url }}{{ updateUrl }}" method="post" enctype="multipart/form-data">
-				<input type="hidden" name="updateElementId" value="{{elements.id}}">
-				<input type="hidden" name="tok" value={{ token }}>
+				<input type="hidden" name="updateElementId" value="{{elements.id|striptags|raw }}">
+				<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 
 				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
 					<label for="updatedName">
 						Nom modifié :</label>
-					<input class="form-control" type="text" name="updatedName" id="" placeholder="{{ pageName }}">
+					<input class="form-control" type="text" name="updatedName" id="" placeholder="{{ pageName|striptags|raw  }}">
 				</div>
 
 				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
@@ -161,7 +161,7 @@
 		<div class='row justify-content-start'>
 			<h2 class="col-12 m-2 mb-5">
 				Liste des
-				{{ pageName }}
+				{{ pageName|striptags|raw  }}
 			</h2>
 		</div>
 
@@ -170,7 +170,7 @@
 			<div class=" col-12 col-md-3 col-xxl-2">
 				<input class="form-control" type="text" name='search' placeholder='Recherche'>
 			</div>
-			<input type="hidden" name="tok" value={{ token }}>
+			<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 			<button class=" btn btn-success col-11 col-md-3 col-xl-2 col-xxl-1 ms-2" type="submit">
 				Recherche
 			</button>
@@ -190,7 +190,7 @@
 					<thead class='text-uppercase align-middle'>
 						<tr>
 							<th>Nom
-								{{pageName}}</th>
+								{{pageName|striptags|raw }}</th>
 							<th class="table-description-size">Description</th>
 							<th class="table-description-size">Avis vétérinaire</th>
 							<th class="table-description-size">Photos</th>
@@ -202,15 +202,15 @@
 					<tbody>
 						{% for element in elements %}
 							<tr>
-								<td>{{ element.valeur|raw  }}</td>
-								<td>{{ element.description|raw }}</td>
-								<td>{{ element.avis|raw }}</td>
+								<td>{{ element.valeur|striptags|raw   }}</td>
+								<td>{{ element.description|striptags|raw  }}</td>
+								<td>{{ element.avis|striptags|raw  }}</td>
 								<td>
 
 									{% if element.images is defined %}
 										<div style="margin-right: 10px; display: flex; gap: 10px;">
 											{% for image in element.images %}
-												<img src="data:{{ image.type }};base64,{{ image.data }}" alt="Image" style="width: 75px; height: 75px;">
+												<img src="data:{{ image.type|striptags|raw  }};base64,{{ image.data|striptags|raw  }}" alt="Image" style="width: 75px; height: 75px;">
 											{% endfor %}
 										</div>
 									{% else %}
@@ -221,16 +221,16 @@
 
 								<td>
 									<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
-										<input type="hidden" name="UpdateElementId" value={{ element.id }}>
-										<input type="hidden" name="tok" value={{ token }}>
+										<input type="hidden" name="UpdateElementId" value={{ element.id|striptags|raw  }}>
+										<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 										<button class='btn btn-primary m-2' type="submit">Modifier</button>
 									</form>
 								</td>
 
 								<td>
 									<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
-										<input type="hidden" name="deleteElementId" value={{ element.id }}>
-										<input type="hidden" name="tok" value={{ token }}>
+										<input type="hidden" name="deleteElementId" value={{ element.id|striptags|raw  }}>
+										<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 										<button class='btn btn-danger text-white m-2' type="submit">Supprimer</button>
 									</form>
 								</td>
@@ -246,7 +246,7 @@
 				{% if activePage > 1 %}
 					{# Si on est sur page 2 et + #}
 					<li class="page-item">
-						<a class="page-link" href="?page={{ activePage - 1 }}&search={{ search }}&tok={{ token }}">
+						<a class="page-link" href="?page={{ activePage - 1 }}&search={{ search|striptags|raw  }}&tok={{ token|striptags|raw  }}">
 							Page précédente
 						</a>
 					</li>
@@ -260,7 +260,7 @@
 						</li>
 					{% else %}
 						<li class="page-item">
-							<a class="page-link" href="?page={{ page }}&search={{ search }}&tok={{ token }}">
+							<a class="page-link" href="?page={{ page }}&search={{ search|striptags|raw  }}&tok={{ token|striptags|raw  }}">
 								{{ page }}
 							</a>
 						</li>
@@ -268,7 +268,7 @@
 				{% endfor %}
 				{% if activePage < pageMax %}
 					<li class="page-item">
-						<a class="page-link" href="?page={{ activePage + 1 }}&search={{ search }}&tok={{ token }}">
+						<a class="page-link" href="?page={{ activePage + 1 }}&search={{ search|striptags|raw  }}&tok={{ token|striptags|raw  }}">
 							Page suivante
 						</a>
 					</li>
@@ -302,7 +302,7 @@
 						<form id='addelement' action="{{base_url}}{{addUrl}}" method="post" enctype='multipart/form-data'>
 							<label for="addElementName">Nom du nouvel habitat :
 							</label><br>
-							<input type="text" required name="addElementName" id="" placeholder="{{pageName}}">
+							<input type="text" required name="addElementName" id="" placeholder="{{pageName|striptags|raw }}">
 							<br><br>
 
 							<label for="addElementDesc">Description du nouvel habitat :
@@ -316,7 +316,7 @@
 							<input type="file" name="addElementImg[]" id="addElementImg" multiple></input><br>
 						<br>
 
-						<input type="hidden" name="tok" value={{ token }}>
+						<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 						<button class='btn btn-success ps-4 pe-4' type="submit">Soumettre</button>
 					</form>
 				</div>

@@ -21,7 +21,7 @@
 
 		{# résultat de l'action #}
 			<p>
-		{{addResult}}
+		{{addResult|striptags|raw }}
 		</p>
 		<br>
 
@@ -42,7 +42,7 @@
 							{% for animaux in items %}
 								<li>
 								Nom de l'animal:
-							{{ animaux.nom_animal }}
+							{{ animaux.nom_animal|striptags|raw  }}
 						</li>
 					{% endfor %}
 				</ul>
@@ -60,7 +60,7 @@
 			<h1 class="">Bienvenue dans votre espace de gestion des Animaux</h1>
 			<br>
 			<h2>Modification
-				{{ pageName }}
+				{{ pageName|striptags|raw  }}
 				:
 			</h2>
 		</div>
@@ -69,25 +69,25 @@
 			<div class='row justify-content-start'>
 				<p>
 					Ancien nom de l'animal:
-					{{elements.valeur}}</p>
+					{{elements.valeur|striptags|raw }}</p>
 			</div>
 
 			<div class='row justify-content-start'>
 				<p>
 					Ancienne race de l'animal:
-					{{elements.nom_race}}</p>
+					{{elements.nom_race|striptags|raw }}</p>
 			</div>
 
 			<div class='row justify-content-start'>
 				<p>
 					Ancien habitat de l'animal:
-					{{elements.nom_habitat}}</p>
+					{{elements.nom_habitat|striptags|raw }}</p>
 			</div>
 
 			<div class='row justify-content-start'>
 				<p>
 					Ancien état de l'animal:
-					{{elements.etat}}</p>
+					{{elements.etat|striptags|raw }}</p>
 			</div>
 
 
@@ -110,13 +110,13 @@
 							{% set imageId = imageIds[key] %}
 							<tr>
 								<td>
-									<img src="data:{{ image.type }};base64,{{ image.data }}" alt="Image" style="width: 75px; height: 75px;">
+									<img src="data:{{ image.type|striptags|raw  }};base64,{{ image.data|striptags|raw  }}" alt="Image" style="width: 75px; height: 75px;">
 								</td>
 
 								<td>
 									<form method="post" action="{{base_url}}{{deleteUrlImg}}" enctype='multipart/form-data'>
-										<input type="hidden" name="deleteElementId" value={{imageId}}>
-										<input type="hidden" name="tok" value={{ token }}>
+										<input type="hidden" name="deleteElementId" value={{imageId|striptags|raw }}>
+										<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 										<button class='btn btn-danger text-white m-2' type="submit">Supprimer</button>
 									</form>
 								</td>
@@ -153,7 +153,7 @@
 					<select class="form-control" name="addElementRace">
 						<option value=""></option>
 						{% for item in races %}
-							<option value="{{ item.id }}">{{ item.valeur }}</option>
+							<option value="{{ item.id|striptags|raw  }}">{{ item.valeur|striptags|raw  }}</option>
 						{% endfor %}
 					</select>
 				</div>
@@ -164,7 +164,7 @@
 					<select class="form-control" name="addElementHabitat">
 						<option value=""></option>
 						{% for item in habitat %}
-							<option value="{{ item.id }}">{{ item.valeur }}</option>
+							<option value="{{ item.id|striptags|raw  }}">{{ item.valeur|striptags|raw  }}</option>
 						{% endfor %}
 					</select>
 				</div>
@@ -176,7 +176,7 @@
 					<input class="form-control" type="file" name="addElementImg[]" id="addElementImg" multiple></input><br>
 			</div>
 
-			<input type="hidden" name="tok" value={{ token }}>
+			<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 			<button class="btn btn-primary col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2" type="submit">Soumettre</button>
 		</form>
 
@@ -198,7 +198,7 @@
 	<div class='container-fluid'>
 		<div class='row justify-content-start'>
 			<h2 class="col-12 m-2 mb-5">liste des
-				{{pageName}}</h2>
+				{{pageName|striptags|raw }}</h2>
 		</div>
 
 		{# Formulaire de recherche #}
@@ -248,7 +248,7 @@
 									{% if element.images is defined %}
 										<div style="margin-right: 10px; display: flex; gap: 10px;">
 											{% for image in element.images %}
-												<img src="data:{{ image.type }};base64,{{ image.data }}" alt="Image" style="width: 75px; height: 75px;">
+												<img src="data:{{ image.type|striptags|raw  }};base64,{{ image.data|striptags|raw  }}" alt="Image" style="width: 75px; height: 75px;">
 											{% endfor %}
 										</div>
 									{% else %}
@@ -259,16 +259,16 @@
 
 								<td>
 									<form method="get" action="{{base_url}}{{updateUrl}}" enctype='multipart/form-data'>
-										<input type="hidden" name="UpdateElementId" value={{ element.id }}>
-										<input type="hidden" name="tok" value={{ token }}>
+										<input type="hidden" name="UpdateElementId" value={{ element.id|striptags|raw  }}>
+										<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 										<button class='btn btn-primary m-2' type="submit">Modifier</button>
 									</form>
 								</td>
 
 								<td>
 									<form method="post" action="{{base_url}}{{deleteUrl}}" enctype='multipart/form-data'>
-										<input type="hidden" name="deleteElementId" value={{ element.id }}>
-										<input type="hidden" name="tok" value={{ token }}>
+										<input type="hidden" name="deleteElementId" value={{ element.id|striptags|raw  }}>
+										<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 										<button class='btn btn-danger text-white m-2' type="submit">Archiver</button>
 									</form>
 								</td>
@@ -293,12 +293,12 @@
 					{% if page == activePage %}
 						<li class="page-item">
 							<span class="current-page page-link">
-								{{ page }}
+								{{ page|striptags|raw  }}
 							</span>
 						</li>
 					{% else %}
 						<li class="page-item">
-							<a class="page-link" href="?page={{ page }}&search={{ search }}&tok={{ token }}">
+							<a class="page-link" href="?page={{ page|striptags|raw  }}&search={{ search|striptags|raw  }}&tok={{ token|striptags|raw  }}">
 								{{ page }}
 							</a>
 						</li>
@@ -306,7 +306,7 @@
 				{% endfor %}
 				{% if activePage < pageMax %}
 					<li class="page-item">
-						<a class="page-link" href="?page={{ activePage + 1 }}&search={{ search }}&tok={{ token }}">
+						<a class="page-link" href="?page={{ activePage + 1 }}&search={{ search|striptags|raw  }}&tok={{ token|striptags|raw  }}">
 							Page suivante
 						</a>
 					</li>
@@ -334,7 +334,7 @@
 					<div class="modal-body">
 						<h2>
 							Souhaitez vous faire un ajout :
-							{{ pageName }}
+							{{ pageName|striptags|raw  }}
 							?
 						</h2>
 						<form id='addelement' action="{{base_url}}{{addUrl}}" method="post" enctype='multipart/form-data'>
@@ -352,7 +352,7 @@
 							</label><br>
 							<select name="addElementRace">
 								{% for item in races %}
-									<option value="{{ item.id }}">{{ item.valeur }}</option>
+									<option value="{{ item.id|striptags|raw  }}">{{ item.valeur|striptags|raw  }}</option>
 								{% endfor %}
 							</select><br><br>
 
@@ -360,7 +360,7 @@
 							</label><br>
 							<select name="addElementHabitat">
 								{% for item in habitat %}
-									<option value="{{ item.id }}">{{ item.valeur }}</option>
+									<option value="{{ item.id|striptags|raw  }}">{{ item.valeur|striptags|raw  }}</option>
 								{% endfor %}
 							</select><br><br>
 
@@ -370,7 +370,7 @@
 							<input type="file" name="addElementImg[]" id="addElementImg" multiple></input><br>
 						<br>
 
-						<input type="hidden" name="tok" value={{ token }}>
+						<input type="hidden" name="tok" value={{ token|striptags|raw  }}>
 						<button class='btn btn-success ps-4 pe-4' type="submit">Soumettre</button>
 					</form>
 				</div>

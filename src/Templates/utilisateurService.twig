@@ -132,7 +132,7 @@
 										{{ element.valeur }}
 									</td>
 									<td>
-										{{ element.description|raw }}
+										{{ element.description|striptags|raw  }}
 									</td>
 									<td>
 										<form method="get" action="{{ base_url }}{{ updateUrl }}" enctype='multipart/form-data'>
@@ -221,7 +221,7 @@
 								<label for="addElementName">
 									Nom du nouveau service :
 								</label>
-								<input type="text" name="addElementName" id="" placeholder="{{ pageName }}">
+								<input type="text" name="addElementName" required id="" placeholder="{{ pageName }}">
 								<br>
 								<br>
 								<label for="addElementDesc">
