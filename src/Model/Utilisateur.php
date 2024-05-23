@@ -297,5 +297,32 @@ class Utilisateur extends Model
         $regex = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{12,}$/';
         return preg_match($regex, $password);
     }
+    public function deleteUtilisateur($Id)
+    {
+        try {
+            // Supprime un utilisateur selon l'id
 
+            $bdd = $this->connexionPDO();
+            $req = '
+            DELETE FROM utilisateurs
+            WHERE id_utilisateur  = :Id';
+
+            // on teste si la connexion pdo a réussi
+            if (is_object($bdd)) {
+                $stmt = $bdd->prepare($req);
+
+                if (!empty($Id)) {
+                    $stmt->bindValue(':Id', $Id, PDO::PARAM_STR);
+                    if ($stmt->execute()) {
+                        return 'Cet utilisateur a bien été supprimé ';
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+            return 'Une erreur est survenue';
+        }
+    }
 }
