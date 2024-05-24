@@ -241,6 +241,44 @@ class Utilisateur extends Model
         }
     }
 
+    public function getByUtilisateurId($id)
+    //retourne un utilisateur selon l'id
+    {
+        try {
+            $bdd = $this->connexionPDO();
+            $req = '
+            SELECT 
+            utilisateurs.id_utilisateur AS id,
+            utilisateurs.firstname,
+            utilisateurs.lastname,
+            utilisateurs.email AS valeur,
+            roles.label AS role
+            FROM utilisateurs
+            JOIN 
+            roles ON utilisateurs.role_utilisateur = roles.id_role
+            WHERE utilisateurs.id_utilisateur  = :id';
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                if (!empty($id)) {
+                    $stmt->bindValue(':id', $id, PDO::PARAM_STR);
+
+                    if ($stmt->execute()) {
+                        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $stmt->closeCursor();
+                        return $user;
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+        }
+    }
+
     public function addUtilisateur($utilisateurName, $utilisateurFirstname, $utilisateurEmail, $utilisateurPass, $utilisateurRole)
     // ajoute un utilisateur et vérifie si le mdp est fort
     {
@@ -315,6 +353,82 @@ class Utilisateur extends Model
                     $stmt->bindValue(':Id', $Id, PDO::PARAM_STR);
                     if ($stmt->execute()) {
                         return 'Cet utilisateur a bien été supprimé ';
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+            return 'Une erreur est survenue';
+        }
+    }
+
+    public function updateUtilisateur($Id, $utilisateurName, $utilisateurFirstname, $utilisateurEmail, $utilisateurPass, $utilisateurRole)
+    // Modifie le utilisateur selon l'id
+    {
+        try {
+            $bdd = $this->connexionPDO();
+
+            if (empty($Id)) {
+                return 'une erreur est survenue';
+            } else {
+                // Ajout dans la table rapport
+                $req = 'UPDATE utilisateurs SET ';
+
+                $params = [];
+
+                if (!empty($utilisateurFirstname)) {
+                    $req .= 'firstname = :utilisateurFirstname, ';
+                    $params[':utilisateurFirstname'] = $utilisateurFirstname;
+                }
+
+                if (!empty($utilisateurName)) {
+                    $req .= 'lastname = :utilisateurName, ';
+                    $params[':utilisateurName'] = $utilisateurName;
+                }
+
+                if (!empty($utilisateurEmail)) {
+                    $req .= 'email = :utilisateurEmail, ';
+                    $params[':utilisateurEmail'] = $utilisateurEmail;
+                }
+
+                if (!empty($utilisateurPass)) {
+
+                    if (!$this->isPasswordValid($utilisateurPass)) {
+                        return 'Le mot de passe ne respecte pas les critères de sécurité.';
+                    }
+
+                    // Hacher le mot de passe
+                    $hashedPass = password_hash($utilisateurPass, PASSWORD_BCRYPT);
+                    $req .= 'pass = :hashedPass, ';
+                    $params[':hashedPass'] = $hashedPass;
+                }
+
+                if (!empty($utilisateurRole)) {
+                    $req .= 'role_utilisateur = :utilisateurRole, ';
+                    $params[':utilisateurRole'] = $utilisateurRole;
+                }
+
+                $req = rtrim($req, ', '); // Supprimer la virgule en trop à la fin de la requête
+
+                $req .= ' WHERE id_utilisateur = :id_utilisateur';
+            }
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                if (!empty($Id)) {
+
+                    foreach ($params as $paramName => $paramValue) {
+                        $stmt->bindValue($paramName, $paramValue, PDO::PARAM_STR);
+                    }
+
+                    $stmt->bindValue(':id_utilisateur', $Id, PDO::PARAM_STR);
+
+                    if ($stmt->execute()) {
+                        return "Cet utilisateur a été mis à jour avec succès.";
                     }
                 }
             } else {

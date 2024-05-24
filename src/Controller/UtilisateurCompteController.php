@@ -24,7 +24,7 @@ class UtilisateurCompteController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ( $userRole !== 'admin') {
+        if ($userRole !== 'admin') {
             $this->Security->logout();
         }
 
@@ -47,7 +47,7 @@ class UtilisateurCompteController
 
             // On récupère le token
             $token = $this->Security->getToken();
-            
+
         } else {
             $utilisateurs = $this->Utilisateur->getPaginationAllUtilisateurNames($page, $itemsPerPage);
             $search = '';
@@ -56,14 +56,14 @@ class UtilisateurCompteController
         // Récupère le nombre de pages, on arrondi au dessus
         if (!empty($this->Utilisateur->getAllUtilisateurNames())) {
             $pageMax = ceil(count($this->Utilisateur->getAllUtilisateurNames()) / $itemsPerPage);
-        }else{
+        } else {
             $pageMax = 1;
         }
 
         // On récupère les rôles
 
         $roles = $this->Utilisateur->getAllRoleNames();
-        
+
         //twig
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
@@ -94,7 +94,7 @@ class UtilisateurCompteController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ( $userRole !== 'admin') {
+        if ($userRole !== 'admin') {
             $this->Security->logout();
         }
 
@@ -145,7 +145,7 @@ class UtilisateurCompteController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ( $userRole !== 'admin') {
+        if ($userRole !== 'admin') {
             $this->Security->logout();
         }
 
@@ -165,11 +165,11 @@ class UtilisateurCompteController
 
             //le pass
             (isset($_POST['password']) and !empty($_POST['password'])) ? $utilisateurPass = $this->Security->filter_form($_POST['password']) : $utilisateurPass = '';
-           
+
             // le role
             (isset($_POST['addElementRole']) and !empty($_POST['addElementRole'])) ? $utilisateurRole = $this->Security->filter_form($_POST['addElementRole']) : $utilisateurRole = '';
 
-                      
+
             // on fait l'ajout en BDD et on récupère le résultat
             $res = $this->Utilisateur->addUtilisateur($utilisateurName, $utilisateurFirstname, $utilisateurEmail, $utilisateurPass, $utilisateurRole);
 
@@ -187,15 +187,15 @@ class UtilisateurCompteController
     public function adminDeleteUtilisateur()
     // Suppression de utilisateur
     {
-       //On vérifie si on a le droit d'être là
-       $this->Security->verifyAccess();
+        //On vérifie si on a le droit d'être là
+        $this->Security->verifyAccess();
 
-       // On récupère le role
-       $userRole = $this->Security->getRole();
+        // On récupère le role
+        $userRole = $this->Security->getRole();
 
-       if ( $userRole !== 'admin') {
-        $this->Security->logout();
-       }
+        if ($userRole !== 'admin') {
+            $this->Security->logout();
+        }
 
         // On récupère le token
         $token = $this->Security->getToken();
@@ -228,7 +228,7 @@ class UtilisateurCompteController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ( $userRole !== 'admin') {
+        if ($userRole !== 'admin') {
             $this->Security->logout();
         }
 
@@ -242,6 +242,10 @@ class UtilisateurCompteController
         $utilisateur = $this->Utilisateur->getByUtilisateurId($utilisateurAction);
         $modifySection = true;
 
+        // On récupère les rôles
+
+        $roles = $this->Utilisateur->getAllRoleNames();
+
         //twig
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
@@ -252,6 +256,7 @@ class UtilisateurCompteController
             'pageName' => 'utilisateurs',
             'elements' => $utilisateur,
             'modifySection' => $modifySection,
+            'roles' => $roles,
             'deleteUrl' => 'admin/manage-utilisateur/delete',
             'addUrl' => 'admin/manage-utilisateur/add',
             'updateUrl' => 'admin/manage-utilisateur/update',
@@ -262,7 +267,7 @@ class UtilisateurCompteController
     }
 
     public function adminUpdateUtilisateur()
-    // Modification de la utilisateur
+    // Modification de utilisateur
     {
         //On vérifie si on a le droit d'être là
         $this->Security->verifyAccess();
@@ -270,7 +275,7 @@ class UtilisateurCompteController
         // On récupère le role
         $userRole = $this->Security->getRole();
 
-        if ( $userRole !== 'admin') {
+        if ($userRole !== 'admin') {
             $this->Security->logout();
         }
 
@@ -279,18 +284,27 @@ class UtilisateurCompteController
 
         if (isset($_POST['tok']) and $this->Security->verifyToken($token, $_POST['tok'])) {
 
-            // on récupère l'id de à Modifier
-            (isset($_POST['updateElementId']) and !empty($_POST['updateElementId'])) ? $action = $this->Security->filter_form($_POST['updateElementId']) : $action = '';
+            // id
+            (isset($_POST['updateElementId']) and !empty($_POST['updateElementId'])) ? $id = $this->Security->filter_form($_POST['updateElementId']) : $id = '';
 
             // le nom 
             (isset($_POST['addElementName']) and !empty($_POST['addElementName'])) ? $utilisateurName = $this->Security->filter_form($_POST['addElementName']) : $utilisateurName = '';
 
-            //la description
-            (isset($_POST['addElementDesc']) and !empty($_POST['addElementDesc'])) ? $utilisateurDesc = $this->Security->filter_form($_POST['addElementDesc']) : $utilisateurDesc = '';
+            //le prénom
+            (isset($_POST['addElementFirstName']) and !empty($_POST['addElementFirstName'])) ? $utilisateurFirstname = $this->Security->filter_form($_POST['addElementFirstName']) : $utilisateurFirstname = '';
 
-           
+            // le mail 
+            (isset($_POST['email']) and !empty($_POST['email'])) ? $utilisateurEmail = $this->Security->filter_form($_POST['email']) : $utilisateurEmail = '';
+
+            //le pass
+            (isset($_POST['password']) and !empty($_POST['password'])) ? $utilisateurPass = $this->Security->filter_form($_POST['password']) : $utilisateurPass = '';
+
+            // le role
+            (isset($_POST['addElementRole']) and !empty($_POST['addElementRole'])) ? $utilisateurRole = $this->Security->filter_form($_POST['addElementRole']) : $utilisateurRole = '';
+
+
             // on fait la modif en BDD et on récupère le résultat
-            $res = $this->Utilisateur->updateUtilisateur($action, $utilisateurName, $utilisateurDesc);
+            $res = $this->Utilisateur->updateUtilisateur($id, $utilisateurName, $utilisateurFirstname, $utilisateurEmail, $utilisateurPass, $utilisateurRole);
 
             // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
             $_SESSION['resultat'] = $res;

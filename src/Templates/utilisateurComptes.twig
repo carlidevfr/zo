@@ -43,30 +43,65 @@
 
 		<div class='container-fluid'>
 			<div class='row justify-content-start'>
-				<p>Ancien nom du service:
+				<p>Ancien nom de l'utilisateur:
+					{{ elements.lastname }}</p>
+			</div>
+			<div class='row justify-content-start'>
+				<p>Ancien prénom de l'utilisateur:
+					{{ elements.firstname }}</p>
+			</div>
+
+			<div class='row justify-content-start'>
+				<p>Ancien email de l'utilisateur:
 					{{ elements.valeur }}</p>
 			</div>
 			<div class='row justify-content-start'>
-				<p>Ancienne description du service:
-					{{ elements.description }}</p>
+				<p>Ancien rôle de l'utilisateur:
+					{{ elements.role }}</p>
 			</div>
+
 
 			<h3>Nouveau :</h3>
 			<br>
-			<form class='container-fluid' action="{{ base_url }}{{ updateUrl }}" method="post" enctype="multipart/form-data">
+			<form class='container-fluid' id="form" action="{{ base_url }}{{ updateUrl }}" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="updateElementId" value={{ elements.id }}>
 				<input type="hidden" name="tok" value={{ token }}>
 
 				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
 					<label for="addElementName">
-						Nom du service :</label>
-					<input class="form-control" type="text" name="addElementName" id="" placeholder="{{ pageName }}">
+						Nom utilisateur :</label>
+					<input class="form-control" type="text" name="addElementName" id="">
 				</div>
 
 				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
-					<label for="addElementDesc">Description :</label>
-					<textarea class="form-control" name="addElementDesc" id="" cols="30" rows="3"></textarea>
+					<label for="addElementName">
+						Prénom utilisateur :</label>
+					<input class="form-control" type="text" name="addElementFirstName" id="">
 				</div>
+
+				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
+					<label for="addElementName">
+						Email utilisateur :</label>
+					<input class="form-control" type="email" name="email" id="email">
+				</div>
+
+				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
+					<label for="addElementName">
+						Mot de passe (12 caract, maj, min, chiffre, caractère spécial) :</label>
+					<input class="form-control" type="password" name="password" id="password">
+				</div>
+
+				<div class="form-group col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2">
+					<label for="addElementRole">Rôle :
+					</label><br>
+					<select class="form-control" name="addElementRole">
+						<option value=""></option>
+						{% for item in roles %}
+							<option value="{{ item.id|striptags|raw  }}">{{ item.valeur|striptags|raw  }}</option>
+						{% endfor %}
+					</select>
+				</div>
+
 				<button class="btn btn-primary col-11 col-md-6 col-lg-5 col-xl-4 col-xxl-3 m-2" type="submit">Soumettre</button>
 			</form>
 			<div class='m-1 '>
@@ -230,7 +265,7 @@
 						<div class="modal-body">
 							<h2>
 								Souhaitez vous faire un ajout :
-																?
+																								?
 							</h2>
 							<form action="{{ base_url }}{{ addUrl }}" method="post" id="form" enctype='multipart/form-data'>
 								<label for="addElementName">
@@ -281,7 +316,7 @@
 			</div>
 		</div>
 	{% endif %}
-		<script type="module" src="{{base_url}}Public/js/form.js" async defer></script>
+	<script type="module" src="{{base_url}}Public/js/form.js" async defer></script>
 
 
 {% endblock %}

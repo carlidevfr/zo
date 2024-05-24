@@ -9,3 +9,4 @@
 2024-05-09 10:05:31 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_habitat = 4' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Habitat.php 495
 2024-05-13 08:33:29 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'LIMIT 15' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Animaux.php 263
 2024-05-13 08:33:30 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'LIMIT 15' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Animaux.php 263
+2024-05-24 07:39:19 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_utilisateur = 'c3ee608c-18df-11ef-af2c-7085c2c31344'' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Utilisateur.php 430

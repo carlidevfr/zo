@@ -41,6 +41,9 @@ form.addEventListener('submit', (event) => { // on vérifie les données à l'en
     for (let count = 0; count < form.elements.length; count++) {
         if (form.elements[count].name === 'email') { // on vérifie si le mail est ok
             if (ValidateEmail(form.elements[count].value)) {
+
+            } else if (form.elements[count].value.trim() === '') {
+                // Si vide ne se passe rien
             } else {
                 error += 1
             }
@@ -48,6 +51,9 @@ form.addEventListener('submit', (event) => { // on vérifie les données à l'en
         if (form.elements[count].name === 'password') { // On vérifie si le mot de passe est ok
             if (ValidatePassword(form.elements[count].value)) {
                 // Mot de passe validé
+
+            } else if (form.elements[count].value.trim() === '') {
+                // Si vide ne se passe rien
             } else {
                 error += 1;
             }
@@ -57,7 +63,7 @@ form.addEventListener('submit', (event) => { // on vérifie les données à l'en
         alert("Le formulaire ne s'est pas envoyé, email ou mdp invalide")
         event.preventDefault()
         errorMessage.innerHTML = "Le formulaire ne s'est pas envoyé, email ou mdp invalide"
-    }else{
+    } else {
         errorMessage.innerHTML = ""
     }
 })
