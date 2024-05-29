@@ -17,4 +17,24 @@ export default class Data {
             .catch((error) => { console.error('Erreur de récupération des données:' + error) });
     }
 
+    postFetchData(apiUrl, sanitizeHtml, ResAction, resDom, formData ) {
+        // Param : url à interroger + fonction de traitement du résultat + element du dom pour print le res, formData 
+
+        fetch(apiUrl, {
+            method: 'POST',
+            body: formData
+        })   // Utilisation de fetch pour interroger l'API
+            .then((response) => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    console.error('Erreur de récupération des données:' + response.status)
+                }
+            })
+            .then((data) => {
+                ResAction(sanitizeHtml, data, resDom)
+            })
+            .catch((error) => { console.error('Erreur de récupération des données:' + error) });
+    }
+
 }

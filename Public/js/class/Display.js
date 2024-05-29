@@ -312,6 +312,30 @@ export default class Display {
     }
   }
 
+  addAvis(sanitizeHtml, data, resDom) {
+    try {
+      // Sélection de l'élément conteneur
+      let container = resDom;
+
+      // Vérifier si l'élément conteneur existe
+      if (!container) {
+        throw new Error("L'élément conteneur n'existe pas.");
+      }
+
+      // Vider le container
+      container.innerHTML = '';
+
+      // Affichage du résultat
+      let p = document.createElement('p');
+      let valeur = sanitizeHtml(data);
+      p.textContent = valeur;
+      container.appendChild(p);
+
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de l'affichage des avis :", error);
+    }
+  }
+
   displayHabitatsPage(sanitizeHtml, data, resDom, id, displayImg) {
     try {
 

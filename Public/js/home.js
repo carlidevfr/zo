@@ -9,6 +9,10 @@ let animauxContainer = document.getElementById('home-display-animaux');
 let habitatsContainer = document.getElementById('home-display-habitats');
 let servicesContainer = document.getElementById('home-display-services');
 let avisContainer = document.getElementById('home-display-avis');
+let avisform = document.getElementById('avis-form');
+let resAvisContainer = document.getElementById('res-avis-form');
+
+
 
 window.addEventListener("load", () => {
     // Evènements au chargement de la page
@@ -24,5 +28,15 @@ window.addEventListener("load", () => {
 
     let avisUrl = '/apigetactiveavis';
     DATA.getFetchData(avisUrl, DISPLAY.sanitizeHtml, DISPLAY.displayAvis, avisContainer, '')
+
+    avisform.addEventListener('submit', function (event) {
+        event.preventDefault(); // Empêcher l'envoi du formulaire traditionnel
+
+        const formData = new FormData(avisform); // Créer un objet FormData à partir du formulaire
+        let avisUrl = '/apiaddavis';
+        DATA.postFetchData(avisUrl, DISPLAY.sanitizeHtml, DISPLAY.addAvis, resAvisContainer, formData);
+        avisform.reset();
+    });
+
 
 })
