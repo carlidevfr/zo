@@ -10,3 +10,8 @@
 2024-05-13 08:33:29 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'LIMIT 15' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Animaux.php 263
 2024-05-13 08:33:30 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'LIMIT 15' à la ligne 2 42000 C:\wamp64\www\zoo\src\Model\Animaux.php 263
 2024-05-24 07:39:19 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_utilisateur = 'c3ee608c-18df-11ef-af2c-7085c2c31344'' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Utilisateur.php 430
+2024-05-29 06:12:49 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_service = 1' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Service.php 247
+2024-05-29 06:15:50 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_service = 1' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Service.php 247
+2024-05-29 06:15:50 SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicata du champ 'gerger@erge.gt' pour la clef 'email' 23000 C:\wamp64\www\zoo\src\Model\Utilisateur.php 315
+2024-05-29 06:17:31 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_service = 1' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Service.php 247
+2024-05-29 06:19:23 SQLSTATE[42000]: Syntax error or access violation: 1064 Erreur de syntaxe près de 'WHERE id_service = 1' à la ligne 1 42000 C:\wamp64\www\zoo\src\Model\Service.php 247
