@@ -2,11 +2,15 @@
 
 require_once './src/Model/Utilisateur.php';
 require_once './src/Model/Common/Security.php';
+require_once './src/Model/Common/SendMail.php';
+
 
 class UtilisateurCompteController
 {
     private $Utilisateur;
     private $Security;
+    private $SendMail;
+
 
     public function __construct()
     {
@@ -175,6 +179,14 @@ class UtilisateurCompteController
 
             // Stockage des résultats dans la session puis redirection pour éviter renvoi au rafraichissement
             $_SESSION['resultat'] = $res;
+            
+            $message = "Un compte a été créé sur ARCADIA. L'identifiant est votre email. Pour le mot de passe merci de revenir vers nous.";
+            $send = new SendMail($this->Security->filter_form($_ENV['FROM']), $utilisateurEmail, $utilisateurFirstname, $utilisateurEmail, $message);
+            if ($send->mailSend()) {
+                $res = "Votre demande est bien transmise";
+            } else {
+                $res = "Echec de l'envoi du message";
+            }
         }
 
         // on regénère le token

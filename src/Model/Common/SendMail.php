@@ -29,7 +29,7 @@ class SendMail{
     }
 
     private function mailContent(): string{
-       $res =  "Demande de contact de la part de" . "\r\n" . $this->contentCleaner($this->nom) . "\r\n" . "<br />" . $this->contentCleaner($this->email) . "\r\n" . "<br />" . $this->contentCleaner($this->message);
+       $res =  "Information de ARCADIA" . "\r\n" . $this->contentCleaner($this->nom) . "\r\n" . "<br />" . $this->contentCleaner($this->email) . "\r\n" . "<br />" . $this->contentCleaner($this->message);
        return $res;
     }
 
