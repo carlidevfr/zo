@@ -272,6 +272,46 @@ export default class Display {
     }
   }
 
+  displayAvis(sanitizeHtml, data, resDom) {
+    try {
+      // Sélection de l'élément conteneur
+      let container = resDom;
+
+      // Vérifier si l'élément conteneur existe
+      if (!container) {
+        throw new Error("L'élément conteneur n'existe pas.");
+      }
+
+      // Vider le container
+      container.innerHTML = '';
+
+      // Création de la liste <ul>
+      let ul = document.createElement('ul');
+
+      // Parcourir les données et créer chaque élément de liste <li>
+      data.forEach((item) => {
+        // Création de l'élément de liste <li>
+        let li = document.createElement('li');
+
+        // Formatage de la date et du contenu de l'avis
+        let date = sanitizeHtml(item.date_avis);
+        let valeur = sanitizeHtml(item.valeur);
+        let contenuAvis = sanitizeHtml(item.contenu_avis);
+
+        // Texte de l'élément de liste
+        li.textContent = `${date} - ${valeur} : ${contenuAvis}`;
+
+        // Ajouter l'élément de liste à la liste <ul>
+        ul.appendChild(li);
+      });
+
+      // Ajouter la liste <ul> au conteneur
+      container.appendChild(ul);
+    } catch (error) {
+      console.error("Une erreur s'est produite lors de l'affichage des avis :", error);
+    }
+  }
+
   displayHabitatsPage(sanitizeHtml, data, resDom, id, displayImg) {
     try {
 

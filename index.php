@@ -129,10 +129,8 @@ $router->addRoute('GET', BASE_URL . 'apigetservices', 'HomeController', 'apiGetS
 $router->addRoute('GET', BASE_URL . 'apigetanimauxbyhabitat', 'HomeController', 'apiGetAnimauxByHabitat');
 $router->addRoute('GET', BASE_URL . 'apigetanimauxbyidanimal', 'HomeController', 'apiGetAnimauxByIdAnimal');
 $router->addRoute('GET', BASE_URL . 'apigetrapportbyidanimal', 'HomeController', 'apiGetRapportByIdAnimal');
-
-
-
-
+$router->addRoute('GET', BASE_URL . 'apigetactiveavis', 'HomeController', 'apiGetActiveAvis');
+$router->addRoute('POST', BASE_URL . 'apiaddavis', 'HomeController', 'apiAddAvis');
 
 
 

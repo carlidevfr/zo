@@ -81,6 +81,39 @@ class Avis extends Model
         }
     }
 
+    public function getAllActiveAvisNames()
+    //Récupère tous les avis validés
+    {
+        try {
+            $bdd = $this->connexionPDO();
+            $req = "
+            SELECT id_avis AS id,
+            pseudo AS valeur, 
+            DATE_FORMAT(date_avis, '%d/%m/%Y') AS date_avis,
+            contenu_avis,
+            actif
+            FROM avis
+            WHERE actif = 1
+            ORDER BY id_avis DESC
+            ";
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                if ($stmt->execute()) {
+                    $avis = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $stmt->closeCursor();
+                    return $avis;
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+        }
+    }
+
     public function getPaginationAllAvisNames($page, $itemsPerPage)
     //Récupère les avis triées par page
     {
@@ -204,6 +237,38 @@ class Avis extends Model
                     $stmt->bindValue(':newName', $newName, PDO::PARAM_INT);
                     if ($stmt->execute()) {
                         return 'Le statut de cet avis a bien été modifié ';
+                    }
+                }
+            } else {
+                return 'une erreur est survenue';
+            }
+        } catch (Exception $e) {
+            $this->logError($e);
+            return 'Une erreur est survenue';
+        }
+    }
+
+    public function addAvis($pseudo, $date_avis, $contenu_avis)
+    // Ajoute un avis
+    {
+        try {
+            $bdd = $this->connexionPDO();
+            $req = '
+            INSERT INTO avis (pseudo, date_avis, contenu_avis, actif)
+            VALUES (:pseudo, :date_avis, :contenu_avis, :actif)';
+
+            if (is_object($bdd)) {
+                // on teste si la connexion pdo a réussi
+                $stmt = $bdd->prepare($req);
+
+                if (!empty ($pseudo) && !empty ($date_avis) && !empty ($contenu_avis)) {
+                    $stmt->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
+                    $stmt->bindValue(':date_avis', $date_avis, PDO::PARAM_STR);
+                    $stmt->bindValue(':contenu_avis', $contenu_avis, PDO::PARAM_STR);
+                    $stmt->bindValue(':actif', 0, PDO::PARAM_INT);
+
+                    if ($stmt->execute()) {
+                        return 'Votre avis est en attente de validation';
                     }
                 }
             } else {

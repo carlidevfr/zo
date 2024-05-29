@@ -8,6 +8,7 @@ const DATA = new Data();
 let animauxContainer = document.getElementById('home-display-animaux');
 let habitatsContainer = document.getElementById('home-display-habitats');
 let servicesContainer = document.getElementById('home-display-services');
+let avisContainer = document.getElementById('home-display-avis');
 
 window.addEventListener("load", () => {
     // Evènements au chargement de la page
@@ -20,5 +21,8 @@ window.addEventListener("load", () => {
 
     let servicesUrl = '/apigetservices';
     DATA.getFetchData(servicesUrl, DISPLAY.sanitizeHtml, DISPLAY.displayAccordion, servicesContainer, 'accordeon-services-api')
+
+    let avisUrl = '/apigetactiveavis';
+    DATA.getFetchData(avisUrl, DISPLAY.sanitizeHtml, DISPLAY.displayAvis, avisContainer, '')
 
 })

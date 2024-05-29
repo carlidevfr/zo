@@ -5,9 +5,8 @@ require_once './src/Model/Common/Regenerate.php';
 require_once './src/Model/Animaux.php';
 require_once './src/Model/Habitat.php';
 require_once './src/Model/Service.php';
+require_once './src/Model/Avis.php';
 require_once './src/Model/RapportVeterinaire.php';
-
-
 
 
 
@@ -17,6 +16,7 @@ class HomeController
     private $Animaux;
     private $Habitat;
     private $Service;
+    private $Avis;
     private $RapportVeterinaire;
 
 
@@ -30,6 +30,7 @@ class HomeController
         $this->Animaux = new Animaux();
         $this->Habitat = new Habitat();
         $this->Service = new Service();
+        $this->Avis = new Avis();
         $this->RapportVeterinaire = new RapportVeterinaire();
     }
 
@@ -163,5 +164,25 @@ class HomeController
         //récupération et envoi des services en json
         $res = $this->Service->getAllServiceNames();
         Model::sendJSON($res) ;     
+    }
+
+    public function apiGetActiveAvis(){
+
+        //récupération et envoi des avis validés en json
+        $res = $this->Avis->getAllActiveAvisNames();
+        Model::sendJSON($res) ;     
+    }
+
+    public function apiAddAvis(){
+        //Post d'un avis
+        (isset($_POST['id'])) ? $id = $this->Security->filter_form($_POST['id']) : $id = '';
+        (isset($_POST['message'])) ? $message = $this->Security->filter_form($_POST['message']) : $message = '';
+
+        if (!empty ($id) && !empty ($message)) {
+            $date = new DateTime();
+            $date_avis = date('Y-m-d');
+            $res = $this->Avis->addAvis($id, $date_avis, $message);
+            Model::sendJSON($res) ;     
+        }
     }
 }
