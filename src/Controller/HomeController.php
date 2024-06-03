@@ -20,11 +20,6 @@ class HomeController
     private $Avis;
     private $RapportVeterinaire;
     private $CountAnimal;
-
-
-
-
-
     private $Regenerate;
 
     public function __construct(){
@@ -36,7 +31,6 @@ class HomeController
         $this->Avis = new Avis();
         $this->RapportVeterinaire = new RapportVeterinaire();
         $this->CountAnimal = new CountAnimal();
-
     }
 
     public function index(){
@@ -90,8 +84,6 @@ class HomeController
         
         // Mise à jour du compteur de visite en nosql mongodb
         $this->CountAnimal->addAnimalCount($res['id'], $res['valeur']);
-
-        var_dump($this->CountAnimal->getAnimal($res['id']));
 
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);

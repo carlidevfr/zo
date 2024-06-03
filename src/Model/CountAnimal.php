@@ -60,4 +60,29 @@ class CountAnimal extends Model
             return null;
         }
     }
+
+    public function deleteAnimalById($id)
+    {
+        try {
+            // Récupérer la collection "animaux"
+            $collection = $this->getCollectionAnimaux();
+            
+            // Supprimer l'animal avec l'ID spécifié
+            $result = $collection->deleteOne(['idAnimal' => $id]);
+            
+            // Vérifier si la suppression a réussi
+            if ($result->getDeletedCount() > 0) {
+                // La suppression a réussi
+                return true;
+            } else {
+                // Aucun animal n'a été supprimé (peut-être que l'animal avec cet ID n'existe pas)
+                return false;
+            }
+        } catch (Exception $e) {
+            // En cas d'erreur, enregistrer l'erreur dans le fichier de log
+            $this->logError($e);
+            // Retourner false pour indiquer une erreur
+            return false;
+        }
+    }
 }

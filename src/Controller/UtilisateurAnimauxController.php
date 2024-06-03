@@ -4,6 +4,8 @@ require_once './src/Model/Animaux.php';
 require_once './src/Model/Habitat.php';
 require_once './src/Model/Race.php';
 require_once './src/Model/Common/Security.php';
+require_once './src/Model/CountAnimal.php';
+
 
 class UtilisateurAnimauxController
 {
@@ -11,6 +13,8 @@ class UtilisateurAnimauxController
     private $Security;
     private $Race;
     private $Habitat;
+    private $CountAnimal;
+
 
 
 
@@ -20,6 +24,8 @@ class UtilisateurAnimauxController
         $this->Race = new Race();
         $this->Habitat = new Habitat();
         $this->Security = new Security();
+        $this->CountAnimal = new CountAnimal();
+
     }
 
     public function adminAnimauxPage()
@@ -225,6 +231,9 @@ class UtilisateurAnimauxController
 
         // on fait la modification en BDD et on récupère le résultat
         $res = $this->Animaux->ArchiveAnimal($AniAction);
+
+        // Suppression en nosql mongodb
+        $this->CountAnimal->deleteAnimalById($AniAction);
 
         // Stockage des résultats et l'id de l'élément dans la session puis redirection pour éviter renvoi au rafraichissement
         $_SESSION['resultat'] = $res;
