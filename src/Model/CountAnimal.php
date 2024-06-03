@@ -9,6 +9,9 @@ class CountAnimal extends Model
             // Récupérer la collection "animaux"
             $collection = $this->getCollectionAnimaux();
 
+            // Convertir l'ID en entier en cas de besoin
+            $id = (int) $id;
+
             // Vérifier si l'animal existe déjà dans la collection
             $animal = $collection->findOne(['idAnimal' => $id]);
 
@@ -42,10 +45,12 @@ class CountAnimal extends Model
         try {
             // Récupérer la collection "animaux"
             $collection = $this->getCollectionAnimaux();
-            
+
+            // Convertir l'ID en entier en cas de besoin
+            $id = (int) $id;
             // Rechercher l'animal dans la collection
             $animal = $collection->findOne(['idAnimal' => $id]);
-            
+
             if ($animal) {
                 // Si l'animal existe, retourner son compteur
                 return $animal;
@@ -66,10 +71,13 @@ class CountAnimal extends Model
         try {
             // Récupérer la collection "animaux"
             $collection = $this->getCollectionAnimaux();
-            
+
+            // Convertir l'ID en entier en cas de besoin
+            $id = (int) $id;
+
             // Supprimer l'animal avec l'ID spécifié
             $result = $collection->deleteOne(['idAnimal' => $id]);
-            
+
             // Vérifier si la suppression a réussi
             if ($result->getDeletedCount() > 0) {
                 // La suppression a réussi
@@ -83,6 +91,40 @@ class CountAnimal extends Model
             $this->logError($e);
             // Retourner false pour indiquer une erreur
             return false;
+        }
+    }
+
+    public function getAllAnimaux()
+    {
+        try {
+            // Récupérer la collection "animaux"
+            $collection = $this->getCollectionAnimaux();
+
+            // Récupérer toutes les données de la collection, triées par ordre décroissant de la valeur du compteur
+            $animaux = $collection->find([], ['sort' => ['compteur' => -1]]);
+
+            // Récupérer un tableau
+            $res = [];
+
+            // Parcourir chaque document
+            foreach ($animaux as $animal) {
+                // Extraire les champs nécessaires et les stocker dans un tableau
+                $animalData = [
+                    'idAnimal' => $animal['idAnimal'],
+                    'nom' => $animal['nom'],
+                    'compteur' => $animal['compteur']
+                ];
+
+                // Ajouter le tableau d'animal extrait au tableau résultant
+                $res[] = $animalData;
+            }
+
+            return $res;
+        } catch (Exception $e) {
+            // En cas d'erreur, enregistrer l'erreur dans le fichier de log
+            $this->logError($e);
+            // Retourner null pour indiquer une erreur
+            return null;
         }
     }
 }

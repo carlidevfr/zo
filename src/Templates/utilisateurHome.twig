@@ -53,8 +53,12 @@
 		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0' onclick="location.href='/admin/manage-service'">Services</button><br><br>
 	{% endif %}
 
-		{% if user_role == 'admin'%}
+	{% if user_role == 'admin'%}
 		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0' onclick="location.href='/admin/manage-utilisateur'">Comptes</button><br><br>
+	{% endif %}
+
+	{% if user_role == 'admin'%}
+		<button class='col-12 col-sm-4 p-5 h3 background__secondary border-0' onclick="location.href='/admin/manage-stats'">Statistiques</button><br><br>
 	{% endif %}
 
 	<button class='col-12 col-sm-4 p-5 h3 alert alert-danger border-0' onclick="location.href='/logout'">Déconnexion</button>

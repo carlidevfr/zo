@@ -30,8 +30,9 @@ require_once './src/Controller/UtilisateurHabitatVeteController.php';
 require_once './src/Controller/UtilisateurRapportVeteController.php';
 require_once './src/Controller/ConsommationNourritureController.php';
 require_once './src/Controller/UtilisateurCompteController.php';
+require_once './src/Controller/UtilisateurStatsController.php';
 require_once './src/Model/Common/Security.php';
-require_once './src/Model/Common/Regenerate.php';
+//require_once './src/Model/Common/Regenerate.php';
 
 
 $router = new Router();
@@ -44,12 +45,8 @@ $router->addRoute('GET', BASE_URL . 'animal', 'homecontroller', 'animalByIdPage'
 $router->addRoute('GET', BASE_URL . 'contact', 'ContactController', 'contactPage');
 $router->addRoute('POST', BASE_URL . 'contact', 'ContactController', 'contactForm');
 
-
-
-
-
-$router->addRoute('GET', BASE_URL . 'createbddprod', 'homecontroller', 'createBddProd');
-$router->addRoute('GET', BASE_URL . 'createbddtest', 'homecontroller', 'createBddTest');
+//$router->addRoute('GET', BASE_URL . 'createbddprod', 'homecontroller', 'createBddProd');
+//$router->addRoute('GET', BASE_URL . 'createbddtest', 'homecontroller', 'createBddTest');
 
 $router->addRoute('GET', BASE_URL . 'admin', 'UtilisateurHomeController', 'utilisateurHomePage');
 $router->addRoute('GET', BASE_URL . 'login', 'UtilisateurHomeController', 'userLogin');
@@ -117,6 +114,8 @@ $router->addRoute('GET', BASE_URL . 'admin/manage-utilisateur/action/success', '
 $router->addRoute('POST', BASE_URL . 'admin/manage-utilisateur/delete', 'UtilisateurCompteController', 'adminDeleteUtilisateur');
 $router->addRoute('GET', BASE_URL . 'admin/manage-utilisateur/update', 'UtilisateurCompteController', 'adminUpdateUtilisateurPage');
 $router->addRoute('POST', BASE_URL . 'admin/manage-utilisateur/update', 'UtilisateurCompteController', 'adminUpdateUtilisateur');
+
+$router->addRoute('GET', BASE_URL . 'admin/manage-stats', 'UtilisateurStatsController', 'adminStatsPage');
 
 $router->addRoute('GET', BASE_URL . 'apigetimganimaux', 'HomeController', 'apiGetImgAnimaux');
 $router->addRoute('GET', BASE_URL . 'apigetimghabitats', 'HomeController', 'apiGetImgHabitats');
