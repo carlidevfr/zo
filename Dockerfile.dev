@@ -23,6 +23,9 @@ RUN pecl install mongodb && \
 
 RUN echo "extension=mongodb.so" >> /usr/local/etc/php/php.ini
 
+# Utilisation de sed pour modifier la directive display_errors dans le fichier php.ini
+RUN sed -i 's/display_errors = On/display_errors = Off/' /usr/local/etc/php/php.ini
+
 # Permet l'utilisation de htaccess
 RUN a2enmod rewrite
 
