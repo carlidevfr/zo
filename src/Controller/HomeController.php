@@ -6,6 +6,7 @@ require_once './src/Model/Animaux.php';
 require_once './src/Model/Habitat.php';
 require_once './src/Model/Service.php';
 require_once './src/Model/Avis.php';
+require_once './src/Model/CountAnimal.php';
 require_once './src/Model/RapportVeterinaire.php';
 
 
@@ -18,6 +19,8 @@ class HomeController
     private $Service;
     private $Avis;
     private $RapportVeterinaire;
+    private $CountAnimal;
+
 
 
 
@@ -32,6 +35,8 @@ class HomeController
         $this->Service = new Service();
         $this->Avis = new Avis();
         $this->RapportVeterinaire = new RapportVeterinaire();
+        $this->CountAnimal = new CountAnimal();
+
     }
 
     public function index(){
@@ -78,12 +83,16 @@ class HomeController
     }
 
     public function animalByIdPage(){
-        //récupération et envoi d'un habitat selon son id
-
+        //récupération et envoi d'un animal selon son id
         (isset($_GET['animal'])) ? $animalId = $this->Security->filter_form($_GET['animal']) : $animalId = '';
         $res = $this->Animaux->getByAnimalId($animalId);
 
         
+        // Mise à jour du compteur de visite en nosql mongodb
+        $this->CountAnimal->addAnimalCount($res['id'], $res['valeur']);
+
+        var_dump($this->CountAnimal->getAnimal($res['id']));
+
         $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
         $template = $twig->load('animalByIdPage.twig');

@@ -4,3 +4,7 @@
 **/**.xml.dist
 **/prod.sql
 **/testprod.sql
+Dockerfile
+docker-compose.yml
+/mariadb
+/dbdata6

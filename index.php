@@ -7,7 +7,7 @@ session_set_cookie_params([
     'domain' => $_SERVER['SERVER_NAME'],
     'httponly' => true,
     'samesite' => 'Strict', // Définir le SameSite sur Strict pour plus de sécurité
-    //'secure' => true // Indique que le cookie ne doit être envoyé que via une connexion HTTPS
+    'secure' => true // Indique que le cookie ne doit être envoyé que via une connexion HTTPS
 ]);
 
 session_start();
@@ -30,10 +30,6 @@ require_once './src/Controller/UtilisateurHabitatVeteController.php';
 require_once './src/Controller/UtilisateurRapportVeteController.php';
 require_once './src/Controller/ConsommationNourritureController.php';
 require_once './src/Controller/UtilisateurCompteController.php';
-
-
-
-
 require_once './src/Model/Common/Security.php';
 require_once './src/Model/Common/Regenerate.php';
 
