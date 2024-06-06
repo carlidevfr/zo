@@ -27,7 +27,7 @@ abstract class Model
 
     public function connexionMongo(){
         try {
-            self::$client = new MongoDB\Client('mongodb://' . Security::filter_form($_ENV["MONGO_INITDB_ROOT_USERNAME"]) .':' . Security::filter_form($_ENV["MONGO_INITDB_ROOT_PASS"]) . '@' . Security::filter_form($_ENV["MONGO_INITDB_HOST"]));
+            self::$client = new MongoDB\Client(Security::filter_form($_ENV["MONGO_BASE"]) .  Security::filter_form($_ENV["MONGO_INITDB_ROOT_USERNAME"]) .':' . urlencode(Security::filter_form($_ENV["MONGO_INITDB_ROOT_PASS"])) . '@' . Security::filter_form($_ENV["MONGO_INITDB_HOST"]));
             // Sélection de la base de données
             self::$mongoDb = self::$client->STATSANIMAUX; // Remplacez "test" par le nom de votre base de données
             return self::$mongoDb;

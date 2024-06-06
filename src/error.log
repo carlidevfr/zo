@@ -1,0 +1,2 @@
+2024-06-06 07:11:15 Failed to parse URI options: Failed to look up SRV record "_mongodb._tcp.ighd78945zA@zoo.z8dcinw.mongodb.net": The specified host is unknown. 0 /var/www/html/vendor/mongodb/mongodb/src/Client.php 118
+2024-06-06 07:15:39 Failed to parse MongoDB URI: 'mongodb%2Bsrv%3A%2F%2Fzooapp%3AP%40ighd78945zA%40zoo.z8dcinw.mongodb.net%2F%3FretryWrites%3Dtrue%26amp%3Bw%3Dmajority%26amp%3BappName%3Dzoo'. Invalid URI Schema, expecting 'mongodb://' or 'mongodb+srv://'. 0 /var/www/html/vendor/mongodb/mongodb/src/Client.php 118
