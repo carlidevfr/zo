@@ -26,6 +26,19 @@ services:
       MYSQL_PASSWORD: test
     restart: always
 
+  mariadbtest:
+    image: mariadb
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mariadbtest:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: 
+      MYSQL_USER: 
+      MYSQL_PASSWORD: 
+    restart: always
+
   mongodb:
     image: mongo:7.0.8
     restart: always
