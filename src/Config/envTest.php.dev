@@ -3,3 +3,7 @@ $_ENV["DB_HOST"] = 'mariadbtest';
 $_ENV["DB_USER"] ='';
 $_ENV["DB_PASS"] ='';
 $_ENV["DB_NAME"] = 'testzoo';
+$_ENV["FROM"] = '';
+$_ENV["SMTPHOST"] = 'smtp.gmail.com';
+$_ENV["SMTPPASS"] = '';
+$_ENV["SMTPPORT"] = '587';

@@ -1,6 +1,9 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require_once './src/Model/Common/Model.php';
 
-class SendMail{
+class SendMail extends Model{
     private string $from;
     private string $to;
     private string $nom;
@@ -33,9 +36,34 @@ class SendMail{
        return $res;
     }
 
-    public function mailSend()
-    {
-        return mail($this->to,'ZOO_CONTACT',$this->mailContent(),$this->headers());  
-    }
+    public function mailSend() {
+        $mail = new PHPMailer(true);
 
+        try {
+            // Configuration du serveur SMTP
+            $mail->isSMTP();
+            $mail->Host = $_ENV["SMTPHOST"]; // serveur SMTP
+            $mail->SMTPAuth = true;
+            $mail->Username = $_ENV["FROM"]; 
+            $mail->Password = $_ENV["SMTPPASS"];
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Activer le chiffrement TLS
+            $mail->Port = $_ENV["SMTPPORT"] ; // Port TCP à utiliser
+
+            // Destinataires
+            $mail->setFrom($this->from);
+            $mail->addAddress($this->to); // Ajouter un destinataire
+
+            // Contenu du mail
+            $mail->isHTML(true); // Format d'email en HTML
+            $mail->Subject = 'ZOO_CONTACT';
+            $mail->Body    = $this->mailContent();
+            $mail->AltBody = strip_tags($this->mailContent());
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            $this->logError($e);
+            return false;
+        }
+    }
 }
