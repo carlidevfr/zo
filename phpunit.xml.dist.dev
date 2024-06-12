@@ -1,0 +1,17 @@
+<phpunit bootstrap="vendor/autoload.php" colors="true">
+   <testsuites>
+       <testsuite name="My Test Suite">
+           <directory>./tests</directory>
+       </testsuite>
+   </testsuites>
+   <php>
+        <env name="APP_ENV" value="test"/>
+        <env name="DB_HOST" value='mariadb'/>
+        <env name="DB_USER" value=""/>
+        <env name="DB_PASS" value=""/>
+        <env name="DB_NAME" value="testzoo"/>
+        <const name="BASE_URL" value="./zoo"/>
+
+   </php>
+   
+</phpunit>

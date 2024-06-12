@@ -1,8 +1,8 @@
 -- MariaDB
 -- on supprime les versions précédentes des tables
-DROP DATABASE IF EXISTS zoo;
-CREATE DATABASE zoo;
-USE zoo;
+DROP DATABASE IF EXISTS testzoo;
+CREATE DATABASE testzoo;
+USE testzoo;
 
 -- on crée la table roles
 
@@ -72,6 +72,7 @@ CREATE TABLE animaux
     etat VARCHAR(50) NOT NULL,
     race_animal INT NOT NULL,
     habitat_animal INT NOT NULL,
+    active_animal TINYINT NOT NULL DEFAULT 1,
     FOREIGN KEY (race_animal) REFERENCES races(id_race),
     FOREIGN KEY (habitat_animal) REFERENCES habitats(id_habitat)
 ) engine=INNODB DEFAULT CHARSET=utf8;
@@ -217,6 +218,6 @@ INSERT INTO rapport_veterinaire (animal, date_rapport, detail, nourriture_propos
     (3,'2024-04-18', 'En super forme', 'jambon', '1 kg');
 
 -- création d'un utilisateur qui servira à faire la connexion dans le .ENV du PHP pour toute l'app;
--- CREATE OR REPLACE USER 'zooapp'@'%' IDENTIFIED BY PASSWORD '*54958E764CE10E50764C2EECBB71D01F08549980';
--- GRANT SELECT, INSERT, UPDATE, DELETE ON zoo.* TO 'zooapp'@'%' ;
+-- CREATE OR REPLACE USER 'usertest'@'%' IDENTIFIED BY PASSWORD '*54958E764CE10E50764C2EECBB71D01F08549980';
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON testzoo.* TO 'usertest'@'%' ;
     
