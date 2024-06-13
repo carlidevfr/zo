@@ -103,6 +103,9 @@ class UtilisateurRaceController
             // Si l'id est en variable session on le récupère
             (isset($_SESSION['idElement']) and !empty($_SESSION['idElement'])) ? $idElement = $this->Security->filter_form($_SESSION['idElement']) : $idElement = '';
 
+            // On récupère la liste des éléments liés pouvant empêcher la suppression
+            (isset($idElement) and !empty($idElement) ? $data = $this->Race->getRelatedRace($idElement) : $data = '');
+
             // Efface les résultats de la session pour éviter de les conserver plus longtemps que nécessaire
             unset($_SESSION['resultat']);
             unset($_SESSION['idElement']);
@@ -123,6 +126,7 @@ class UtilisateurRaceController
             'base_url' => BASE_URL,
             'pageName' => 'races',
             'addResult' => $res,
+            'data' => $data,
             'deleteUrl' => 'admin/manage-race/delete',
             'addUrl' => 'admin/manage-race/add',
             'updateUrl' => 'admin/manage-race/update',

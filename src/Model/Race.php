@@ -138,6 +138,54 @@ class Race extends Model
         }
     }
 
+    public function getRelatedRace($raceId)
+    // Récupère tous les éléments liés à un raceId
+    {
+        try {
+
+            // Initialisation de la liste des éléments liés
+            $relatedElements = array();
+
+            // Liste des tables avec des clés étrangères vers Country
+            $tables = array(
+                'animaux' => 'race_animal',
+            );
+
+            // Boucle sur les tables pour récupérer les éléments liés
+            foreach ($tables as $tableName => $foreignKey) {
+
+                $bdd = $this->connexionPDO();
+                $req = "SELECT * FROM $tableName WHERE $foreignKey = :raceId";
+
+                // on teste si la connexion pdo a réussi
+                if (is_object($bdd)) {
+                    $stmt = $bdd->prepare($req);
+
+                    if (!empty($raceId) and !empty($raceId)) {
+                        $stmt->bindValue(':raceId', $raceId, PDO::PARAM_INT);
+                        if ($stmt->execute()) {
+                            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            $stmt->closeCursor();
+
+                            // Ajout des résultats à la liste
+                            $relatedElements[$tableName] = $results;
+                        } else {
+                            return 'une erreur est survenue';
+                        }
+                    }
+                } else {
+                    return 'une erreur est survenue';
+                }
+            }
+
+            // Retourne la liste des éléments liés
+            return $relatedElements;
+
+        } catch (Exception $e) {
+            $this->logError($e);
+        }
+    }
+
     public function addRace($raceName)
     // Ajoute une race
     {
