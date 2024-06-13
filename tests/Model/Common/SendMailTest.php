@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 require_once './src/Model/Common/SendMail.php';
 
 
-class SecurityTest extends TestCase
+class SendMailTest extends TestCase
 {
     public function testmailSend()
     // Test de l'envoi d'un mail

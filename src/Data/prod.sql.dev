@@ -1,8 +1,8 @@
 -- MariaDB
 -- on supprime les versions précédentes des tables
-DROP DATABASE IF EXISTS zoo;
-CREATE DATABASE zoo;
-USE zoo;
+DROP DATABASE IF EXISTS test;
+CREATE DATABASE test;
+USE test;
 
 -- on crée la table roles
 
@@ -58,7 +58,7 @@ CREATE TABLE races
 CREATE TABLE habitats
 (
     id_habitat INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nom_habitat VARCHAR(50) NOT NULL,
+    nom_habitat VARCHAR(80) NOT NULL,
     description TEXT NOT NULL,
     avis TEXT
 ) engine=INNODB DEFAULT CHARSET=utf8;
@@ -72,6 +72,7 @@ CREATE TABLE animaux
     etat VARCHAR(50) NOT NULL,
     race_animal INT NOT NULL,
     habitat_animal INT NOT NULL,
+    active_animal TINYINT NOT NULL DEFAULT 1,
     FOREIGN KEY (race_animal) REFERENCES races(id_race),
     FOREIGN KEY (habitat_animal) REFERENCES habitats(id_habitat)
 ) engine=INNODB DEFAULT CHARSET=utf8;
@@ -106,7 +107,7 @@ CREATE TABLE rapport_veterinaire
 CREATE TABLE images
 (
     id_image INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    data BLOB NOT NULL,
+    data MEDIUMBLOB NOT NULL,
     type VARCHAR(50) NOT NULL
 ) engine=INNODB DEFAULT CHARSET=utf8;
 
@@ -117,8 +118,8 @@ CREATE TABLE images_animaux
     id_animal INT NOT NULL,
     id_image INT NOT NULL,
     PRIMARY KEY (id_animal, id_image),
-    FOREIGN KEY (id_animal) REFERENCES animaux(id_animal),
-    FOREIGN KEY (id_image) REFERENCES images(id_image)
+    FOREIGN KEY (id_animal) REFERENCES animaux(id_animal) ON DELETE CASCADE,
+    FOREIGN KEY (id_image) REFERENCES images(id_image) ON DELETE CASCADE
 ) engine=INNODB DEFAULT CHARSET=utf8;
 
 -- on crée la table images_habitats
@@ -128,8 +129,8 @@ CREATE TABLE images_habitats
     id_habitat INT NOT NULL,
     id_image INT NOT NULL,
     PRIMARY KEY (id_habitat, id_image),
-    FOREIGN KEY (id_habitat) REFERENCES habitats(id_habitat),
-    FOREIGN KEY (id_image) REFERENCES images(id_image)
+    FOREIGN KEY (id_habitat) REFERENCES habitats(id_habitat) ON DELETE CASCADE,
+    FOREIGN KEY (id_image) REFERENCES images(id_image) ON DELETE CASCADE
 ) engine=INNODB DEFAULT CHARSET=utf8;
 
 -- insertion données fictives;
@@ -140,9 +141,9 @@ INSERT INTO roles (label) VALUES
     ('veterinaire');
 
 INSERT INTO utilisateurs (id_utilisateur, firstname, lastname, email, pass, role_utilisateur) VALUES
-    (UUID(), 'Anthony', 'DOTTOR', 'admin@test.fr', '$2y$10$VppjutLdN9sIlt3coyMMdu3THA/3jg2XmBj/xya16kd11ynw59QxG', 1),
-    (UUID(), 'Anthony', 'vete', 'vete@test.fr', '$2y$10$VppjutLdN9sIlt3coyMMdu3THA/3jg2XmBj/xya16kd11ynw59QxG', 3),
-    (UUID(), 'Anthony', 'emploi', 'emp@test.fr', '$2y$10$VppjutLdN9sIlt3coyMMdu3THA/3jg2XmBj/xya16kd11ynw59QxG', 2)
+    (UUID(), 'Anthony', 'DOTTOR', 'admin@test.fr', '$2y$10$w/Z3seCK31OxqV22WKRY2u51LdlRf9cJ6tFAyOnMUGMJ57I5sxdEm', 1),
+    (UUID(), 'Anthony', 'vete', 'vete@test.fr', '$2y$10$w/Z3seCK31OxqV22WKRY2u51LdlRf9cJ6tFAyOnMUGMJ57I5sxdEm', 3),
+    (UUID(), 'Anthony', 'emploi', 'emp@test.fr', '$2y$10$w/Z3seCK31OxqV22WKRY2u51LdlRf9cJ6tFAyOnMUGMJ57I5sxdEm', 2)
 ;
 
 INSERT INTO services (titre, description) VALUES

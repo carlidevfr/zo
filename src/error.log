@@ -1,2 +1,0 @@
-2024-06-12 08:44:50 SMTP Error: Could not authenticate. 0 /var/www/html/vendor/phpmailer/phpmailer/src/PHPMailer.php 2265
-2024-06-12 08:50:31 SMTP Error: Could not authenticate. 0 /var/www/html/vendor/phpmailer/phpmailer/src/PHPMailer.php 2265

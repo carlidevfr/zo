@@ -29,7 +29,7 @@ services:
   mariadbtest:
     image: mariadb
     ports:
-      - "3307:3306"
+      - "3309:3306"
     volumes:
       - ./mariadbtest:/var/lib/mysql
     environment:
