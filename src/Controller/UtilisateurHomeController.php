@@ -24,7 +24,7 @@ class UtilisateurHomeController
         $userRole = $this->Security->getRole();
 
         // Affiche la page back office
-        $loader = new Twig\Loader\FilesystemLoader('./src/templates');
+        $loader = new Twig\Loader\FilesystemLoader('./src/Templates');
         $twig = new Twig\Environment($loader);
         $template = $twig->load('utilisateurHome.twig');
 

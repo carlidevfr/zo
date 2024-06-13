@@ -141,9 +141,9 @@ INSERT INTO roles (label) VALUES
     ('veterinaire');
 
 INSERT INTO utilisateurs (id_utilisateur, firstname, lastname, email, pass, role_utilisateur) VALUES
-    (UUID(), 'Anthony', 'DOTTOR', 'admin@test.fr', '$2y$10$w/Z3seCK31OxqV22WKRY2u51LdlRf9cJ6tFAyOnMUGMJ57I5sxdEm', 1),
-    (UUID(), 'Anthony', 'vete', 'vete@test.fr', '$2y$10$w/Z3seCK31OxqV22WKRY2u51LdlRf9cJ6tFAyOnMUGMJ57I5sxdEm', 3),
-    (UUID(), 'Anthony', 'emploi', 'emp@test.fr', '$2y$10$w/Z3seCK31OxqV22WKRY2u51LdlRf9cJ6tFAyOnMUGMJ57I5sxdEm', 2)
+    (UUID(), 'Anthony', 'DOTTOR', 'admin@test.fr', '$2y$10$bQUHQkyCk9YAZ44eCg/BAeVSCI8qY/Y2GnD5hnY6KFGBR4e30T9Tm', 1),
+    (UUID(), 'Anthony', 'vete', 'vete@test.fr', '$2y$10$bQUHQkyCk9YAZ44eCg/BAeVSCI8qY/Y2GnD5hnY6KFGBR4e30T9Tm', 3),
+    (UUID(), 'Anthony', 'emploi', 'emp@test.fr', '$2y$10$bQUHQkyCk9YAZ44eCg/BAeVSCI8qY/Y2GnD5hnY6KFGBR4e30T9Tm', 2)
 ;
 
 INSERT INTO services (titre, description) VALUES
