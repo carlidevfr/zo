@@ -1,7 +1,7 @@
 {
     "require": {
         "twig/twig": "^3.9",
-        "mongodb/mongodb": "^1.19",
+        "mongodb/mongodb": "^1.14.0",
         "phpmailer/phpmailer": "^6.9"
     },
     "require-dev": {
