@@ -14,7 +14,7 @@
         <env name="SMTPHOST" value=""/>
         <env name="SMTPPASS" value=""/>
         <env name="SMTPPORT" value=""/>
-        <const name="BASE_URL" value="./zoo"/>
+        <const name="BASE_URL" value="/"/>
 
    </php>
    
