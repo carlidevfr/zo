@@ -135,6 +135,7 @@ class Security
             return true;
 
         } else {
+            self::logOut();
             return false;
         }
     }

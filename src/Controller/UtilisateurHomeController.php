@@ -69,7 +69,7 @@ class UtilisateurHomeController
 
                 if (is_array($user) && !isset($user['error'])) {
                     // on vérifie que l'uuid ne contient pas le mot erreur
-                    //Si oui on attribue le role admin (le seul)
+                    //Si oui on attribue le role
                     $_SESSION['role'] = $user['role'];
                     $_SESSION['user'] = $user['id_utilisateur'];
 
